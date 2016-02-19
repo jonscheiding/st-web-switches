@@ -26,9 +26,7 @@ definition(
 
 
 preferences {
-	section("Title") {
-		// TODO: put inputs here
-	}
+	input "switches", "capability.switch", title: "Control these switches", multiple: true
 }
 
 def installed() {
