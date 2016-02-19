@@ -29,6 +29,38 @@ preferences {
 	input "switches", "capability.switch", title: "Control these switches", multiple: true
 }
 
+mappings {
+	path("/switches") {
+    	action: [
+        	GET: "listSwitches"
+        ]
+    }
+    path("/switches/:id/:state") {
+    	action: [
+        	PUT: "updateSwitchState"
+        ]
+    }
+}
+
+def listSwitches() {
+	switches.collect {
+    	[id: it.id, label: it.displayName, state: it.currentSwitch]
+    }
+}
+
+def updateSwitchState() {
+	def sw = switches.find { it.id == params.id }
+    
+    switch(params.state) {
+	    case "on": 
+        	sw.on()
+            break
+        case "off":
+        	sw.off()
+            break
+    }
+}
+
 def installed() {
 	log.debug "Installed with settings: ${settings}"
 
