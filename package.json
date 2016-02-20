@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/jonscheiding/fni-remote-heat#readme",
   "dependencies": {
-    "express": "^4.13.4"
+    "express": "^4.13.4",
+    "simple-oauth2": "^0.5.1"
   }
 }
