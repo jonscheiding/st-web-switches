@@ -1,0 +1,19 @@
+{
+  "name": "fni-remote-heat",
+  "version": "1.0.0",
+  "description": "App for remotely controlling airplane heaters",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonscheiding/fni-remote-heat.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jonscheiding/fni-remote-heat/issues"
+  },
+  "homepage": "https://github.com/jonscheiding/fni-remote-heat#readme"
+}
