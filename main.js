@@ -10,7 +10,7 @@ var options = {
   index: "index.html"
 };
 
-app.get("/", express.static(webroot, options));
+app.use("/", express.static(webroot, options));
 
 app.get("/authorize", stAuth.authorizeHandler);
 app.get("/authorize/callback", stAuth.authorizeHandler.callback, function(req, res) {  

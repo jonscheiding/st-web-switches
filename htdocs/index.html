@@ -1,8 +1,13 @@
-<html>
+<html ng-app="heaters">
   <head>
     <title>Help, I'm Alive!</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.js"></script>
+    <script type="text/javascript" src="app.js"></script>
   </head>
-  <body>
-    Hello, World!
+  <body ng-controller="HeatersController">
+    <div ng-repeat="switch in switches">
+      <label>{{switch.label}}</label>
+      <div>Currently {{switch.state}}</div>
+    </div>
   </body>
 </html>
