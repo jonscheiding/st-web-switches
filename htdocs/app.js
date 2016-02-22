@@ -1,6 +1,6 @@
-var app = angular.module("heaters", []);
+var app = angular.module("app", []);
 
-app.controller("HeatersController", function($scope, $http) {
+app.controller("AppController", function($scope, $http) {
   $http.get("/api/switches").then(function(response) {
     $scope.switches = response.data;
   })
