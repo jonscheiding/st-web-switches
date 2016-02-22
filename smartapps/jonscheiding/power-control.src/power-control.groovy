@@ -14,97 +14,92 @@
  *
  */
 definition(
-    name: "Power Control",
-    namespace: "jonscheiding",
-    author: "Jon Scheiding",
-    description: "SmartApp to enable control of one or more switches via an API.",
-    category: "My Apps",
-    iconUrl: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience.png",
-    iconX2Url: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience@2x.png",
-    iconX3Url: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience@2x.png",
-    oauth: true)
-
+  name: "Power Control",
+  namespace: "jonscheiding",
+  author: "Jon Scheiding",
+  description: "SmartApp to enable control of one or more switches via an API.",
+  category: "My Apps",
+  iconUrl: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience.png",
+  iconX2Url: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience@2x.png",
+  iconX3Url: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience@2x.png",
+  oauth: true)
 
 preferences {
-	input "switches", "capability.switch", title: "Control these switches", multiple: true
+  input "switches", "capability.switch", title: "Control these switches", multiple: true
 }
 
 mappings {
-	path("/info") {
-    	action: [
-        	GET: "api_info_get"
-        ]
-    }
-	path("/switches") {
-    	action: [
-        	GET: "api_switches_get"
-        ]
-    }
-    path("/switches/:id") {
-    	action: [
-        	GET: "api_switch_get"
-        ]
-    }
-    path("/switches/:id/:state") {
-    	action: [
-        	PUT: "api_switch_state_put"
-        ]
-    }
+  path("/info") {
+    action: [
+      GET: "api_info_get"
+    ]
+  }
+  path("/switches") {
+    action: [
+      GET: "api_switches_get"
+    ]
+  }
+  path("/switches/:id") {
+    action: [
+      GET: "api_switch_get"
+    ]
+  }
+  path("/switches/:id/:state") {
+    action: [
+      PUT: "api_switch_state_put"
+    ]
+  }
 }
 
 def api_info_get() {
-	[
-    	label: app.label
-    ]
+  [
+    label: app.label
+  ]
 }
 
 def api_switches_get() {
-	switches.collect {map_switch(it)}
+  switches.collect {map_switch(it)}
 }
 
 def api_switch_get() {
-	def sw = switches.find { it.id == params.id }
-    map_switch(sw)
+  def sw = switches.find { it.id == params.id }
+  map_switch(sw)
 }
 
 def map_switch(sw) {
-	[
-    	id: sw.id,
-        label: sw.displayName,
-        state: sw.currentSwitch
-    ]
+  [
+    id: sw.id,
+    label: sw.displayName,
+    state: sw.currentSwitch
+  ]
 }
 
 def api_switch_state_put() {
-	def sw = switches.find { it.id == params.id }
-    
-    switch(params.state) {
-	    case "on": 
-        	sw.on()
-            return
-        case "off":
-        	sw.off()
-            return
+  def sw = switches.find { it.id == params.id }
+        
+  switch(params.state) {
+      case "on": 
+        sw.on()
+        return
+      case "off":
+        sw.off()
+        return
     }
-    
+        
     httpError(404, "Unknown state " + params.state)
 }
 
 def installed() {
-	log.debug "Installed with settings: ${settings}"
+  log.debug "Installed with settings: ${settings}"
 
-	initialize()
+  initialize()
 }
 
 def updated() {
-	log.debug "Updated with settings: ${settings}"
+  log.debug "Updated with settings: ${settings}"
 
-	unsubscribe()
-	initialize()
+  unsubscribe()
+  initialize()
 }
 
-def initialize() {
-	// TODO: subscribe to attributes, devices, locations, etc.
-}
-
-// TODO: implement event handlers
+def initialize() {}
