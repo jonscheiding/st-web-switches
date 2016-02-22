@@ -14,13 +14,13 @@ app.get("/", express.static(webroot, options));
 
 app.get("/authorize", stAuth.authorizeHandler);
 app.get("/authorize/callback", stAuth.authorizeHandler.callback, function(req, res) {  
-  res.redirect("/api");
+  res.redirect("/");
 });
 
 app.use("/api", function(req, res, next) {
-  if(!stAuth.getAuthToken()) {
+  if(!stAuth.isAuthorized()) {
     res.status(403).json({
-      message: "Server is not authenticated to SmartThings."
+      message: "Server is not authorized to SmartThings."
     });
     return;
   }
@@ -28,16 +28,15 @@ app.use("/api", function(req, res, next) {
   next();
 });
 
-app.get("/api", function(req, res) {
-  unirest.get("https://graph.api.smartthings.com/api/smartapps/endpoints")
-     .headers({"Authorization": "Bearer " + stAuth.getAuthToken()})
+app.use("/api", function(req, res) {
+  var baseUri = "https://graph.api.smartthings.com:443/api/smartapps/installations/36be958e-8940-4f73-975a-ae72f00a9503";
+  unirest[req.method.toLowerCase()](baseUri + req.originalUrl.replace("/api",""))
+    .headers({Authorization: stAuth.getAuthorization()})
     .end(function(response) {
+      console.log(response.body);
+      res.status(response.status);
       res.send(response.body);
-    });  
-});
-
-app.get("/api/heaters", function(req, res) {
-  res.send("You did it!");
+    });
 });
 
 app.listen(3000);
