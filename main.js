@@ -29,7 +29,7 @@ app.use("/api", function(req, res, next) {
 });
 
 app.use("/api", function(req, res) {
-  var baseUri = "https://graph.api.smartthings.com:443/api/smartapps/installations/36be958e-8940-4f73-975a-ae72f00a9503";
+  var baseUri = "https://graph.api.smartthings.com:443/api/smartapps/installations/a5c0a34f-3ee2-4928-8afe-eda9c15e4fd7";
   unirest[req.method.toLowerCase()](baseUri + req.originalUrl.replace("/api",""))
     .headers({Authorization: stAuth.getAuthorization()})
     .end(function(response) {

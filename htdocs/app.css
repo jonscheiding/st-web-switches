@@ -1,0 +1,60 @@
+body {
+  margin: 0;
+  padding: 2em;
+  font-size: 20px;
+  font-family: Arial;
+}
+
+/* LAYOUT */
+
+.switches {
+  width: 400px;
+  margin: auto;
+}
+
+.switches .switch .indicator {
+  float: right;
+}
+.switches .switch {
+  height: 3.2em;
+  padding: 0.2em;
+}
+.switches .switch label {
+  padding-top: 1em;
+}
+.switches .switch .indicator {
+  padding: 1em;
+}
+
+/* APPEARANCE */
+
+.switch:first-child {
+  border-top-width: 2px;
+}
+.switch {
+  border-width: 0px 2px 2px 2px;
+  border-style: solid;
+}
+.switch .indicator {
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 50%;
+}
+.switch label {
+  text-transform: uppercase;
+  display: inline-block;
+  margin-top: auto;
+}
+
+/* COLORS */
+
+.switch.on .indicator {
+  border-color: darkgreen;
+  background-color: lightgreen;
+}
+
+.switch.off .indicator {
+  border-color: black;
+  background-color: darkred;
+  color: lightgrey;
+}
