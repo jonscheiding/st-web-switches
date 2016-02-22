@@ -30,35 +30,64 @@ preferences {
 }
 
 mappings {
+	path("/info") {
+    	action: [
+        	GET: "api_info_get"
+        ]
+    }
 	path("/switches") {
     	action: [
-        	GET: "listSwitches"
+        	GET: "api_switches_get"
+        ]
+    }
+    path("/switches/:id") {
+    	action: [
+        	GET: "api_switch_get"
         ]
     }
     path("/switches/:id/:state") {
     	action: [
-        	PUT: "updateSwitchState"
+        	PUT: "api_switch_state_put"
         ]
     }
 }
 
-def listSwitches() {
-	switches.collect {
-    	[id: it.id, label: it.displayName, state: it.currentSwitch]
-    }
+def api_info_get() {
+	[
+    	label: app.label
+    ]
 }
 
-def updateSwitchState() {
+def api_switches_get() {
+	switches.collect {map_switch(it)}
+}
+
+def api_switch_get() {
+	def sw = switches.find { it.id == params.id }
+    map_switch(sw)
+}
+
+def map_switch(sw) {
+	[
+    	id: sw.id,
+        label: sw.displayName,
+        state: sw.currentSwitch
+    ]
+}
+
+def api_switch_state_put() {
 	def sw = switches.find { it.id == params.id }
     
     switch(params.state) {
 	    case "on": 
         	sw.on()
-            break
+            return
         case "off":
         	sw.off()
-            break
+            return
     }
+    
+    httpError(404, "Unknown state " + params.state)
 }
 
 def installed() {
