@@ -1,60 +1,63 @@
-body {
-  margin: 0;
-  padding: 2em;
-  font-size: 20px;
-  font-family: Arial;
-}
+/* COLORS */
 
-/* LAYOUT */
+body { background-color: #95a5a5; }
 
 .switches {
-  width: 400px;
-  margin: auto;
+  background-color: #ecf0f1;
+  color: #2e3e51;
+}
+.switch { border-color: #95a5a5; }
+
+/* IMAGES */
+
+.switch .indicator {
+  background-position: center;
+  background-repeat: no-repeat; 
 }
 
-.switches .switch .indicator {
-  float: right;
+.switch.on .indicator {
+  background-image: url("/images/power-button-green.png");
 }
-.switches .switch {
-  height: 3.2em;
-  padding: 0.2em;
-}
-.switches .switch label {
-  padding-top: 1em;
-}
-.switches .switch .indicator {
-  padding: 1em;
+
+.switch.off .indicator {
+  background-image: url("/images/power-button-red.png");
 }
 
 /* APPEARANCE */
 
-.switch:first-child {
-  border-top-width: 2px;
+body { 
+  font-family: 'Roboto', sans-serif; 
+  font-size: 20px;
 }
+
 .switch {
-  border-width: 0px 2px 2px 2px;
-  border-style: solid;
+  border-width: 3px;
+  border-bottom-style: solid;
 }
 .switch .indicator {
-  border-width: 1px;
-  border-style: solid;
-  border-radius: 50%;
-}
-.switch label {
   text-transform: uppercase;
-  display: inline-block;
-  margin-top: auto;
+  cursor: pointer;
 }
 
-/* COLORS */
+/* LAYOUT */
 
-.switch.on .indicator {
-  border-color: darkgreen;
-  background-color: lightgreen;
+body { margin: 0; }
+.switches {
+  width: 400px;
+  margin: auto;
+  margin-top: 2em;
 }
-
-.switch.off .indicator {
-  border-color: black;
-  background-color: darkred;
-  color: lightgrey;
+.switch {
+  position: relative;
+  line-height: 3em;
+  padding-left: 0.5em;
+}
+.switch .indicator {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 3em;
+  height: 3em;
+  text-align: center;
+  line-height: 3em;
 }
