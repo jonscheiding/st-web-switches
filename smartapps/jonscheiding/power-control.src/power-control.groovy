@@ -79,7 +79,7 @@ def api_switch_state_put() {
         httpError(404, "No such state for switch: '" + params.state + "'")
     }
     
-    api_switch_get
+    map_switch(sw)
 }
 
 def map_switch(sw) {
