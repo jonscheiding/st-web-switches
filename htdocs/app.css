@@ -42,17 +42,17 @@ body {
 }
 
 .message label {
-  font-size: 1.5em;
+  font-size: 1.1em;
 }
 
 /* LAYOUT */
 
 body { margin: 0; }
 .switches {
-  max-width: 600px;
-  width: 100%;
+  max-width: 500px;
+  width: 90%;
   margin: auto;
-  margin-top: 2em;
+  margin-top: 1em;
 }
 .switch {
   position: relative;
@@ -81,4 +81,5 @@ body { margin: 0; }
   display: inline-block;
   padding: 1em;
   margin-top: 2em;
+  max-width: 80%;
 }
