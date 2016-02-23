@@ -10,7 +10,7 @@
     <div class="switches">
       <div class="switch {{switch.state}}" ng-repeat="switch in switches">
         <label>{{switch.label}}</label>
-        <div class="indicator">
+        <div class="indicator" ng-click="toggle()">
           {{switch.state}}
         </div>
       </div>
