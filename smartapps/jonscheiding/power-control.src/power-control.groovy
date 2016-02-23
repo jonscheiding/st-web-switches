@@ -80,13 +80,16 @@ def api_switch_state_put() {
   switch(params.state) {
       case "on": 
         sw.on()
-        return
+        break
       case "off":
         sw.off()
+        break
+      default:
+        httpError(404, "Unknown state " + params.state)
         return
     }
-        
-    httpError(404, "Unknown state " + params.state)
+    
+    api_switch_get
 }
 
 def installed() {
