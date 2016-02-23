@@ -6,7 +6,7 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="app.css"></script>
   </head>
-  <body ng-controller="AppController">
+  <body ng-controller="AppController" ng-cloak>
     <div class="switches">
       <div class="switch {{switch.state}}" ng-repeat="switch in switches">
         <label>{{switch.label}}</label>
@@ -14,6 +14,12 @@
           {{switch.state}}
         </div>
       </div>
+    </div>
+    <div class="message" ng-if="loading">
+      <label>Loading</label>
+    </div>
+    <div class="message" ng-if="changingSwitch">
+      <label>Turning {{changingSwitch.to}} {{changingSwitch.label}}</label>
     </div>
   </body>
 </html>
