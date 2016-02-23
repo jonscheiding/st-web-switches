@@ -1,12 +1,14 @@
 /* COLORS */
 
-body { background-color: #95a5a5; }
+body { background-color: #bdc3c7; }
+.switch { border-color: #bdc3c7; }
 
-.switches {
+.switches, .message label {
   background-color: #ecf0f1;
   color: #2e3e51;
 }
-.switch { border-color: #95a5a5; }
+
+.message { background: rgba(0, 0, 0, 0.5); }
 
 /* IMAGES */
 
@@ -27,7 +29,7 @@ body { background-color: #95a5a5; }
 
 body { 
   font-family: 'Roboto', sans-serif; 
-  font-size: 20px;
+  font-size: 24px;
 }
 
 .switch {
@@ -39,11 +41,16 @@ body {
   cursor: pointer;
 }
 
+.message label {
+  font-size: 1.5em;
+}
+
 /* LAYOUT */
 
 body { margin: 0; }
 .switches {
-  width: 400px;
+  max-width: 600px;
+  width: 100%;
   margin: auto;
   margin-top: 2em;
 }
@@ -60,4 +67,18 @@ body { margin: 0; }
   height: 3em;
   text-align: center;
   line-height: 3em;
+}
+
+.message {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+.message label {
+  display: inline-block;
+  padding: 1em;
+  margin-top: 2em;
 }
