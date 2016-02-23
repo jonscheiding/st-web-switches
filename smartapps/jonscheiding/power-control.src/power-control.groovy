@@ -89,7 +89,7 @@ def api_switch_state_put() {
         return
     }
     
-    api_switch_get
+    map_switch(sw)
 }
 
 def installed() {
