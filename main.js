@@ -2,8 +2,30 @@ var express = require("express");
 var path = require("path");
 var unirest = require("unirest");
 var stAuth = require("./lib/st-auth.js");
+var stApp = require("./lib/st-app.js");
 
 var app = express();
+var stPassthrough = stApp.passthrough({
+  transformUrl: function(url) {
+    return url.replace(/^\/api/, "");
+  }
+});
+
+function addSwitchLinks(sw) {
+  sw.links = {
+    self: "/api/switches/" + sw.id,
+    on: "/api/switches/" + sw.id + "/on",
+    off: "/api/switches/" + sw.id + "/off"
+  };
+}
+
+function enrichSwitch(response) {
+  addSwitchLinks(response.body);
+}
+
+function enrichSwitches(response) {
+  response.body.forEach(addSwitchLinks);
+}
 
 var webroot = path.join(__dirname, "htdocs");
 var options = {
@@ -11,7 +33,6 @@ var options = {
 };
 
 app.use("/", express.static(webroot, options));
-
 app.get("/authorize", stAuth.authorizeHandler);
 app.get("/authorize/callback", stAuth.authorizeHandler.callback, function(req, res) {  
   res.redirect("/");
@@ -28,15 +49,15 @@ app.use("/api", function(req, res, next) {
   next();
 });
 
-app.use("/api", function(req, res) {
-  var baseUri = "https://graph.api.smartthings.com:443/api/smartapps/installations/a5c0a34f-3ee2-4928-8afe-eda9c15e4fd7";
-  unirest[req.method.toLowerCase()](baseUri + req.originalUrl.replace("/api",""))
-    .headers({Authorization: stAuth.getAuthorization()})
-    .end(function(response) {
-      console.log(response.body);
-      res.status(response.status);
-      res.send(response.body);
-    });
+app.get("/api", function(req, res) {
+  res.send({
+    links: {
+      switches: "/api/switches"
+    }
+  })
 });
+app.get("/api/switches/:id", stPassthrough(enrichSwitch));
+app.get("/api/switches", stPassthrough(enrichSwitches));
+app.use("/api/*", stPassthrough());
 
 app.listen(3000);
