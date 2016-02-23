@@ -62,8 +62,24 @@ def api_switches_get() {
 }
 
 def api_switch_get() {
-  def sw = switches.find { it.id == params.id }
-  map_switch(sw)
+  map_switch(find_switch(params.id))
+}
+
+def api_switch_state_put() {
+  def sw = find_switch(params.id)
+        
+  switch(params.state) {
+      case "on": 
+        sw.on()
+        break
+      case "off":
+        sw.off()
+        break
+      default:
+        httpError(404, "No such state for switch: '" + params.state + "'")
+    }
+    
+    api_switch_get
 }
 
 def map_switch(sw) {
@@ -74,22 +90,14 @@ def map_switch(sw) {
   ]
 }
 
-def api_switch_state_put() {
-  def sw = switches.find { it.id == params.id }
-        
-  switch(params.state) {
-      case "on": 
-        sw.on()
-        break
-      case "off":
-        sw.off()
-        break
-      default:
-        httpError(404, "Unknown state " + params.state)
-        return
-    }
-    
-    api_switch_get
+def find_switch(id) {
+  def sw = switches.find { it.id == id }
+  
+  if(!sw) {
+    httpError(404, "No such switch: '" + id + "'")
+  }
+  
+  return sw  
 }
 
 def installed() {
