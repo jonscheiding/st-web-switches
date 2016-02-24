@@ -60,4 +60,4 @@ app.get("/api/switches/:id", stPassthrough(enrichSwitch));
 app.get("/api/switches", stPassthrough(enrichSwitches));
 app.use("/api/*", stPassthrough());
 
-app.listen(3000);
+app.listen(5000);
