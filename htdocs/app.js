@@ -3,7 +3,7 @@ var app = angular.module("app", [])
     $httpProvider.interceptors.push(function($q, $rootScope) {
       return {
         'responseError': function(response) {
-          if(response.status == 403) {
+          if(response.status == 401) {
             $rootScope.authorizationMissing = true;
             $rootScope.loading = false;
           }

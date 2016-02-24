@@ -24,6 +24,7 @@ function enrichSwitch(response) {
 }
 
 function enrichSwitches(response) {
+  if(!response.body.forEach) { return; }
   response.body.forEach(addSwitchLinks);
 }
 
