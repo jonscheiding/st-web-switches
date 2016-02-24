@@ -1,6 +1,6 @@
 /* COLORS */
 
-body, { background-color: #bdc3c7; }
+body { background-color: #bdc3c7; }
 .switch { border-color: #bdc3c7; }
 
 button {
@@ -59,8 +59,7 @@ button {
   cursor: pointer;
   outline-style: solid;
   outline-width: 1px;
-}
-button:focus {
+  text-transform: uppercase;
 }
 
 /* LAYOUT */
