@@ -37,17 +37,7 @@ app.get("/authorize", stAuth.authorizeHandler);
 app.get("/authorize/callback", stAuth.authorizeHandler.callback, function(req, res) {  
   res.redirect("/");
 });
-
-app.use("/api", function(req, res, next) {
-  if(!stAuth.isAuthorized()) {
-    res.status(403).json({
-      message: "Server is not authorized to SmartThings."
-    });
-    return;
-  }
-  
-  next();
-});
+app.use("/api", stAuth.ensureAuthorized);
 
 app.get("/api", function(req, res) {
   res.send({
