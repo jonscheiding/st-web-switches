@@ -1,7 +1,16 @@
 /* COLORS */
 
-body { background-color: #bdc3c7; }
+body, { background-color: #bdc3c7; }
 .switch { border-color: #bdc3c7; }
+
+button {
+  background-color: #3498db;
+  outline-color: #2980b9;
+  color: #ecf0f1;
+}
+button:focus {
+  outline-color: #34495e;
+}
 
 .switches, .message label {
   background-color: #ecf0f1;
@@ -44,6 +53,15 @@ body {
 .message label {
   font-size: 1.1em;
 }
+button {
+  font-size: 1.2em;
+  padding: 0.3em 0.8em;
+  cursor: pointer;
+  outline-style: solid;
+  outline-width: 1px;
+}
+button:focus {
+}
 
 /* LAYOUT */
 
@@ -82,4 +100,10 @@ body { margin: 0; }
   padding: 1em;
   margin-top: 2em;
   max-width: 80%;
+}
+.message label button {
+  border: none;
+  display: block;
+  margin: auto;
+  margin-top: 1em;  
 }
