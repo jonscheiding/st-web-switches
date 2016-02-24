@@ -22,5 +22,11 @@
     <div class="message" ng-if="changingSwitch">
       <label>Turning {{changingSwitch.to}} {{changingSwitch.label}}</label>
     </div>
+    <div class="message" ng-if="authorizationMissing">
+      <label>
+        Server is not authenticated to SmartThings.  Click below to authenticate.
+        <button>Authenticate</button>
+      </label>
+    </div>
   </body>
 </html>
