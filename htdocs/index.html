@@ -24,8 +24,8 @@
     </div>
     <div class="message" ng-if="authorizationMissing">
       <label>
-        Server is not authenticated to SmartThings.  Click below to authenticate.
-        <button>Authenticate</button>
+        Server is not authorized to SmartThings.  Click below to authorize.
+        <button ng-click="authorize()">Authorize</button>
       </label>
     </div>
   </body>
