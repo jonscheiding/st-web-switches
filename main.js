@@ -60,4 +60,4 @@ app.get("/api/switches/:id", stPassthrough(enrichSwitch));
 app.get("/api/switches", stPassthrough(enrichSwitches));
 app.use("/api/*", stPassthrough());
 
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 5000);
