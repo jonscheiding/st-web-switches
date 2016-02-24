@@ -13,13 +13,17 @@ var app = angular.module("app", [])
     });
   });
 
-app.controller("AppController", function($scope, $http) {
+app.controller("AppController", function($scope, $http, $window) {
   $scope.loading = true;
   
   $http.get("/api/switches").then(function(response) {
     $scope.loading = false;
     $scope.switches = response.data;
   });
+  
+  $scope.authorize = function() {
+    $window.location.href = "/authorize";
+  };
   
   $scope.toggle = function() {
     var $this = this;
