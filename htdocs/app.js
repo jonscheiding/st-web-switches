@@ -1,4 +1,17 @@
-var app = angular.module("app", []);
+var app = angular.module("app", [])
+  .config(function($httpProvider) {
+    $httpProvider.interceptors.push(function($q, $rootScope) {
+      return {
+        'responseError': function(response) {
+          if(response.status == 403) {
+            $rootScope.authorizationMissing = true;
+            $rootScope.loading = false;
+          }
+          return $q.reject(response);
+        }
+      };
+    });
+  });
 
 app.controller("AppController", function($scope, $http) {
   $scope.loading = true;
