@@ -36,10 +36,8 @@ app.controller("AppController", function($scope, $http, $window) {
     
     var url = $this.switch.links[newState];
     $http.put(url).then(function(response) {
-      $http.get($this.switch.links.self).then(function(response) {
-        $scope.changingSwitch = null;
-        $this.switch = response.data;
-      });
+      $scope.changingSwitch = null;
+      $this.switch = response.data;
     });
   }
 });

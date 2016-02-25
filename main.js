@@ -5,11 +5,6 @@ var stAuth = require("./lib/st-auth.js");
 var stApp = require("./lib/st-app.js");
 
 var app = express();
-var stPassthrough = stApp.passthrough({
-  transformUrl: function(url) {
-    return url.replace(/^\/api/, "");
-  }
-});
 
 function addSwitchLinks(sw) {
   sw.links = {
@@ -19,26 +14,17 @@ function addSwitchLinks(sw) {
   };
 }
 
-function enrichSwitch(response) {
-  addSwitchLinks(response.body);
-}
-
-function enrichSwitches(response) {
-  if(!response.body.forEach) { return; }
-  response.body.forEach(addSwitchLinks);
-}
-
 var webroot = path.join(__dirname, "htdocs");
 var options = {
   index: "index.html"
 };
 
 app.use("/", express.static(webroot, options));
-app.get("/authorize", stAuth.authorizeHandler);
-app.get("/authorize/callback", stAuth.authorizeHandler.callback, function(req, res) {  
+app.get("/authorize", stAuth.express.authorizeRedirect);
+app.get("/authorize/callback", stAuth.express.authorizeCallback, function(req, res) {  
   res.redirect("/");
 });
-app.use("/api", stAuth.ensureAuthorized);
+app.use("/api", stAuth.express.requireAuthorization);
 
 app.get("/api", function(req, res) {
   res.send({
@@ -47,8 +33,28 @@ app.get("/api", function(req, res) {
     }
   })
 });
-app.get("/api/switches/:id", stPassthrough(enrichSwitch));
-app.get("/api/switches", stPassthrough(enrichSwitches));
-app.use("/api/*", stPassthrough());
+
+app.get("/api/switches", stApp.call({
+  handleResponse: function(stResponse) {
+    if(!stResponse.ok) return;
+    stResponse.body.forEach(addSwitchLinks);    
+  }
+}));
+
+app.get("/api/switches/:id", stApp.call({
+  handleResponse: function(stResponse) {
+    if(!stResponse.ok) return;
+    addSwitchLinks(stResponse.body);
+  }
+}));
+
+app.put("/api/switches/:id/:state", stApp.call({
+  handleResponse: function(stResponse, req) {
+    if(!stResponse.ok) return;
+    return function(req, res) {
+      res.redirect(303, "/api/switches/" + req.params.id);
+    };
+  }
+}));
 
 app.listen(process.env.PORT || 5000);
