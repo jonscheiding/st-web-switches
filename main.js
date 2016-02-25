@@ -41,21 +41,21 @@ app.get("/api", function(req, res) {
   })
 });
 
-app.get("/api/switches", stApp.call({
+app.get("/api/switches", stApp.passthrough({
   handleResponse: function(stResponse) {
     if(!stResponse.ok) return;
     stResponse.body.forEach(addSwitchLinks);    
   }
 }));
 
-app.get("/api/switches/:id", stApp.call({
+app.get("/api/switches/:id", stApp.passthrough({
   handleResponse: function(stResponse) {
     if(!stResponse.ok) return;
     addSwitchLinks(stResponse.body);
   }
 }));
 
-app.put("/api/switches/:id/:state", stApp.call({
+app.put("/api/switches/:id/:state", stApp.passthrough({
   handleResponse: function(stResponse, req) {
     if(!stResponse.ok) return;
     
