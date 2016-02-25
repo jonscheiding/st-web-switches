@@ -1,10 +1,17 @@
 var express = require("express");
 var path = require("path");
-var unirest = require("unirest");
+var moment = require("moment");
 var stAuth = require("./lib/st-auth.js");
 var stApp = require("./lib/st-app.js");
+var timers = require("./lib/timers.js");
 
 var app = express();
+
+var powerTimeout = moment.duration(5, "seconds");
+
+timers.on("timesUp", function(id) {
+  console.log("Time's up for " + id);
+});
 
 function addSwitchLinks(sw) {
   sw.links = {
@@ -51,6 +58,11 @@ app.get("/api/switches/:id", stApp.call({
 app.put("/api/switches/:id/:state", stApp.call({
   handleResponse: function(stResponse, req) {
     if(!stResponse.ok) return;
+    
+    if(req.params.state == "on") {
+      timers.start(req.params.id, powerTimeout);
+    }
+    
     return function(req, res) {
       res.redirect(303, "/api/switches/" + req.params.id);
     };
