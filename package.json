@@ -20,6 +20,7 @@
   "dependencies": {
     "events": "^1.1.0",
     "express": "^4.13.4",
+    "merge": "^1.2.0",
     "moment": "^2.11.2",
     "simple-oauth2": "^0.5.1",
     "unirest": "^0.4.2"
