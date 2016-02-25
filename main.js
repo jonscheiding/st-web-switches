@@ -7,7 +7,7 @@ var timers = require("./lib/timers.js");
 
 var app = express();
 
-var powerTimeout = moment.duration(5, "seconds");
+var powerTimeout = moment.duration(process.env.POWER_TIMEOUT, "5 seconds");
 
 timers.on("timesUp", function(id) {
   stApp.call(
