@@ -10,7 +10,14 @@ var app = express();
 var powerTimeout = moment.duration(5, "seconds");
 
 timers.on("timesUp", function(id) {
-  console.log("Time's up for " + id);
+  stApp.call(
+    {method: "PUT", url: "/switches/" + id + "/off"},
+    function(stResponse) {
+      //
+      // TODO: Logging here (and everywhere else)
+      //
+    }
+  );
 });
 
 function addSwitchLinks(sw) {
