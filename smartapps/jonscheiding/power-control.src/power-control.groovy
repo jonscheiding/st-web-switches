@@ -52,6 +52,10 @@ mappings {
 }
 
 def api_info_get() {
+  //
+  // Temporary to get state initialized without having to reinstall app
+  //
+  state.timers = {}
   [
     label: app.label
   ]
@@ -73,6 +77,7 @@ def api_switch_state_put() {
   switch(params.state) {
       case "on": 
         sw.on()
+        start_timer(sw.id)
         break
       case "off":
         sw.off()
@@ -102,6 +107,11 @@ def find_switch(id) {
   return sw  
 }
 
+def start_timer(id) {
+  state.timers.id = "1234"
+  log.info("Started timer for ${id}, timers are now ${state.timers}.")
+}
+
 def logHttpError(code, msg) {
   log.error("${code} ${msg}");
   httpError(code, msg);
@@ -120,4 +130,6 @@ def updated() {
   initialize()
 }
 
-def initialize() {}
+def initialize() {
+  state.timers = {}
+}
