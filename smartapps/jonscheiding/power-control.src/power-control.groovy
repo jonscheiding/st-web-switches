@@ -55,7 +55,8 @@ def api_info_get() {
   //
   // Temporary to get state initialized without having to reinstall app
   //
-  state.timers = {}
+  state.timers = [:]
+  
   [
     label: app.label
   ]
@@ -108,7 +109,11 @@ def find_switch(id) {
 }
 
 def start_timer(id) {
-  state.timers.id = "1234"
+  def cal = new GregorianCalendar()
+  cal.setTime(new Date())
+  cal.add(Calendar.HOUR, 2)
+  state.timers[id] = cal.getTime()
+  
   log.info("Started timer for ${id}, timers are now ${state.timers}.")
 }
 
