@@ -78,7 +78,7 @@ def api_switch_state_put() {
         sw.off()
         break
       default:
-        httpError(404, "No such state for switch: '" + params.state + "'")
+        logHttpError(404, "No such state for switch: '${params.state}'")
     }
     
     map_switch(sw)
@@ -96,10 +96,15 @@ def find_switch(id) {
   def sw = switches.find { it.id == id }
   
   if(!sw) {
-    httpError(404, "No such switch: '" + id + "'")
+    logHttpError(404, "No such switch: '${id}'")
   }
   
   return sw  
+}
+
+def logHttpError(code, msg) {
+  log.error("${code} ${msg}");
+  httpError(code, msg);
 }
 
 def installed() {
