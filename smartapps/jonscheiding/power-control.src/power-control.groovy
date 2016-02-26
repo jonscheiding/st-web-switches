@@ -67,6 +67,8 @@ def api_switch_get() {
 
 def api_switch_state_put() {
   def sw = find_switch(params.id)
+  
+  log.info("Received request to turn switch ${sw.id} to ${params.state}.  Switch is currently ${sw.currentSwitch}.")
         
   switch(params.state) {
       case "on": 
