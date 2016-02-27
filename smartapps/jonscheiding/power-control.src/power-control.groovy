@@ -34,6 +34,11 @@ mappings {
       GET: "api_info_get"
     ]
   }
+  path("/timers") {
+    action: [
+      GET: "api_timers_get"
+    ]
+  }
   path("/switches") {
     action: [
       GET: "api_switches_get"
@@ -57,6 +62,12 @@ def api_info_get() {
   [
     label: app.label
   ]
+}
+
+def api_timers_get() {
+  check_timers()
+  
+  state.timers
 }
 
 def api_switches_get() {
