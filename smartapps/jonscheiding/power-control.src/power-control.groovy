@@ -98,14 +98,18 @@ def api_switch_state_put() {
 }
 
 def map_switch(sw) {
-  [
+  def res = [
     id: sw.id,
-    label: sw.displayName,
-    state: [
-      is: sw.currentSwitch,
+    label: sw.displayName
+  ]
+  
+  if(state.timers[sw.id]) {
+    res.on = [
       until: state.timers[sw.id]
     ]
-  ]
+  } else {
+    res.on = false;
+  }
 }
 
 def find_switch(id) {
