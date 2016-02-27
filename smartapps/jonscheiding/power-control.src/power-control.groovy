@@ -85,7 +85,6 @@ def api_switch_state_put() {
   switch(params.state) {
       case "on": 
         sw.on()
-        start_timer(sw.id)
         break
       case "off":
         sw.off()
@@ -163,6 +162,11 @@ def logHttpError(code, msg) {
   httpError(code, msg);
 }
 
+def handleSwitchOn(evt) {
+  log.debug("Received notification that switch ${evt.device.id} turned on.")
+  start_timer(evt.device.id)
+}
+
 def installed() {
   log.debug "Installed with settings: ${settings}"
 
@@ -179,5 +183,9 @@ def updated() {
 def initialize() {
   if(!state.timers) {
     state.timers = [:]
+  }
+  
+  switches.each { 
+    subscribe(it, "switch.on", handleSwitchOn)
   }
 }
