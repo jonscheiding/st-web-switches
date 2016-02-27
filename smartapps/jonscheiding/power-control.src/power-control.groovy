@@ -200,6 +200,14 @@ def handleSwitchOn(evt) {
   start_timer(evt.device.id)
 }
 
+def handleSwitchOff(evt) {
+  log.debug("Received notification that switch ${evt.deviceId} turned off.")
+  if(state.timers[evt.device.id]) {
+    log.info("Unsetting timer for ${evt.deviceId} because it turned off.  Timer was set for ${state.timers[evt.device.id]}.")
+    state.timers.remove(evt.device.id)
+  }
+}
+
 def installed() {
   log.debug "Installed with settings: ${settings}"
 
@@ -220,5 +228,6 @@ def initialize() {
   
   switches.each { 
     subscribe(it, "switch.on", handleSwitchOn)
+    subscribe(it, "switch.off", handleSwitchOff)
   }
 }
