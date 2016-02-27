@@ -52,7 +52,11 @@ mappings {
 }
 
 def api_info_get() {
-  check_timers
+  if(!state.timers) {
+    state.timers = [:]
+  }
+  
+  check_timers()
   
   [
     label: app.label
@@ -110,8 +114,8 @@ def start_timer(id) {
   cal.setTime(new Date())
   cal.add(Calendar.SECOND, 10)
   
-  state.timers[id] = cal.getTime()  
-  log.info("Started timer for ${id}.")
+  state.timers[id] = cal.getTime().toString()  
+  log.info("Setting timer to turn off switch ${id} at ${state.timers[id]}.")
 }
 
 def check_timers() {
@@ -121,7 +125,7 @@ def check_timers() {
   
   state.timers.each { id, time -> 
     log.debug("Checking timer for ${id}, set to expire at ${time}")
-    if(now > time) {
+    if(now > Date.parseToStringDate(time)) {
       log.info("Turning off switch ${id}, since its time ran out at ${time}.")
       
       def sw = switches.find { it.id == id }
@@ -154,5 +158,5 @@ def updated() {
 }
 
 def initialize() {
-  state.timers = {}
+  state.timers = [:]
 }
