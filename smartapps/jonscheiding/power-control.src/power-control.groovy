@@ -26,6 +26,7 @@ definition(
 
 preferences {
   input "switches", "capability.switch", title: "Control these switches", multiple: true
+  input "switch_timeout", "nunber", title: "How long minutes"
 }
 
 mappings {
@@ -119,7 +120,7 @@ def find_switch(id) {
 def start_timer(id) {
   def cal = new GregorianCalendar()
   cal.setTime(new Date())
-  cal.add(Calendar.SECOND, 10)
+  cal.add(Calendar.MINUTE, switch_timeout)
   
   state.timers[id] = cal.getTime().toString()  
   log.info("Setting timer to turn off switch ${id} at ${state.timers[id]}.")
