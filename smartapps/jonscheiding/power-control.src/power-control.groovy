@@ -116,6 +116,8 @@ def start_timer(id) {
   
   state.timers[id] = cal.getTime().toString()  
   log.info("Setting timer to turn off switch ${id} at ${state.timers[id]}.")
+  
+  schedule("* * * * * ?", check_timers)
 }
 
 def check_timers() {
@@ -136,6 +138,11 @@ def check_timers() {
       sw.off()
       state.timers.remove(id)
     }
+  }
+  
+  if(!state.timers) {
+    log.info("Stopping timer schedule because there are no active timers.")
+    unschedule(check_timers)
   }
 }
 
