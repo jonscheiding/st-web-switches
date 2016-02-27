@@ -8,6 +8,10 @@ var expressWinston = require("express-winston");
 var stAuth = require("./lib/st-auth.js");
 var stApp = require("./lib/st-app.js");
 
+stApp.passthrough.fixupUrl = function(s) {
+  return s.replace(/^\/api/, "");
+}
+
 var app = express();
 
 function addSwitchLinks(sw) {
