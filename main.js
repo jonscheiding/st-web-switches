@@ -27,7 +27,7 @@ app.use("/", express.static(webroot, options));
 app.use("/", expressWinston.logger({winstonInstance: winston}));
 
 app.get("/authorize", stAuth.express.authorizeRedirect);
-app.get("/authorize/callback", stAuth.express.authorizeCallback, function(req, res) {  
+app.get("/authorize/callback", stAuth.express.authorizeCallback, stApp.initialize, function(req, res) {  
   res.redirect("/");
 });
 app.use("/api", stAuth.express.requireAuthorization);
