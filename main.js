@@ -1,6 +1,10 @@
 var express = require("express");
-var path = require("path");
 var moment = require("moment");
+var path = require("path");
+var util = require("util");
+var winston = require("winston");
+var expressWinston = require("express-winston");
+
 var stAuth = require("./lib/st-auth.js");
 var stApp = require("./lib/st-app.js");
 
@@ -20,6 +24,8 @@ var options = {
 };
 
 app.use("/", express.static(webroot, options));
+app.use("/", expressWinston.logger({winstonInstance: winston}));
+
 app.get("/authorize", stAuth.express.authorizeRedirect);
 app.get("/authorize/callback", stAuth.express.authorizeCallback, function(req, res) {  
   res.redirect("/");
@@ -58,4 +64,7 @@ app.put("/api/switches/:id/:state", stApp.passthrough({
   }
 }));
 
-app.listen(process.env.PORT || 5000);
+var listenPort = process.env.PORT || 5000;
+
+app.listen(listenPort);
+winston.info("Listening on port %d", listenPort);
