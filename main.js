@@ -10,7 +10,7 @@ var stApp = require("./lib/st-app.js");
 
 stApp.passthrough.fixupUrl = function(s) {
   return s.replace(/^\/api/, "");
-}
+};
 
 var app = express();
 
