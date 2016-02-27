@@ -72,13 +72,13 @@ def api_info_get() {
 def api_timers_get() {
   check_timers()
   
-  state.timers.map {key, value => map_timer(key, value)}
+  state.timers.collect {[id: it.key, until: it.value]}
 }
 
 def api_timer_get() {
   def timer = state.timers[params.id]
   if(!timer) {
-    logHttpError(404, "No timer set for ${params.id}".)
+    logHttpError(404, "No timer set for ${params.id}.")
   }
   
   map_timer(params.id, timer)
@@ -86,7 +86,7 @@ def api_timer_get() {
 
 def api_timer_delete() {
   if(!state.timers[params.id]) {
-    logHttpError(404, "No timer set for ${params.id}".)
+    logHttpError(404, "No timer set for ${params.id}.")
   }
   
   log.info("Received a request to unset the timer for ${params.id}, which was set for ${state.timers[params.id]}.")
