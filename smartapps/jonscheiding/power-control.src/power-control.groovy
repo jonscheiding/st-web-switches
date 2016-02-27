@@ -40,6 +40,12 @@ mappings {
       GET: "api_timers_get"
     ]
   }
+  path("/timers/:id") {
+    action: [
+      GET: "api_timer_get",
+      DELETE: "api_timer_delete"
+    ]
+  }
   path("/switches") {
     action: [
       GET: "api_switches_get"
@@ -66,7 +72,26 @@ def api_info_get() {
 def api_timers_get() {
   check_timers()
   
-  state.timers
+  state.timers.map {key, value => map_timer(key, value)}
+}
+
+def api_timer_get() {
+  def timer = state.timers[params.id]
+  if(!timer) {
+    logHttpError(404, "No timer set for ${params.id}".)
+  }
+  
+  map_timer(params.id, timer)
+}
+
+def api_timer_delete() {
+  if(!state.timers[params.id]) {
+    logHttpError(404, "No timer set for ${params.id}".)
+  }
+  
+  log.info("Received a request to unset the timer for ${params.id}, which was set for ${state.timers[params.id]}.")
+  
+  state.timers.remove(params.id)
 }
 
 def api_switches_get() {
@@ -110,6 +135,13 @@ def map_switch(sw) {
   }
   
   res
+}
+
+def map_timer(key, value) {
+  [
+    id: key,
+    until: value
+  ]
 }
 
 def find_switch(id) {
