@@ -9,10 +9,10 @@
   </head>
   <body ng-controller="AppController" ng-cloak>
     <div class="switches">
-      <div class="switch {{switch.state}}" ng-repeat="switch in switches">
+      <div class="switch {{switch.state.is}}" ng-repeat="switch in switches">
         <label>{{switch.label}}</label>
         <div class="indicator" ng-click="toggle()">
-          {{switch.state}}
+          {{switch.state.is}}
         </div>
       </div>
     </div>
