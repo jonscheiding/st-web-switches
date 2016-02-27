@@ -52,10 +52,7 @@ mappings {
 }
 
 def api_info_get() {
-  //
-  // Temporary to get state initialized without having to reinstall app
-  //
-  state.timers = [:]
+  check_timers
   
   [
     label: app.label
@@ -111,10 +108,31 @@ def find_switch(id) {
 def start_timer(id) {
   def cal = new GregorianCalendar()
   cal.setTime(new Date())
-  cal.add(Calendar.HOUR, 2)
-  state.timers[id] = cal.getTime()
+  cal.add(Calendar.SECOND, 10)
   
-  log.info("Started timer for ${id}, timers are now ${state.timers}.")
+  state.timers[id] = cal.getTime()  
+  log.info("Started timer for ${id}.")
+}
+
+def check_timers() {
+  def now = new Date()
+  
+  log.debug("Checking all timers ${state.timers}.")
+  
+  state.timers.each { id, time -> 
+    log.debug("Checking timer for ${id}, set to expire at ${time}")
+    if(now > time) {
+      log.info("Turning off switch ${id}, since its time ran out at ${time}.")
+      
+      def sw = switches.find { it.id == id }
+      if(!sw) {
+        log.error("Switch ${id} does not exist.")
+      }
+      
+      sw.off()
+      state.timers.remove(id)
+    }
+  }
 }
 
 def logHttpError(code, msg) {
