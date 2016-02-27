@@ -58,8 +58,6 @@ mappings {
 }
 
 def api_info_get() {
-  check_timers()
-  
   [
     label: app.label
   ]
