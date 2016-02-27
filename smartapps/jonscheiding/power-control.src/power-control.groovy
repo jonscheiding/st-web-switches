@@ -17,16 +17,16 @@ definition(
   name: "Power Control",
   namespace: "jonscheiding",
   author: "Jon Scheiding",
-  description: "SmartApp to enable control of one or more switches via an API.",
+  description: "Enable control of one or more switches via an API.",
   category: "My Apps",
-  iconUrl: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience.png",
-  iconX2Url: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience@2x.png",
-  iconX3Url: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience@2x.png",
+  iconUrl: "http://www.indianmagentoexperts.com/wp-content/uploads/2013/02/api-icon.png",
+  iconX2Url: "http://www.indianmagentoexperts.com/wp-content/uploads/2013/02/api-icon.png",
+  iconX3Url: "http://www.indianmagentoexperts.com/wp-content/uploads/2013/02/api-icon.png",
   oauth: true)
 
 preferences {
-  input "switches", "capability.switch", title: "Control these switches", multiple: true, required: true
-  input "switch_timeout", "nunber", title: "How long minutes", required: true
+  input "switches", "capability.switch", title: "Which switches should the API expose?", multiple: true, required: true
+  input "switch_timeout", "nunber", title: "How long (in minutes) should they wait to turn off automatically?", required: true
 }
 
 mappings {
