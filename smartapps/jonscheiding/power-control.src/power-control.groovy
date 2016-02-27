@@ -52,10 +52,6 @@ mappings {
 }
 
 def api_info_get() {
-  if(!state.timers) {
-    state.timers = [:]
-  }
-  
   check_timers()
   
   [
@@ -126,7 +122,6 @@ def check_timers() {
   log.debug("Checking all timers ${state.timers}.")
   
   state.timers.each { id, time -> 
-    log.debug("Checking timer for ${id}, set to expire at ${time}")
     if(now > Date.parseToStringDate(time)) {
       log.info("Turning off switch ${id}, since its time ran out at ${time}.")
       
@@ -165,5 +160,7 @@ def updated() {
 }
 
 def initialize() {
-  state.timers = [:]
+  if(!state.timers) {
+    state.timers = [:]
+  }
 }
