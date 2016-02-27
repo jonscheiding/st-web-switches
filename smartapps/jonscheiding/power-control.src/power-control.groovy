@@ -100,14 +100,13 @@ def map_switch(sw) {
   def res = [
     id: sw.id,
     label: sw.displayName
+    state: [
+      is: sw.currentSwitch
+    ]
   ]
   
   if(state.timers[sw.id]) {
-    res.on = [
-      until: state.timers[sw.id]
-    ]
-  } else {
-    res.on = false;
+    res.state.until: Date.parseToStringDate(state.timers[sw.id])
   }
 }
 
