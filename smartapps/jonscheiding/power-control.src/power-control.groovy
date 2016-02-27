@@ -109,6 +109,8 @@ def map_switch(sw) {
   } else {
     res.on = false;
   }
+  
+  res
 }
 
 def find_switch(id) {
