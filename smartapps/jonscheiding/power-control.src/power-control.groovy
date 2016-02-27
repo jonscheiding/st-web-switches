@@ -25,8 +25,8 @@ definition(
   oauth: true)
 
 preferences {
-  input "switches", "capability.switch", title: "Control these switches", multiple: true
-  input "switch_timeout", "nunber", title: "How long minutes"
+  input "switches", "capability.switch", title: "Control these switches", multiple: true, required: true
+  input "switch_timeout", "nunber", title: "How long minutes", required: true
 }
 
 mappings {
