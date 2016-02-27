@@ -27,7 +27,7 @@ app.controller("AppController", function($scope, $http, $window) {
   
   $scope.toggle = function() {
     var $this = this;
-    var newState = $this.switch.state == "off" ? "on" : "off";
+    var newState = $this.switch.state.is == "off" ? "on" : "off";
     
     $scope.changingSwitch = {
       label: $this.switch.label,
