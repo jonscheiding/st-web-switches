@@ -101,7 +101,10 @@ def map_switch(sw) {
   [
     id: sw.id,
     label: sw.displayName,
-    state: sw.currentSwitch
+    state: [
+      is: sw.currentSwitch,
+      until: state.timers[sw.id]
+    ]
   ]
 }
 
