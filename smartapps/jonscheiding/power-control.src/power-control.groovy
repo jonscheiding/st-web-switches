@@ -108,6 +108,8 @@ def map_switch(sw) {
   if(state.timers[sw.id]) {
     res.state.until: Date.parseToStringDate(state.timers[sw.id])
   }
+  
+  res
 }
 
 def find_switch(id) {
