@@ -11,22 +11,22 @@
     <div class="switches">
       <div class="switch {{switch.state.is}}" ng-repeat="switch in switches">
         <label>{{switch.label}}</label>
-        <div class="indicator" ng-click="toggle()">
+        <button class="indicator" ng-click="toggle()">
           {{switch.state.is}}
-        </div>
+        </button>
       </div>
     </div>
     <div class="message" ng-if="loading">
-      <label>Loading</label>
+      <p>Loading</p>
     </div>
     <div class="message" ng-if="changingSwitch">
-      <label>Turning {{changingSwitch.to}} {{changingSwitch.label}}</label>
+      <p>Turning {{changingSwitch.to}} {{changingSwitch.label}}</p>
     </div>
     <div class="message" ng-if="authorizationMissing">
-      <label>
+      <p>
         Server is not authorized to SmartThings.  Click below to authorize.
         <button ng-click="authorize()">Authorize</button>
-      </label>
+      </p>
     </div>
   </body>
 </html>

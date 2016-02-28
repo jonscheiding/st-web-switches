@@ -3,36 +3,28 @@
 body { background-color: #bdc3c7; }
 .switch { border-color: #bdc3c7; }
 
-button {
-  background-color: #3498db;
-  outline-color: #2980b9;
-  color: #ecf0f1;
-}
-button:focus {
-  outline-color: #34495e;
+body {
+  color: #2e3e51;
 }
 
-.switches, .message label {
+.message button {
+  background-color: #3498db;
+}
+
+.switch.on button {
+  background-color: #27b061;
+}
+
+.switch.off button {
+  background-color: #c0392b;
+}
+
+.switches, .message p {
   background-color: #ecf0f1;
   color: #2e3e51;
 }
 
-.message { background: rgba(0, 0, 0, 0.5); }
-
-/* IMAGES */
-
-.switch .indicator {
-  background-position: center;
-  background-repeat: no-repeat; 
-}
-
-.switch.on .indicator {
-  background-image: url("/images/power-button-green.png");
-}
-
-.switch.off .indicator {
-  background-image: url("/images/power-button-red.png");
-}
+.message { background: rgba(0, 0, 0, 0.3); }
 
 /* APPEARANCE */
 
@@ -45,21 +37,27 @@ body {
   border-width: 3px;
   border-bottom-style: solid;
 }
-.switch .indicator {
-  text-transform: uppercase;
-  cursor: pointer;
+
+button, .message p {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.message label {
+.message p {
   font-size: 1.1em;
 }
+
 button {
-  font-size: 1.2em;
-  padding: 0.3em 0.8em;
-  cursor: pointer;
-  outline-style: solid;
-  outline-width: 1px;
   text-transform: uppercase;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  text-align: center;
+  font-size: 1em;
+}
+
+.message button {
+  font-size: 1.2em;
+  padding: 0.5em 1em;
 }
 
 /* LAYOUT */
@@ -76,14 +74,13 @@ body { margin: 0; }
   line-height: 3em;
   padding-left: 0.5em;
 }
-.switch .indicator {
+.switch button {
   position: absolute;
-  right: 0;
-  top: 0;
-  width: 3em;
-  height: 3em;
-  text-align: center;
-  line-height: 3em;
+  right: 0.3em;
+  top: 0.3em;
+  width: 2.4em;
+  height: 2.4em;
+  line-height: 2.4em;
 }
 
 .message {
@@ -94,13 +91,13 @@ body { margin: 0; }
   height: 100%;
   text-align: center;
 }
-.message label {
+.message p {
   display: inline-block;
   padding: 1em;
   margin-top: 2em;
   max-width: 80%;
 }
-.message label button {
+.message button {
   border: none;
   display: block;
   margin: auto;
