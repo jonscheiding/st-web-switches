@@ -25,8 +25,12 @@ definition(
   oauth: true)
 
 preferences {
-  input "switches", "capability.switch", title: "Which switches should the API expose?", multiple: true, required: true
-  input "switch_timeout", "nunber", title: "How long (in minutes) should they wait to turn off automatically?", required: true
+  section("Allow external service to control these things...") {
+    input "switches", "capability.switch", title: "Which switches should the API expose?", multiple: true, required: true
+  }
+  section (mobileOnly: true, "Turn off switches automatically...") {
+    input "switch_timeout", "nunber", title: "After how many minutes?", required: true
+  }
 }
 
 mappings {
