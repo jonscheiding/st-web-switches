@@ -1,6 +1,6 @@
-<html ng-app="switch-app">
+<html ng-app="switch-app" ng-controller="SwitchAppController">
   <head>
-    <title>Help, I'm Alive!</title>
+    <title>{{api.label}}</title>
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
@@ -12,8 +12,8 @@
     <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
   </head>
 
-  <body ng-controller="SwitchAppController" ng-cloak>
-
+  <body ng-cloak>
+    <h3>{{api.label}}</h3>
     <div class="switches">
       <div class="switch {{switch.state.is}}" ng-repeat="switch in switches">
         <label>{{switch.label}}</label>

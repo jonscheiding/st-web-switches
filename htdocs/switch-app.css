@@ -7,7 +7,11 @@ body {
   color: #2e3e51;
 }
 
-.message button {
+h3 {
+  color: #ecf0f1;
+}
+
+.message button, h3 {
   background-color: #3498db;
 }
 
@@ -33,6 +37,13 @@ body {
   font-size: 24px;
 }
 
+h3 {
+  margin-top: 1em;
+  padding: 0.7em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
 .switch {
   border-width: 3px;
   border-bottom-style: solid;
@@ -42,7 +53,7 @@ body {
   font-size: 0.5em;
 }
 
-button, .message p {
+button, .message p, h3 {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
@@ -66,11 +77,12 @@ button {
 
 /* LAYOUT */
 
-body { margin: 0; }
-.switches {
+body { 
+  margin: auto; 
   max-width: 500px;
   width: 90%;
-  margin: auto;
+}
+.switches {
   margin-top: 1em;
 }
 .switch {

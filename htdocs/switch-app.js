@@ -17,7 +17,7 @@ app.controller("SwitchAppController", function($scope, $http, $window, $interval
   $scope.loading = true;
   
   $scope.reload = function() {
-    $http.get("/api/switches").then(function(response) {
+    $http.get($scope.api.links.switches).then(function(response) {
       $scope.loading = false;
       $scope.switches = response.data;
     });
@@ -52,6 +52,9 @@ app.controller("SwitchAppController", function($scope, $http, $window, $interval
     });
   }
   
-  $scope.reload();
-  $interval($scope.reload, 15000);
+  $http.get("/api").then(function(response) {
+    $scope.api = response.data;
+    $scope.reload();
+    $interval($scope.reload, 15000);
+  });
 });
