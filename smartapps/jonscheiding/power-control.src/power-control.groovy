@@ -122,7 +122,10 @@ def api_switch_state_put() {
         logHttpError(404, "No such state for switch: '${params.state}'")
     }
     
-    map_switch(sw)
+    //
+    // Pause to try to give the on() call a chance to process
+    //
+    pause(200)
 }
 
 def map_switch(sw) {
