@@ -25,6 +25,14 @@ app.controller("AppController", function($scope, $http, $window) {
     $window.location.href = "/authorize";
   };
   
+  $scope.switchOffWhen = function() {
+    if(this.switch.state.is != "on" || !this.switch.state.until) {
+      return;
+    }
+    
+    return moment(this.switch.state.until).fromNow();
+  }
+  
   $scope.toggle = function() {
     var $this = this;
     var newState = $this.switch.state.is == "off" ? "on" : "off";

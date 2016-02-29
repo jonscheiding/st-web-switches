@@ -38,6 +38,10 @@ body {
   border-bottom-style: solid;
 }
 
+.switch .state-message {
+  font-size: 0.5em;
+}
+
 button, .message p {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
@@ -73,6 +77,13 @@ body { margin: 0; }
   position: relative;
   line-height: 3em;
   padding-left: 0.5em;
+}
+.switch .state-message {
+  display: inline-block;
+  position: absolute;
+  right: 5.4em;
+  line-height: 5.4em;
+  font-size: 0.6em;  
 }
 .switch button {
   position: absolute;
