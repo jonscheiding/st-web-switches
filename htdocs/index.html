@@ -2,6 +2,7 @@
   <head>
     <title>Help, I'm Alive!</title>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
     <script type="text/javascript" src="app.js"></script>
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="app.css"></script>
@@ -11,6 +12,9 @@
     <div class="switches">
       <div class="switch {{switch.state.is}}" ng-repeat="switch in switches">
         <label>{{switch.label}}</label>
+        <div class="state-message" ng-if="switchOffWhen()">
+          Turning off {{switchOffWhen()}}
+        </div>
         <button class="indicator" ng-click="toggle()">
           {{switch.state.is}}
         </button>
