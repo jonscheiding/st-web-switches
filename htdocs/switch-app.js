@@ -13,13 +13,15 @@ var app = angular.module("switch-app", [])
     });
   });
 
-app.controller("SwitchAppController", function($scope, $http, $window) {
+app.controller("SwitchAppController", function($scope, $http, $window, $interval, $timeout) {
   $scope.loading = true;
   
-  $http.get("/api/switches").then(function(response) {
-    $scope.loading = false;
-    $scope.switches = response.data;
-  });
+  $scope.reload = function() {
+    $http.get("/api/switches").then(function(response) {
+      $scope.loading = false;
+      $scope.switches = response.data;
+    });
+  };
   
   $scope.authorize = function() {
     $window.location.href = "/authorize";
@@ -46,6 +48,10 @@ app.controller("SwitchAppController", function($scope, $http, $window) {
     $http.put(url).then(function(response) {
       $scope.changingSwitch = null;
       $this.switch = response.data;
+      $timeout($scope.reload, 1000);
     });
   }
+  
+  $scope.reload();
+  $interval($scope.reload, 15000);
 });
