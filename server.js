@@ -1,4 +1,4 @@
-require("dotenv");
+require("dotenv").config();
 
 var express = require("express");
 var moment = require("moment");
