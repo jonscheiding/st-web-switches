@@ -137,6 +137,10 @@ def map_switch(sw) {
     ]
   ]
   
+  if(sw.supportedAttributes.any{ it.name == "power" }) {
+    res.state.power = sw.currentPower
+  }
+  
   if(state.timers[sw.id]) {
     res.state.until = Date.parseToStringDate(state.timers[sw.id])
   }
