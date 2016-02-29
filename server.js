@@ -39,10 +39,12 @@ app.get("/authorize/callback", stAuth.express.authorizeCallback, stApp.express.i
 app.use("/api", stAuth.express.requireAuthorization, stApp.express.ensureInitialized);
 
 app.get("/api", function(req, res) {
-  res.send({
-    links: {
+  stApp.call({method: "GET", url: "/info"}, function(stResponse) {
+    stResponse.body.links = {
+      self: "/api",
       switches: "/api/switches"
-    }
+    };
+    res.send(stResponse.body);
   })
 });
 
