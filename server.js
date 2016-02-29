@@ -1,3 +1,5 @@
+require("dotenv");
+
 var express = require("express");
 var moment = require("moment");
 var path = require("path");
