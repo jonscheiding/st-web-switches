@@ -1,14 +1,19 @@
-<html ng-app="app">
+<html ng-app="switch-app">
   <head>
     <title>Help, I'm Alive!</title>
+
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-    <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="switch-app.js"></script>
+
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="app.css"></script>
+    <link rel="stylesheet" type="text/css" href="switch-app.css"></script>
+
     <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
   </head>
-  <body ng-controller="AppController" ng-cloak>
+
+  <body ng-controller="SwitchAppController" ng-cloak>
+
     <div class="switches">
       <div class="switch {{switch.state.is}}" ng-repeat="switch in switches">
         <label>{{switch.label}}</label>
@@ -20,17 +25,21 @@
         </button>
       </div>
     </div>
+
     <div class="message" ng-if="loading">
       <p>Loading</p>
     </div>
+
     <div class="message" ng-if="changingSwitch">
       <p>Turning {{changingSwitch.to}} {{changingSwitch.label}}</p>
     </div>
+
     <div class="message" ng-if="authorizationMissing">
       <p>
         Server is not authorized to SmartThings.  Click below to authorize.
         <button ng-click="authorize()">Authorize</button>
       </p>
     </div>
+
   </body>
 </html>

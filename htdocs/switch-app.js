@@ -1,4 +1,4 @@
-var app = angular.module("app", [])
+var app = angular.module("switch-app", [])
   .config(function($httpProvider) {
     $httpProvider.interceptors.push(function($q, $rootScope) {
       return {
@@ -13,7 +13,7 @@ var app = angular.module("app", [])
     });
   });
 
-app.controller("AppController", function($scope, $http, $window) {
+app.controller("SwitchAppController", function($scope, $http, $window) {
   $scope.loading = true;
   
   $http.get("/api/switches").then(function(response) {
