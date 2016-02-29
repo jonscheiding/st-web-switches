@@ -15,7 +15,7 @@
   <body ng-cloak>
     <h3>{{api.label}}</h3>
     <div class="switches">
-      <div class="switch {{switch.state.is}}" ng-repeat="switch in switches | orderBy: 'label'">
+      <div class="switch {{switch.state.is}}" ng-class="{'not-in-use': !switch.state.inUse}" ng-repeat="switch in switches | orderBy: 'label'">
         <label>{{switch.label}}</label>
         <div class="state-message" ng-if="switchOffWhen()">
           Turning off {{switchOffWhen()}}

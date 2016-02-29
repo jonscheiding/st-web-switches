@@ -48,7 +48,11 @@ app.controller("SwitchAppController", function($scope, $http, $window, $interval
     $http.put(url).then(function(response) {
       $scope.changingSwitch = null;
       $this.switch = response.data;
-      $timeout($scope.reload, 1000);
+      
+      if($this.switch.state.is == "on") {
+        $timeout($scope.reload, 1000);
+        $timeout($scope.reload, 4000);
+      }
     });
   }
   
