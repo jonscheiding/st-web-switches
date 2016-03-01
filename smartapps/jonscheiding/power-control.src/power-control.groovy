@@ -113,21 +113,25 @@ def api_switch_state_put() {
   log.info("Received request to turn switch ${sw.id} to ${params.state}.  Switch is currently ${sw.currentSwitch}.")
         
   switch(params.state) {
-      case "on": 
-        sw.on()
-        start_timer(sw.id)
-        break
-      case "off":
-        sw.off()
-        break
-      default:
-        logHttpError(404, "No such state for switch: '${params.state}'")
-    }
+    case "on": 
+      sw.on()
+      start_timer(sw.id)
+      break
+    case "off":
+      sw.off()
+      break
+    default:
+      logHttpError(404, "No such state for switch: '${params.state}'")
+  }
     
-    //
-    // Pause to try to give the on() call a chance to process
-    //
-    pause(200)
+  //
+  // Pause to try to give the on()/off() call a chance to process
+  //
+  def pauses = 0
+  while(sw.currentSwitch != params.state && pauses < 10) {
+  	pause(100)
+    pauses ++
+  }
 }
 
 def map_switch(sw) {
