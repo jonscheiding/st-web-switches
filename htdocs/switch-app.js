@@ -45,7 +45,7 @@ app.controller("SwitchAppController", function($scope, $http, $window, $interval
   //
   $scope.getStateMessage = function(displayParts) {
     var parts = [];
-    if(this.switch.state.unplugged) {
+    if(this.switch.state.plug == "unplugged") {
       parts.push(displayParts.unplugged);
     }
     if(this.switch.state.until) {
@@ -74,7 +74,7 @@ app.controller("SwitchAppController", function($scope, $http, $window, $interval
       $scope.changingSwitch = null;
       $this.switch = response.data;
       
-      $timeout($scope.reload, 1000);
+      $timeout($scope.reload, 2000);
     });
   }
   
