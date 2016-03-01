@@ -1,7 +1,6 @@
 require("dotenv").config();
 
 var express = require("express");
-var moment = require("moment");
 var path = require("path");
 var util = require("util");
 var winston = require("winston");
