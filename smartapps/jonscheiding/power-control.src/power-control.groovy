@@ -114,6 +114,7 @@ def api_switch_state_put() {
   switch(params.state) {
       case "on": 
         sw.on()
+        start_timer(sw.id)
         break
       case "off":
         sw.off()
@@ -196,6 +197,8 @@ def check_timers() {
       def sw = switches.find { it.id == id }
       if(!sw) {
         log.error("Switch ${id} does not exist.")
+        state.timers.remove(id)
+        return
       }
       
       sw.off()
