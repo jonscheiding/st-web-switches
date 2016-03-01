@@ -1,3 +1,8 @@
+//
+// Main application.  Primarily handles providing an ExpressJS interface to the
+// logic in st-app and st-auth.
+//
+
 require("dotenv").config();
 
 var express = require("express");
@@ -23,6 +28,9 @@ function addSwitchLinks(sw) {
   };
 }
 
+//
+// Set up logging of requests and serving of static content
+//
 var webroot = path.join(__dirname, "htdocs");
 var options = {
   index: "index.html"
@@ -31,10 +39,19 @@ var options = {
 app.use("/", express.static(webroot, options));
 app.use("/", expressWinston.logger({winstonInstance: winston}));
 
+//
+// Set up the authorization routes
+//
+stAuth.callbackUrl = "/authorize/callback";
+
 app.get("/authorize", stAuth.express.authorizeRedirect);
 app.get("/authorize/callback", stAuth.express.authorizeCallback, stApp.express.initialize, function(req, res) {  
   res.redirect("/");
 });
+
+//
+// Set up the actual API calls
+//
 app.use("/api", stAuth.express.requireAuthorization, stApp.express.ensureInitialized);
 
 app.get("/api", function(req, res) {
