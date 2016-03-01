@@ -100,8 +100,9 @@ h3, .state-message, button { color: #ecf0f1; }
 
 .message button, h3 { background-color: #3498db; }
 
-.switch.on button, .switch.on .state-message { background-color: #27b061; }
+.switch.on button, .switch.on .state-message { background-color: #7f8c8d; }
+.switch.on.plugged-in button, .switch.on.plugged-in .state-message { background-color: #27b061; }
+.switch.on.unplugged button, .switch.on.unplugged .state-message { background-color: #e67e22; }
 .switch.off button, .switch.off .state-message { background-color: #c0392b; }
-.switch.unplugged button, .switch.unplugged .state-message { background-color: #e67e22; }
 
 .message { background: rgba(0, 0, 0, 0.3); }
