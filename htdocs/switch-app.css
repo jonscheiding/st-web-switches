@@ -99,10 +99,10 @@ body { color: #2e3e51; }
 h3, .state-message, button { color: #ecf0f1; }
 .switches, .message p { background-color: #ecf0f1; }
 
-.message button, h3, .state-message { background-color: #3498db; }
+.message button, h3 { background-color: #3498db; }
 
-.switch.on button { background-color: #27b061; }
-.switch.off button { background-color: #c0392b; }
-.switch.on.unplugged button, .switch.on.unplugged .state-message { background-color: #e67e22; }
+.switch.on button, .switch.on .state-message { background-color: #27b061; }
+.switch.off button, .switch.off .state-message { background-color: #c0392b; }
+.switch.unplugged button, .switch.unplugged .state-message { background-color: #e67e22; }
 
 .message { background: rgba(0, 0, 0, 0.3); }
