@@ -49,16 +49,13 @@ app.controller("SwitchAppController", function($scope, $http, $window, $interval
       $scope.changingSwitch = null;
       $this.switch = response.data;
       
-      if($this.switch.state.is == "on") {
-        $timeout($scope.reload, 1000);
-        $timeout($scope.reload, 4000);
-      }
+      $timeout($scope.reload, 1000);
     });
   }
   
   $http.get("/api").then(function(response) {
     $scope.api = response.data;
     $scope.reload();
-    $interval($scope.reload, 15000);
+    $interval($scope.reload, 5000);
   });
 });
