@@ -69,7 +69,8 @@ mappings {
 
 def api_info_get() {
   [
-    label: app.label
+    label: app.label,
+    state: state
   ]
 }
 
@@ -187,24 +188,26 @@ def start_timer(id) {
 
 def check_timers() {
   def now = new Date()
+  def remove = []
   
   log.debug("Checking all timers ${state.timers}.")
   
-  state.timers.each { id, timer -> 
+  state.timers.each { id, timer ->
     if(now > Date.parseToStringDate(timer.end)) {
       log.info("Turning off switch ${id}, since its time ran out at ${timer.end}.")
       
       def sw = switches.find { it.id == id }
       if(!sw) {
         log.error("Switch ${id} does not exist.")
-        state.timers.remove(id)
-        return
+      } else {
+        sw.off()
       }
       
-      sw.off()
-      state.timers.remove(id)
+      remove.push(id)
     }
   }
+  
+  remove.each { state.timers.remove(it) }
   
   if(!state.timers) {
     log.info("Stopping timer schedule because there are no active timers.")
