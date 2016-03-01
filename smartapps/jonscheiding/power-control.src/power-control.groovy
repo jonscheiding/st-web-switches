@@ -142,7 +142,8 @@ def map_switch(sw) {
   }
   
   if(state.timers[sw.id]) {
-    res.state.until = Date.parseToStringDate(state.timers[sw.id])
+  	res.state.since = Date.parseToStringDate(state.timers[sw.id].start)
+    res.state.until = Date.parseToStringDate(state.timers[sw.id].end)
   }
   
   res
@@ -151,7 +152,8 @@ def map_switch(sw) {
 def map_timer(key, value) {
   [
     id: key,
-    until: value
+    since: value.start,
+    until: value.end
   ]
 }
 
@@ -168,10 +170,16 @@ def find_switch(id) {
 def start_timer(id) {
   def cal = new GregorianCalendar()
   cal.setTime(new Date())
-  cal.add(Calendar.MINUTE, switch_timeout.toInteger())
   
-  state.timers[id] = cal.getTime().toString()  
-  log.info("Setting timer to turn off switch ${id} at ${state.timers[id]}.")
+  state.timers[id] = [
+    start: cal.getTime().toString()
+  ]
+
+  cal.add(Calendar.MINUTE, switch_timeout.toInteger())
+
+  state.timers[id].end = cal.getTime().toString()
+  
+  log.info("Setting timer to turn off switch ${id}: ${state.timers[id]}.")
   
   schedule("* * * * * ?", check_timers)
 }
@@ -181,9 +189,9 @@ def check_timers() {
   
   log.debug("Checking all timers ${state.timers}.")
   
-  state.timers.each { id, time -> 
-    if(now > Date.parseToStringDate(time)) {
-      log.info("Turning off switch ${id}, since its time ran out at ${time}.")
+  state.timers.each { id, timer -> 
+    if(now > Date.parseToStringDate(timer.end)) {
+      log.info("Turning off switch ${id}, since its time ran out at ${timer.end}.")
       
       def sw = switches.find { it.id == id }
       if(!sw) {
