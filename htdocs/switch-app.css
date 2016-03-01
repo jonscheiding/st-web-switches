@@ -80,7 +80,7 @@ button, .message p, h3 {
   padding: 1em;
   margin: auto;
   margin-top: 2em;
-  max-width: 80%;
+  max-width: 50%;
 }
 .message button {
   border: none;
