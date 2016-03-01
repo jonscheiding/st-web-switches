@@ -35,6 +35,19 @@ app.controller("SwitchAppController", function($scope, $http, $window, $interval
     return moment(this.switch.state.until).fromNow();
   }
   
+  $scope.getStateMessage = function(displayParts) {
+    var parts = [];
+    if(this.switch.state.unplugged) {
+      parts.push(displayParts.unplugged);
+    }
+    if(this.switch.state.until) {
+      parts.push(displayParts.until);
+    }
+    
+    var message = parts.join(displayParts.joiner);
+    return message.firstLetterToUpperCase();
+  }
+  
   $scope.toggle = function() {
     var $this = this;
     var newState = $this.switch.state.is == "off" ? "on" : "off";
@@ -59,3 +72,7 @@ app.controller("SwitchAppController", function($scope, $http, $window, $interval
     $interval($scope.reload, 5000);
   });
 });
+
+String.prototype.firstLetterToUpperCase = function() {
+  return this.charAt(0).toUpperCase() + this.slice(1);
+}
