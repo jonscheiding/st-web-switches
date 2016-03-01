@@ -37,9 +37,8 @@ h3 {
 }
 
 .switch {
-  border-width: 5px;
-  border-bottom-style: solid;
   line-height: 3em;
+  margin-bottom: 0.5em;
 }
 
 .switch label {
@@ -97,7 +96,7 @@ body { background-color: #bdc3c7; }
 body { color: #2e3e51; }
 
 h3, .state-message, button { color: #ecf0f1; }
-.switches, .message p { background-color: #ecf0f1; }
+.switch, .message p { background-color: #ecf0f1; }
 
 .message button, h3 { background-color: #3498db; }
 
