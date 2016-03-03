@@ -255,8 +255,16 @@ def initialize() {
     state.timers = [:]
   }
   
+  if(settings.switch_timeout) {
+  	state.switch_timeout = settings.switch_timeout
+  } else {
+  	settings.switch_timeout = state.switch_timeout
+  }
+  
   switches.each { 
     subscribe(it, "switch.on", handleSwitchOn)
     subscribe(it, "switch.off", handleSwitchOff)
   }
+  
+  log.info "state: ${state} | settings: ${settings}"
 }
