@@ -42,7 +42,7 @@ app.use("/", expressWinston.logger({winstonInstance: winston}));
 //
 // Set up the authorization routes
 //
-stAuth.callbackUrl = "/authorize/callback";
+stAuth.express.callbackUrl = "/authorize/callback";
 
 app.get("/authorize", stAuth.express.authorizeRedirect);
 app.get("/authorize/callback", stAuth.express.authorizeCallback, stApp.express.initialize, function(req, res) {  
