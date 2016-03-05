@@ -29,7 +29,7 @@ preferences {
     input "switches", "capability.switch", title: "Which switches should the API expose?", multiple: true, required: true
   }
   section (mobileOnly: true, "Turn off switches automatically...") {
-    input "switch_timeout", "nunber", title: "After how many minutes?", required: true
+    input "switch_timeout", "nunber", title: "After how many minutes?", required: true, defaultValue: switch_timeout
   }
 }
 
@@ -181,7 +181,7 @@ def start_timer(id) {
     start: cal.getTime().toString()
   ]
 
-  cal.add(Calendar.MINUTE, switch_timeout.toInteger())
+  cal.add(Calendar.MINUTE, state.switch_timeout.toInteger())
 
   state.timers[id].end = cal.getTime().toString()
   
