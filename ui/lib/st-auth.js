@@ -5,13 +5,15 @@
 // once received.
 // 
 
+var envalid = require("envalid");
 var winston = require("winston");
 
 var storage = require("./storage.js")("authorization_token");
 
-if(!process.env.ST_OAUTH_ID || !process.env.ST_OAUTH_SECRET) {
-  throw new Error("SmartThings OAuth info not set.  Please make sure ST_OAUTH_ID and ST_OAUTH_SECRET are in the environment.")
-}
+envalid.validate(process.env, {
+  ST_OAUTH_ID: { required: true },
+  ST_OAUTH_SECRET: { required: true }
+});
 
 var oauth2 = require("simple-oauth2")({
   clientID: process.env.ST_OAUTH_ID,

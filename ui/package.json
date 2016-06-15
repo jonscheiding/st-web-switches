@@ -18,6 +18,7 @@
   "homepage": "https://github.com/jonscheiding/st-web-switches#readme",
   "dependencies": {
     "dotenv": "^2.0.0",
+    "envalid": "^1.0.0",
     "events": "^1.1.0",
     "express": "^4.13.4",
     "express-winston": "^1.2.0",
