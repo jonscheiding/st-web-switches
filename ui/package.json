@@ -1,21 +1,21 @@
 {
-  "name": "fni-remote-heat",
+  "name": "st-web-switches",
   "version": "1.0.0",
-  "description": "App for remotely controlling airplane heaters",
+  "description": "Web app for remotely controlling switches via SmartThings",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jonscheiding/fni-remote-heat.git"
+    "url": "git+https://github.com/jonscheiding/st-web-switches.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jonscheiding/fni-remote-heat/issues"
+    "url": "https://github.com/jonscheiding/st-web-switches/issues"
   },
-  "homepage": "https://github.com/jonscheiding/fni-remote-heat#readme",
+  "homepage": "https://github.com/jonscheiding/st-web-switches#readme",
   "dependencies": {
     "dotenv": "^2.0.0",
     "events": "^1.1.0",
