@@ -14,7 +14,7 @@
  *
  */
 definition(
-  name: "Power Control",
+  name: "Web Switches",
   namespace: "jonscheiding",
   author: "Jon Scheiding",
   description: "Enable control of one or more switches via an API.",
