@@ -77,7 +77,7 @@ def api_info_get() {
 def api_timers_get() {
   check_timers()
   
-  state.timers.collect {[id: it.key, until: it.value]}
+  state.timers.collect {map_timer(it.key, it.value)}
 }
 
 def api_timer_get() {
@@ -255,11 +255,10 @@ def initialize() {
     state.timers = [:]
   }
   
-  if(settings.switch_timeout) {
-  	state.switch_timeout = settings.switch_timeout
-  } else {
-  	settings.switch_timeout = state.switch_timeout
-  }
+  state.switch_timeout = 
+  	settings.switch_timeout ?: 
+    state.switch_timeout ?:
+    1
   
   switches.each { 
     subscribe(it, "switch.on", handleSwitchOn)
