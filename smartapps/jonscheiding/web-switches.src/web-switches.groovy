@@ -19,9 +19,9 @@ definition(
   author: "Jon Scheiding",
   description: "Enable control of one or more switches via an API.",
   category: "My Apps",
-  iconUrl: "http://icons.iconarchive.com/icons/elegantthemes/beautiful-flat-one-color/48/hourglass-icon.png",
-  iconX2Url: "http://icons.iconarchive.com/icons/elegantthemes/beautiful-flat-one-color/72/hourglass-icon.png",
-  iconX3Url: "http://icons.iconarchive.com/icons/elegantthemes/beautiful-flat-one-color/128/hourglass-icon.png",
+  iconUrl: "http://cdn.device-icons.smartthings.com/Appliances/appliances17-icn.png",
+  iconX2Url: "http://cdn.device-icons.smartthings.com/Appliances/appliances17-icn@2x.png",
+  iconX3Url: "http://cdn.device-icons.smartthings.com/Appliances/appliances17-icn@2x.png",
   oauth: true)
 
 preferences {
