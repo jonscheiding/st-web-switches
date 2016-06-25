@@ -100,10 +100,12 @@ def api_timer_delete() {
 }
 
 def api_switches_get() {
+  refresh_current_power()
   switches.collect {map_switch(it)}
 }
 
 def api_switch_get() {
+  refresh_current_power(params.id)
   map_switch(find_switch(params.id))
 }
 
@@ -143,7 +145,7 @@ def map_switch(sw) {
     ]
   ]
   
-  if(sw.supportedAttributes.any{ it.name == "power" }) {
+  if(can_report_current_power(sw)) {
     res.state.power = sw.currentPower
   }
   
@@ -171,6 +173,30 @@ def find_switch(id) {
   }
   
   return sw  
+}
+
+def refresh_current_power(optional_id) {
+  def refreshed_any = false
+
+  switches.each {
+    if(optional_id && it.id != optional_id)
+      return
+    if(!can_report_current_power(it))
+      return
+    if(it.currentSwitch != "on")
+      return
+
+    it.refresh()
+    refreshed_any = true
+ }
+    
+  if(refreshed_any) {
+    pause(1000)
+  }
+}
+
+def can_report_current_power(sw) {
+  sw.supportedAttributes.any{ it.name == "power" }
 }
 
 def start_timer(id) {
