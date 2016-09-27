@@ -3,9 +3,7 @@
 // logic in st-app and st-auth.
 //
 
-require("dotenv").config();
-
-var express = require("express");
+var express = require("express")
 var path = require("path");
 var util = require("util");
 var winston = require("winston");
@@ -18,7 +16,7 @@ stApp.passthrough.fixupUrl = function(s) {
   return s.replace(/^\/api/, "");
 };
 
-var app = express();
+var app = express.Router()
 
 function addSwitchLinks(sw) {
   sw.links = {
@@ -88,7 +86,4 @@ app.put("/api/switches/:id/:state", stApp.passthrough({
   }
 }));
 
-var listenPort = process.env.PORT || 5000;
-
-app.listen(listenPort);
-winston.info("Listening on port %d", listenPort);
+module.exports = app;
