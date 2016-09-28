@@ -4,7 +4,7 @@ import webpackMiddleware from 'webpack-dev-middleware'
 
 const config = {
   devtool: 'source-map',
-  entry: './htdocs/switch-app.js',
+  entry: path.resolve(__dirname, 'switch-app.js'),
   output: {
     filename: 'switch-app.js',
     path: path.resolve(__dirname, 'dist'),

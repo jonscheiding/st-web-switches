@@ -4,18 +4,20 @@
 //
 
 import express from 'express'
-import path from 'path'
 import winston from 'winston'
 import expressWinston from 'express-winston'
 
-import stAuth from './lib/st-auth'
-import stApp from './lib/st-app'
+import ui from './src/ui'
+
+import stAuth from './src/api/st-auth'
+import stApp from './src/api/st-app'
 
 stApp.passthrough.fixupUrl = function(s) {
   return s.replace(/^\/api/, '')
 }
 
 var app = express.Router()
+app.use(ui())
 
 function addSwitchLinks(sw) {
   sw.links = {
@@ -25,15 +27,6 @@ function addSwitchLinks(sw) {
   }
 }
 
-//
-// Set up logging of requests and serving of static content
-//
-var webroot = path.join(__dirname, 'htdocs')
-var options = {
-  index: 'index.html'
-}
-
-app.use('/', express.static(webroot, options))
 app.use('/', expressWinston.logger({winstonInstance: winston}))
 
 //
