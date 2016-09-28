@@ -1,4 +1,7 @@
-var app = angular.module('switch-app', [])
+import angular from 'angular'
+import moment from 'moment'
+
+const app = angular.module('switch-app', [])
   .config(function($httpProvider) {
     $httpProvider.interceptors.push(function($q, $rootScope) {
       return {
@@ -44,7 +47,7 @@ app.controller('SwitchAppController', function($scope, $http, $window, $interval
   // Puts them together with a comma if they both need to be displayed.
   //
   $scope.getStateMessage = function(displayParts) {
-    var parts = []
+    const parts = []
     if(this.switch.state.plug == 'unplugged') {
       parts.push(displayParts.unplugged)
     }
@@ -52,7 +55,7 @@ app.controller('SwitchAppController', function($scope, $http, $window, $interval
       parts.push(displayParts.until)
     }
     
-    var message = parts.join(displayParts.joiner)
+    const message = parts.join(displayParts.joiner)
     return message.firstLetterToUpperCase()
   }
   
@@ -61,15 +64,15 @@ app.controller('SwitchAppController', function($scope, $http, $window, $interval
   // off/on.
   //
   $scope.toggle = function() {
-    var $this = this
-    var newState = $this.switch.state.is == 'off' ? 'on' : 'off'
+    const $this = this
+    const newState = $this.switch.state.is == 'off' ? 'on' : 'off'
     
     $scope.changingSwitch = {
       label: $this.switch.label,
       to: newState
     }
     
-    var url = $this.switch.links[newState]
+    const url = $this.switch.links[newState]
     $http.put(url).then(function(response) {
       $scope.changingSwitch = null
       $this.switch = response.data

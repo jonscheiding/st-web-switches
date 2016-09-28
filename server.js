@@ -8,8 +8,8 @@ import path from 'path'
 import winston from 'winston'
 import expressWinston from 'express-winston'
 
-import stAuth from './lib/st-auth.js'
-import stApp from './lib/st-app.js'
+import stAuth from './lib/st-auth'
+import stApp from './lib/st-app'
 
 stApp.passthrough.fixupUrl = function(s) {
   return s.replace(/^\/api/, '')

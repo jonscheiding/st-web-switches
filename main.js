@@ -4,8 +4,10 @@ var express = require('express')
 var winston = require('winston')
 
 var server = require('./server.js').default
+var webpack = require('./webpack.js').default
 
 var app = express()
+app.use(webpack())
 app.use(server)
 
 var listenPort = process.env.PORT || 5000
