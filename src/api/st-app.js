@@ -90,7 +90,7 @@ function makeRequest(method, uri, done) {
 //
 // Simple method to call an endpoint on the API.
 //
-export const call = function(options, done) {
+const call = function(options, done) {
   const method = options.method.toLowerCase()
   const url = options.url
   
@@ -145,9 +145,10 @@ const express = {
   // URL.
   //
   initialize: function(req, res, next) {
-    if(baseUri == process.env.SMARTAPP_ENDPOINT_URI) {
+    baseUri = process.env.SMARTAPP_ENDPOINT_URI
+    if(baseUri) {
       winston.info('Found value \'%s\' in environment for base URI.', baseUri)
-      storage.save(next, process.env.SMARTAPP_ENDPOINT_URI)
+      storage.save(next, baseUri)
       return
     }
     
@@ -174,4 +175,4 @@ const express = {
   }
 }
 
-export default { passthrough, express }
+export default { passthrough, express, call }
