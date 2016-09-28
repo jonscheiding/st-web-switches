@@ -1,8 +1,9 @@
 require('dotenv').config()
+require('babel-register')
 var express = require('express')
 var winston = require('winston')
 
-var server = require('./server.js')
+var server = require('./server.js').default
 
 var app = express()
 app.use(server)

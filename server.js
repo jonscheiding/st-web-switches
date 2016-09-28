@@ -3,13 +3,13 @@
 // logic in st-app and st-auth.
 //
 
-var express = require('express')
-var path = require('path')
-var winston = require('winston')
-var expressWinston = require('express-winston')
+import express from 'express'
+import path from 'path'
+import winston from 'winston'
+import expressWinston from 'express-winston'
 
-var stAuth = require('./lib/st-auth.js')
-var stApp = require('./lib/st-app.js')
+import stAuth from './lib/st-auth.js'
+import stApp from './lib/st-app.js'
 
 stApp.passthrough.fixupUrl = function(s) {
   return s.replace(/^\/api/, '')
@@ -85,4 +85,4 @@ app.put('/api/switches/:id/:state', stApp.passthrough({
   }
 }))
 
-module.exports = app
+export default app
