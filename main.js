@@ -3,7 +3,7 @@ require('babel-register')
 var express = require('express')
 var winston = require('winston')
 
-var server = require('./server.js').default
+var server = require('./src/server.js').default
 
 var app = express()
 app.use(server)
