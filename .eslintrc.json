@@ -1,0 +1,43 @@
+{
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  },
+  "rules": {
+    "indent": [
+      "error",
+      2,
+      { "SwitchCase": 1 }
+    ],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "semi": [
+      "error",
+      "never"
+    ],
+    "no-unexpected-multiline": "error"
+  },
+  "env": {
+    "mocha": true,
+    "node": true
+  },
+  "globals": {
+    "process": true,
+    "Promise": true,
+    "angular": true,
+    "moment": true
+  }
+}

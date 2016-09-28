@@ -3,87 +3,86 @@
 // logic in st-app and st-auth.
 //
 
-var express = require("express")
-var path = require("path");
-var util = require("util");
-var winston = require("winston");
-var expressWinston = require("express-winston");
+var express = require('express')
+var path = require('path')
+var winston = require('winston')
+var expressWinston = require('express-winston')
 
-var stAuth = require("./lib/st-auth.js");
-var stApp = require("./lib/st-app.js");
+var stAuth = require('./lib/st-auth.js')
+var stApp = require('./lib/st-app.js')
 
 stApp.passthrough.fixupUrl = function(s) {
-  return s.replace(/^\/api/, "");
-};
+  return s.replace(/^\/api/, '')
+}
 
 var app = express.Router()
 
 function addSwitchLinks(sw) {
   sw.links = {
-    self: "/api/switches/" + sw.id,
-    on: "/api/switches/" + sw.id + "/on",
-    off: "/api/switches/" + sw.id + "/off"
-  };
+    self: '/api/switches/' + sw.id,
+    on: '/api/switches/' + sw.id + '/on',
+    off: '/api/switches/' + sw.id + '/off'
+  }
 }
 
 //
 // Set up logging of requests and serving of static content
 //
-var webroot = path.join(__dirname, "htdocs");
+var webroot = path.join(__dirname, 'htdocs')
 var options = {
-  index: "index.html"
-};
+  index: 'index.html'
+}
 
-app.use("/", express.static(webroot, options));
-app.use("/", expressWinston.logger({winstonInstance: winston}));
+app.use('/', express.static(webroot, options))
+app.use('/', expressWinston.logger({winstonInstance: winston}))
 
 //
 // Set up the authorization routes
 //
-stAuth.express.callbackUrl = "/authorize/callback";
+stAuth.express.callbackUrl = '/authorize/callback'
 
-app.get("/authorize", stAuth.express.authorizeRedirect);
-app.get("/authorize/callback", stAuth.express.authorizeCallback, stApp.express.initialize, function(req, res) {  
-  res.redirect("/");
-});
+app.get('/authorize', stAuth.express.authorizeRedirect)
+app.get('/authorize/callback', stAuth.express.authorizeCallback, stApp.express.initialize, function(req, res) {  
+  res.redirect('/')
+})
 
 //
 // Set up the actual API calls
 //
-app.use("/api", stAuth.express.requireAuthorization, stApp.express.ensureInitialized);
+app.use('/api', stAuth.express.requireAuthorization, stApp.express.ensureInitialized)
 
-app.get("/api", function(req, res) {
-  stApp.call({method: "GET", url: "/info"}, function(stResponse) {
+app.get('/api', function(req, res) {
+  stApp.call({method: 'GET', url: '/info'}, function(stResponse) {
     stResponse.body.links = {
-      self: "/api",
-      switches: "/api/switches"
-    };
-    res.send(stResponse.body);
+      self: '/api',
+      switches: '/api/switches'
+    }
+    res.send(stResponse.body)
   })
-});
+})
 
-app.get("/api/switches", stApp.passthrough({
+app.get('/api/switches', stApp.passthrough({
   handleResponse: function(stResponse) {
-    if(!stResponse.ok) return;
-    stResponse.body.forEach(addSwitchLinks);    
+    if(!stResponse.ok) return
+    stResponse.body.forEach(addSwitchLinks)    
   }
-}));
+}))
 
-app.get("/api/switches/:id", stApp.passthrough({
+app.get('/api/switches/:id', stApp.passthrough({
   handleResponse: function(stResponse) {
-    if(!stResponse.ok) return;
-    addSwitchLinks(stResponse.body);
+    if(!stResponse.ok) return
+    addSwitchLinks(stResponse.body)
   }
-}));
+}))
 
-app.put("/api/switches/:id/:state", stApp.passthrough({
-  handleResponse: function(stResponse, req) {
-    if(!stResponse.ok) return;
+app.put('/api/switches/:id/:state', stApp.passthrough({
+  handleResponse: function(stResponse) {
+    if(!stResponse.ok) return
     
     return function(req, res) {
-      res.redirect(303, "/api/switches/" + req.params.id);
-    };
+      res.redirect(303, '/api/switches/' + req.params.id)
+    }
   }
-}));
+}))
 
-module.exports = app;
+module.exports = app

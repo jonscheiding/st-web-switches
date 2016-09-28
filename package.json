@@ -5,6 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "node main.js",
+    "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -29,5 +30,8 @@
     "simple-oauth2": "^0.5.1",
     "unirest": "^0.4.2",
     "winston": "^2.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.6.1"
   }
 }
