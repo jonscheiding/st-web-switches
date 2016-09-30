@@ -30,7 +30,7 @@ preferences {
 		input "switches", "capability.switch", title: "Which switches should the API expose?", multiple: true, required: true
 	}
 	section (mobileOnly: true, "Turn off switches automatically...") {
-		input "switch_timeout", "nunber", title: "After how many minutes?", required: true, defaultValue: switch_timeout
+		input "switch_timeout", "nunber", title: "After how many minutes?", required: true, defaultValue: 120
 	}
 }
 
@@ -70,8 +70,8 @@ mappings {
 
 def api_info_get() {
 	[
-	label: app.label,
-	state: state
+        label: app.label,
+        switchTimeout: settings.switch_timeout
 	]
 }
 
