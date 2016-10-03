@@ -228,7 +228,7 @@ def updated() {
 def initialize() {
 	state.switches = state.switches ?: [:]
 	def updatedState = [:]
-	
+
 	switches.each { sw -> 
 		subscribe(sw, "switch.on", handle_switch_on)
 		subscribe(sw, "switch.off", handle_switch_off)

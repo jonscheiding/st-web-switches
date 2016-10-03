@@ -3,8 +3,8 @@ import interceptor from 'rest/interceptor'
 import mimeInterceptor from 'rest/interceptor/mime'
 import pathPrefixInterceptor from 'rest/interceptor/pathPrefix'
 
-import db from 'redis-db'
-import proxy from 'rest-proxy'
+import db from 'src2/redis-db'
+import proxy from 'src2/rest-proxy'
 
 const accessTokenInterceptor = interceptor({
   request: (request, options) => {
