@@ -4,12 +4,12 @@ import interceptor from 'rest/interceptor'
 import mimeInterceptor from 'rest/interceptor/mime'
 import pathPrefixInterceptor from 'rest/interceptor/pathPrefix'
 
+import proxy from 'src2/rest-proxy'
+
 envalid.validate(process.env, {
   SMARTAPP_ACCESS_TOKEN: { required: true },
   SMARTAPP_BASE_URL: { required: true }
 })
-
-import proxy from 'src2/rest-proxy'
 
 const accessTokenInterceptor = interceptor({
   request: (request, options) => {
