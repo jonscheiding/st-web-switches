@@ -75,10 +75,16 @@ function findMiddlewareApplicableFor(url) {
   return foundMiddleware
 }
 
-function makeRequest(method, uri, done) {
-  return unirest[method](uri)
+function makeRequest(method, uri, body, done) {
+  let req = unirest[method](uri)
     .headers({Authorization: 'Bearer ' + stAuth.getAccessToken()})
-    .end(function(stResponse) {
+  
+  if(body) {
+    req = req.send(body)
+  }
+  
+  req
+    .end(stResponse => {
       winston.info('SmartThings API %s %s %d %j', method.toUpperCase(), uri, stResponse.status, stResponse.body)
       
       if(done) {
@@ -94,7 +100,7 @@ const call = function(options, done) {
   const method = options.method.toLowerCase()
   const url = options.url
   
-  makeRequest(method, baseUri + url, function(stResponse) {
+  makeRequest(method, baseUri + url, options.body, function(stResponse) {
     if(stResponse.ok) {
       const middlewareMethod = findMiddlewareApplicableFor(url)
       if(middlewareMethod) {
