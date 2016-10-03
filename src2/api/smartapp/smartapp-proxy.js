@@ -3,6 +3,9 @@ import interceptor from 'rest/interceptor'
 import mimeInterceptor from 'rest/interceptor/mime'
 import pathPrefixInterceptor from 'rest/interceptor/pathPrefix'
 
+import db from 'redis-db'
+import proxy from 'rest-proxy'
+
 const accessTokenInterceptor = interceptor({
   request: (request, options) => {
     if(!options.accessToken) return
@@ -17,7 +20,16 @@ const accessTokenInterceptor = interceptor({
   }
 })
 
-export default rest 
-  .wrap(mimeInterceptor)
-  .wrap(pathPrefixInterceptor, { prefix: 'https://graph.api.smartthings.com/api/smartapps/installations/2b520eaf-eabe-4a98-a6b9-25eb0226a4d8' })
-  .wrap(accessTokenInterceptor, { accessToken: 'c352e5bc-e60e-4adc-a7b7-1704fc4da4b4' })
+const client = rest.wrap(mimeInterceptor)
+
+export default () => (req, res) => {
+  db.mget('smartapp-base-url', 'smartapp-access-token', (err, replies) => {
+    let [ baseUrl, accessToken ] = replies
+    let proxyRequest = proxy(client
+      .wrap(pathPrefixInterceptor, {prefix: baseUrl})
+      .wrap(accessTokenInterceptor, {accessToken: accessToken}))
+      
+    proxyRequest(req, res)
+  })
+}
+
