@@ -74,20 +74,28 @@ def api_switch_state_post() {
 def map_switch(sw) {
 	def sw_state = state.switches[sw.id]
 	
+    def currentSwitch = (state.switches[sw.id].currently ?: sw.currentSwitch)
 	def currentPower = null
-	if(can_report_current_power(sw) && sw.currentSwitch == "on") {
+	if(can_report_current_power(sw) && currentSwitch == "on") {
 		currentPower = sw.currentPower
 	}
 	
 	[
-		id: sw.id,
-		label: sw.displayName,
-		state: [
-			currently: sw_state.currently ?: sw.currentSwitch,
-			since: sw_state.since
-		],
-		timer: sw_state.timer,
-		usage: currentPower
+		data: [
+            id: sw.id,
+            label: sw.displayName,
+            state: [
+                currently: currentSwitch,
+                since: sw_state.since
+            ],
+            timer: sw_state.timer,
+            usage: currentPower
+        ],
+        links: [
+        	self: "/switches/${sw.id}",
+            "on": "/switches/${sw.id}/on",
+            "off": "/switches/${sw.id}/off"
+        ]
 	]
 }
 
@@ -228,7 +236,7 @@ def updated() {
 def initialize() {
 	state.switches = state.switches ?: [:]
 	def updatedState = [:]
-
+	
 	switches.each { sw -> 
 		subscribe(sw, "switch.on", handle_switch_on)
 		subscribe(sw, "switch.off", handle_switch_off)
