@@ -44,7 +44,7 @@ mappings {
 	path("/switches/:id") {
 		action: [ GET: "api_switch_get" ]
 	}
-	path("/switches/:id/state") {
+	path("/switches/:id/:state") {
 		action: [ POST: "api_switch_state_post" ]
 	}
 	path("/debug/check_timers") {
@@ -65,12 +65,9 @@ def api_switch_get() {
 }
 
 def api_switch_state_post() {
-	def json = request.JSON
-	def turn = json.turn
-
 	def sw = find_switch(params.id)
 
-	turn_switch(sw, json.turn)
+	turn_switch(sw, params.state)
 	map_switch(sw)
 }
 
@@ -134,7 +131,7 @@ def start_timer(sw, desired_state) {
 def clear_timer(sw) {
 	if(state.switches[sw.id].timer == null) return
 	
-	log.info("Unsetting timer for ${evt.deviceId} because it turned off.  Timer was set for ${state.timers[evt.device.id]}.")
+	log.info("Unsetting timer for ${sw.id}.  Timer was set for ${state.switches[sw.id].timer.at}.")
 	state.switches[sw.id].timer = null
 }
 
@@ -182,6 +179,7 @@ def turn_switch(sw, turn) {
 			break
 		case "off":
 			sw.off()
+            clear_timer(sw)
 			break
 		default:
 			log_http_error(400, "Invalid value '${state}' in POST data field '.turn'")
