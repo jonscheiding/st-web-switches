@@ -1,9 +1,14 @@
+import envalid from 'envalid'
 import rest from 'rest'
 import interceptor from 'rest/interceptor'
 import mimeInterceptor from 'rest/interceptor/mime'
 import pathPrefixInterceptor from 'rest/interceptor/pathPrefix'
 
-import db from 'src2/redis-db'
+envalid.validate(process.env, {
+  SMARTAPP_ACCESS_TOKEN: { required: true },
+  SMARTAPP_BASE_URL: { required: true }
+})
+
 import proxy from 'src2/rest-proxy'
 
 const accessTokenInterceptor = interceptor({
@@ -23,13 +28,11 @@ const accessTokenInterceptor = interceptor({
 const client = rest.wrap(mimeInterceptor)
 
 export default () => (req, res) => {
-  db.mget('smartapp-base-url', 'smartapp-access-token', (err, replies) => {
-    let [ baseUrl, accessToken ] = replies
-    let proxyRequest = proxy(client
-      .wrap(pathPrefixInterceptor, {prefix: baseUrl})
-      .wrap(accessTokenInterceptor, {accessToken: accessToken}))
-      
-    proxyRequest(req, res)
-  })
+  let [ baseUrl, accessToken ] = [ process.env.SMARTAPP_BASE_URL, process.env.SMARTAPP_ACCESS_TOKEN ]
+  let proxyRequest = proxy(client
+    .wrap(pathPrefixInterceptor, {prefix: baseUrl})
+    .wrap(accessTokenInterceptor, {accessToken: accessToken}))
+    
+  proxyRequest(req, res)
 }
 

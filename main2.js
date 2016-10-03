@@ -1,4 +1,5 @@
 var path = require('path')
+require('dotenv').config()
 require('babel-register')
 require('app-module-path').addPath(path.resolve(__dirname))
 
