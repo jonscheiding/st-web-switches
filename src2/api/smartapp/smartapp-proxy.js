@@ -3,6 +3,8 @@ import rest from 'rest'
 import interceptor from 'rest/interceptor'
 import mimeInterceptor from 'rest/interceptor/mime'
 import pathPrefixInterceptor from 'rest/interceptor/pathPrefix'
+import mapObject from 'object.map'
+import url from 'url'
 
 import proxy from 'src2/rest-proxy'
 
@@ -25,14 +27,42 @@ const accessTokenInterceptor = interceptor({
   }
 })
 
+const linkRewriteInterceptor = interceptor({
+  response: (response, options) => {
+    if(!response.entity) return response
+    if(!options.prefix) return response
+    
+    const rewriteLinks = links =>
+      mapObject(links, (value) => 
+        options.prefix + value)
+    
+    if(response.entity instanceof Array) {
+      for(let entity of response.entity) {
+        if(!entity.links) continue
+        entity.links = rewriteLinks(entity.links)
+      }
+      
+      return response
+    }
+    
+    if(!response.entity.links) return response
+    response.entity.links = rewriteLinks(response.entity.links)
+    
+    return response
+  }
+})
+
 const client = rest.wrap(mimeInterceptor)
 
 export default () => (req, res) => {
-  let [ baseUrl, accessToken ] = [ process.env.SMARTAPP_BASE_URL, process.env.SMARTAPP_ACCESS_TOKEN ]
-  let proxyRequest = proxy(client
+  const [ baseUrl, accessToken ] = [ process.env.SMARTAPP_BASE_URL, process.env.SMARTAPP_ACCESS_TOKEN ]
+
+  const proxyRequest = proxy(client
     .wrap(pathPrefixInterceptor, {prefix: baseUrl})
-    .wrap(accessTokenInterceptor, {accessToken: accessToken}))
-    
+    .wrap(accessTokenInterceptor, {accessToken: accessToken})
+    .wrap(linkRewriteInterceptor, {prefix: req.baseUrl})
+  )
+  
   proxyRequest(req, res)
 }
 
