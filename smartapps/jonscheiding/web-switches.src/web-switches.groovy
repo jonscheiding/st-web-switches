@@ -131,7 +131,7 @@ def start_timer(sw, desired_state) {
 	
 	def cal = new GregorianCalendar()
 	cal.setTime(new Date())
-	cal.add(Calendar.SECOND, timerDefault.toInteger())
+	cal.add(Calendar.MINUTE, timerDefault.toInteger())
 	
 	sw_timer.turn = desired_state
 	sw_timer.at = cal.getTime().toString()
