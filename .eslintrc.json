@@ -7,7 +7,8 @@
   "parserOptions": {
     "sourceType": "module",
     "ecmaFeatures": {
-      "experimentalObjectRestSpread": true
+      "experimentalObjectRestSpread": true,
+      "jsx": true
     }
   },
   "rules": {
@@ -38,6 +39,12 @@
     "process": true,
     "Promise": true,
     "angular": true,
-    "moment": true
-  }
+    "moment": true,
+    "React": true,
+    "ReactDOM": true,
+    "document": true
+  },
+  "plugins": [
+    "react"
+  ]
 }

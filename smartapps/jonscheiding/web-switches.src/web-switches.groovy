@@ -35,8 +35,8 @@ preferences {
 }
 
 mappings {
-	path("/settings") {
-		action: [ GET: "api_settings_get" ]
+	path("/app") {
+		action: [ GET: "api_app_get" ]
 	}
 	path("/switches") {
 		action: [ GET: "api_switches_get" ]
@@ -52,8 +52,13 @@ mappings {
 	}
 }
 
-def api_settings_get() {
-	[ label: app.label, timerDefault: settings.timerDefault ]
+def api_app_get() {
+	[ 
+		data: [ label: app.label, timerDefault: settings.timerDefault ],
+		links: [
+			"switches": "/switches"
+		]
+	]
 }
 
 def api_switches_get() {
@@ -74,7 +79,7 @@ def api_switch_state_post() {
 def map_switch(sw) {
 	def sw_state = state.switches[sw.id]
 	
-    def currentSwitch = (state.switches[sw.id].currently ?: sw.currentSwitch)
+	def currentSwitch = (state.switches[sw.id].currently ?: sw.currentSwitch)
 	def currentPower = null
 	if(can_report_current_power(sw) && currentSwitch == "on") {
 		currentPower = sw.currentPower
@@ -82,20 +87,20 @@ def map_switch(sw) {
 	
 	[
 		data: [
-            id: sw.id,
-            label: sw.displayName,
-            state: [
-                currently: currentSwitch,
-                since: sw_state.since
-            ],
-            timer: sw_state.timer,
-            usage: currentPower
-        ],
-        links: [
-        	self: "/switches/${sw.id}",
-            "on": "/switches/${sw.id}/on",
-            "off": "/switches/${sw.id}/off"
-        ]
+			id: sw.id,
+			label: sw.displayName,
+			state: [
+				currently: currentSwitch,
+				since: sw_state.since
+			],
+			timer: sw_state.timer,
+			usage: currentPower
+		],
+		links: [
+			self: "/switches/${sw.id}",
+			"on": "/switches/${sw.id}/on",
+			"off": "/switches/${sw.id}/off"
+		]
 	]
 }
 
@@ -187,7 +192,7 @@ def turn_switch(sw, turn) {
 			break
 		case "off":
 			sw.off()
-            clear_timer(sw)
+			clear_timer(sw)
 			break
 		default:
 			log_http_error(400, "Invalid value '${state}' in POST data field '.turn'")

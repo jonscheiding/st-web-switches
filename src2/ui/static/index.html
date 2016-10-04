@@ -1,0 +1,39 @@
+<html ng-app="switch-app" ng-controller="SwitchAppController">
+  <head>
+    <title>{{api.label}}</title>
+
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" type="text/css" href="app.css">
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.js"></script>
+    <script type="text/javascript" src="/dist/app.js"></script>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  </head>
+
+  <body ng-cloak>
+    <div id="main">
+      <h3>{{api.label}}</h3>
+      <div class="switches">
+        <div class="switch {{switch.state.currently}} {{getPlugStatus()}}" ng-repeat="switch in switches | orderBy: 'label'">
+          <label>{{switch.label}}</label>
+          <button ng-click="toggle()" class="{{switch.state.currently}}">
+            <span>{{switch.state.currently}}</span>
+          </button>
+          <div class="state-message">
+            {{ getStateMessage({
+                unplugged: "unplugged",
+                until: "turning off " + switchOffWhen(),
+                joiner: ", "
+            }) }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="message" ng-if="loading">
+      <p>Loading</p>
+    </div>
+
+  </body>
+</html>

@@ -4,15 +4,15 @@ import webpackMiddleware from 'webpack-dev-middleware'
 
 const config = {
   devtool: 'source-map',
-  entry: path.resolve(__dirname, 'switch-app.js'),
+  entry: path.resolve(__dirname, 'app.js'),
   output: {
-    filename: 'switch-app.js',
+    filename: 'app.js',
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/dist/'
   },
   module: {
     loaders: [
-      { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel'] }
+      { test: /\.js$/, exclude: /node_modules/, loaders: ['babel'] }
     ]
   },
   externals: {

@@ -4,7 +4,6 @@ import interceptor from 'rest/interceptor'
 import mimeInterceptor from 'rest/interceptor/mime'
 import pathPrefixInterceptor from 'rest/interceptor/pathPrefix'
 import mapObject from 'object.map'
-import url from 'url'
 
 import proxy from 'src2/rest-proxy'
 
@@ -52,6 +51,17 @@ const linkRewriteInterceptor = interceptor({
   }
 })
 
+const urlRewriteInterceptor = interceptor({
+  request: (request) => {
+    switch(request.path) {
+      case '/': 
+        request.path = '/app'
+    }
+    
+    return request
+  }
+})
+
 const client = rest.wrap(mimeInterceptor)
 
 export default () => (req, res) => {
@@ -59,6 +69,7 @@ export default () => (req, res) => {
 
   const proxyRequest = proxy(client
     .wrap(pathPrefixInterceptor, {prefix: baseUrl})
+    .wrap(urlRewriteInterceptor)
     .wrap(accessTokenInterceptor, {accessToken: accessToken})
     .wrap(linkRewriteInterceptor, {prefix: req.baseUrl})
   )
