@@ -54,7 +54,8 @@ mappings {
 
 def api_app_get() {
 	[ 
-		data: [ label: app.label, timerDefault: settings.timerDefault ],
+		label: app.label, 
+		timerDefault: settings.timerDefault,
 		links: [
 			"switches": "/switches"
 		]
@@ -86,16 +87,14 @@ def map_switch(sw) {
 	}
 	
 	[
-		data: [
-			id: sw.id,
-			label: sw.displayName,
-			state: [
-				currently: currentSwitch,
-				since: sw_state.since
-			],
-			timer: sw_state.timer,
-			usage: currentPower
+		id: sw.id,
+		label: sw.displayName,
+		state: [
+			currently: currentSwitch,
+			since: sw_state.since
 		],
+		timer: sw_state.timer,
+		usage: currentPower,
 		links: [
 			self: "/switches/${sw.id}",
 			"on": "/switches/${sw.id}/on",
