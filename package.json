@@ -2,9 +2,9 @@
   "name": "st-web-switches",
   "version": "1.0.0",
   "description": "Web app for remotely controlling switches via SmartThings",
-  "main": "main2.js",
+  "main": "main.js",
   "scripts": {
-    "start": "nodemon -e js,mustache main2.js",
+    "start": "nodemon -e js main.js",
     "lint": "eslint .",
     "test": "npm run lint"
   },

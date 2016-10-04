@@ -5,7 +5,7 @@ import mimeInterceptor from 'rest/interceptor/mime'
 import pathPrefixInterceptor from 'rest/interceptor/pathPrefix'
 import mapObject from 'object.map'
 
-import proxy from 'src2/rest-proxy'
+import proxy from 'src/rest-proxy'
 
 envalid.validate(process.env, {
   SMARTAPP_ACCESS_TOKEN: { required: true },
