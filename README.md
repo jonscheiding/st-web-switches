@@ -20,14 +20,17 @@ The SmartApp has the following basic features:
 * Turns switches off after a configurable timeout
 
 ### API
-#### GET /info
-Returns information about the SmartApp installation.  The **label** and **switch_timeout** fields are the values set by the user when they enabled the SmartApp.
+#### GET /app
+Returns information about the SmartApp installation.  The **label** and **timerDefault** fields are the values set by the user when they enabled the SmartApp.
 ##### Example request
-    GET https://.../settings
+    GET https://.../app
 ##### Example response
     {
       "label": "My Power Control App",
-      "defaultTimeout": "120"
+      "timerDefault": "120",
+      "links": {
+        "switches": "/switches"
+      }
     }
     
 #### GET /switches
@@ -42,11 +45,15 @@ Returns information about the available switches.  Includes the switch label, GU
         "state": {
           "currently": "on|turning on|turning off",
           "since": "2016-06-15T17:24:09Z",
-          "usage": true|false|undefined
+          "usage": 20
         },
         "timer": {
           "turn": "off",
           "at": "2016-06-15T19:24:09Z"
+        },
+        "links": {
+          "self": "/switches/0f67f4d7-1d6e-4a3e-bf83-49d3968c748e",
+          "off": "/switches/0f67f4d7-1d6e-4a3e-bf83-49d3968c748e/off"
         }
       },
       {
@@ -54,6 +61,10 @@ Returns information about the available switches.  Includes the switch label, GU
         "label": "Switch #2",
         "state": {
           "currently": "off"
+        },
+        "links": {
+          "self": "/switches/fc069725-8e23-46b9-acf7-dac985ca8428",
+          "on": "/switches/fc069725-8e23-46b9-acf7-dac985ca8428/on"
         }
       },
       {
@@ -65,6 +76,10 @@ Returns information about the available switches.  Includes the switch label, GU
         "timer": {
           "turn": "on",
           "at": "2016-06-15T19:24:09Z"
+        },
+        "links": {
+          "self": "/switches/bdeb5985-ab49-4d24-95ac-65d770546181",
+          "on": "/switches/bdeb5985-ab49-4d24-95ac-65d770546181/on"
         }
       }
     ]
@@ -74,26 +89,21 @@ Returns information about a single switch.  Includes the switch label, ID, and t
 ##### Example request
     GET https://.../switches/0f67f4d7-1d6e-4a3e-bf83-49d3968c748e
     
-#### PATCH /switches/:guid/state
-Turns a switch on or off.  Returns an HTTP 202 with no content.  If the switch is already in the desired state, returns an HTTP 200 with no content.
+#### POST /switches/:guid/:state
+Turns a switch on or off.  Returns an HTTP 201 with the switch resource content.
 ##### Example request
-    PUT https://.../switches/0f67f4d7-1d6e-4a3e-bf83-49d3968c748e/state
-    {
-      "turn": "on|off"
-    }
+    POST https://.../switches/0f67f4d7-1d6e-4a3e-bf83-49d3968c748e/on
 
-#### POST /switches/:guid/timer
-Sets a switch to turn on or off at `after` seconds from now.  If `after` is not specified, uses the `timerDefault` value from the Smartapp settings.  Returns an HTTP 204 with no content.  If the switch is already in the desired state, returns an HTTP 400 error.
+#### POST /switches/:guid/timer/:state
+Sets a switch to turn on or off at `after` seconds from now.  If `after` is not specified, uses the `timerDefault` value from the Smartapp settings.  Returns an HTTP 201 with the switch resource content.  If the switch is already in the desired state, returns an HTTP 400 error.
 ##### Example request
-    POST https://graph.api.smartthings.com/api/.../timers
-##### Example response
+    POST https://.../switches/0f67f4d7-1d6e-4a3e-bf83-49d3968c748e/timer/on
     {
-      "turn": "off|on",
       "after": "3600"
     }
     
-#### DELETE /timers/:guid
+#### DELETE /switches/:guid/timer
 Deletes an existing timer.  The switch will remain in its current state indefinitely.  Returns an HTTP 204 with no content.
 ##### Example request
-    DELETE https://graph.api.smartthings.com/api/.../timers/0f67f4d7-1d6e-4a3e-bf83-49d3968c748e
+    DELETE https://.../switches/0f67f4d7-1d6e-4a3e-bf83-49d3968c748e/timer
    
