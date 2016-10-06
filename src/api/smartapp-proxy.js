@@ -1,6 +1,5 @@
 import envalid from 'envalid'
 import rest from 'rest'
-import interceptor from 'rest/interceptor'
 import mimeInterceptor from 'rest/interceptor/mime'
 import pathPrefixInterceptor from 'rest/interceptor/pathPrefix'
 import mapObject from 'object.map'
