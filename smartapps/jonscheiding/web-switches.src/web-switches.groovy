@@ -30,7 +30,7 @@ preferences {
 		input "switches", "capability.switch", title: "Which switches should the API expose?", multiple: true, required: true
 	}
 	section (mobileOnly: true, "Turn off switches automatically...") {
-		input "timerDefault", "number", title: "After how many minutes?", required: true, defaultValue: 120
+		input "timer_default", "number", title: "After how many minutes?", required: true, defaultValue: 120
 	}
 }
 
@@ -47,6 +47,9 @@ mappings {
 	path("/switches/:id/:state") {
 		action: [ POST: "api_switch_state_post" ]
 	}
+	path("/switches/:id/timer/:state") {
+		action: [ POST: "api_switch_timer_state_post" ]
+	}
 	path("/debug/check_timers") {
 		action: [ POST: "check_timers" ]
 	}
@@ -55,7 +58,7 @@ mappings {
 def api_app_get() {
 	[ 
 		label: app.label, 
-		timerDefault: settings.timerDefault,
+		timerDefault: settings.timer_default,
 		links: [
 			"switches": "/switches"
 		]
@@ -74,6 +77,22 @@ def api_switch_state_post() {
 	def sw = find_switch(params.id)
 
 	turn_switch(sw, params.state)
+	map_switch(sw)
+}
+
+def api_switch_timer_state_post() {
+	def sw = find_switch(params.id)
+	
+	def currentSwitch = state.switches[sw.id].currently ?: sw.currentSwitch
+	
+	switch (currentSwitch) {
+		case params.state:
+		case "turning " + params.state:
+			httpError(400, "Cannot set timer to turn switch ${params.state} because it is already ${currentSwitch}.")
+	}
+
+	start_timer(sw, params.state, true, request.JSON?.after)
+
 	map_switch(sw)
 }
 
@@ -113,24 +132,26 @@ def find_switch(id) {
 	return sw  
 }
 
-def start_timer(sw, desired_state) {
+def start_timer(sw, desired_state, override = false, seconds_from_now = null) {
 	def sw_timer = state.switches[sw.id].timer
 
 	if(sw_timer != null) {
-		if(sw_timer.turn == desired_state) {
+		if(sw_timer.turn == desired_state && !override) {
 			log.info("Not starting a timer to turn ${desired_state} switch ${sw.id}, because there is one already.")
 			return
 		} else if(sw_timer.turn != null) {
-			log.warn("Setting a timer to turn ${desired_state} switch ${id}, even though there is already on to turn it ${sw_timer.turn}.")
+			log.warn("Setting a timer to turn ${desired_state} switch ${sw.id}, even though there is already on to turn it ${sw_timer.turn}.")
 		}
 	}
 	
 	sw_timer = [:]
 	state.switches[sw.id].timer = sw_timer
 	
+	seconds_from_now = seconds_from_now ?: timer_default
+
 	def cal = new GregorianCalendar()
 	cal.setTime(new Date())
-	cal.add(Calendar.MINUTE, timerDefault.toInteger())
+	cal.add(Calendar.MINUTE, seconds_from_now.toInteger())
 	
 	sw_timer.turn = desired_state
 	sw_timer.at = cal.getTime().toString()
