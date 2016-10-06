@@ -1,4 +1,6 @@
 import angular from 'angular'
+import deepIs from 'deep-is'
+import clone from 'clone'
 import moment from 'moment'
 
 const app = angular.module('switch-app', [])
@@ -22,10 +24,16 @@ app.controller('SwitchAppController', function($scope, $http, $window, $interval
   //
   // Refreshes the state of all switches
   //
+  let switches = {}
   $scope.reload = function() {
     $http.get($scope.api.links.switches).then(function(response) {
       $scope.loading = false
-      $scope.switches = response.data
+      if(deepIs(switches, response.data)) {
+        return
+      }
+      
+      switches = response.data
+      $scope.switches = clone(switches) // Have to clone because Angular modifies our objects
     })
   }
   
