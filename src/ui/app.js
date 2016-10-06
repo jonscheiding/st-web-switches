@@ -60,16 +60,11 @@ app.controller('SwitchAppController', function($scope, $http, $window, $interval
   }
   
   $scope.getPlugStatus = function() {
-    if(this.switch.state.currently != 'on') {
-      return null
+    switch(this.switch.unplugged) {
+      case true: return 'unplugged'
+      case false: return 'plugged'
+      default: return null
     }
-    
-    const timeInState = Date.now() - Date.parse(this.switch.state.since)
-    
-    if(timeInState < 6000) return null
-    
-    if(this.switch.usage > 0) return 'plugged'
-    return 'unplugged'
   }
   
   //
