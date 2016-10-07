@@ -24,17 +24,19 @@ app.controller('SwitchAppController', function($scope, $http, $window, $interval
   //
   // Refreshes the state of all switches
   //
-  let switches = {}
-  $scope.reload = function() {
-    $http.get($scope.api.links.switches).then(function(response) {
-      $scope.loading = false
-      if(deepIs(switches, response.data)) {
-        return
-      }
-      
-      switches = response.data
-      $scope.switches = clone(switches) // Have to clone because Angular modifies our objects
-    })
+  {
+    let switches = {}
+    $scope.reload = function() {
+      $http.get($scope.api.links.switches).then(function(response) {
+        $scope.loading = false
+        if(deepIs(switches, response.data)) {
+          return
+        }
+        
+        switches = response.data
+        $scope.switches = clone(switches) // Have to clone because Angular modifies our objects
+      })
+    }
   }
   
   //
