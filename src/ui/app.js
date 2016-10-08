@@ -74,20 +74,28 @@ app.controller('SwitchAppController', function($scope, $http, $window, $interval
     return true
   }
   
+  $scope.canExtend = function() {
+    return this.switch.state.currently == 'on' && this.switch.timer != null
+  }
+  
   //
   // Makes an API call to toggle the switch on/off from its current state of
   // off/on.
   //
   $scope.toggle = function() {
-    const $this = this
-    const newState = $this.switch.state.currently == 'off' ? 'on' : 'off'
+    const newState = this.switch.state.currently == 'off' ? 'on' : 'off'
     
-    const url = $this.switch.links[newState]
+    const url = this.switch.links[newState]
     $http.post(url).then(function(response) {
-      $scope.changingSwitch = null
-      $this.switch = response.data
-      
+      this.switches[this.$index] = response.data
       $timeout($scope.reload, 1000)
+    })
+  }
+  
+  $scope.extend = function() {
+    const url = this.switch.links[`timer/${this.switch.timer.turn}`]
+    $http.post(url).then(response => {
+      this.switches[this.$index] = response.data
     })
   }
   
