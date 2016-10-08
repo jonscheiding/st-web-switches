@@ -117,7 +117,9 @@ def map_switch(sw) {
 		links: [
 			self: "/switches/${sw.id}",
 			"on": "/switches/${sw.id}/on",
-			"off": "/switches/${sw.id}/off"
+			"off": "/switches/${sw.id}/off",
+			"timer/on": "/switches/${sw.id}/timer/on",
+			"timer/off": "/switches/${sw.id}/timer/off"
 		]
 	]
 }
