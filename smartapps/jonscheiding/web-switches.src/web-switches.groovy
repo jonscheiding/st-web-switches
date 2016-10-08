@@ -91,7 +91,7 @@ def api_switch_timer_state_post() {
 			httpError(400, "Cannot set timer to turn switch ${params.state} because it is already ${currentSwitch}.")
 	}
 
-	start_timer(sw, params.state, true, request.JSON?.after)
+	start_timer(sw, params.state, true, params.after)
 
 	map_switch(sw)
 }
@@ -131,10 +131,10 @@ def find_switch(id) {
 		log_http_error(404, "No such switch: '${id}'")
 	}
 	
-	return sw  
+	return sw
 }
 
-def start_timer(sw, desired_state, override = false, seconds_from_now = null) {
+def start_timer(sw, desired_state, override = false, minutes_from_now = null) {
 	def sw_timer = state.switches[sw.id].timer
 
 	if(sw_timer != null) {
@@ -149,11 +149,11 @@ def start_timer(sw, desired_state, override = false, seconds_from_now = null) {
 	sw_timer = [:]
 	state.switches[sw.id].timer = sw_timer
 	
-	seconds_from_now = seconds_from_now ?: timer_default
+	minutes_from_now = minutes_from_now ?: timer_default
 
 	def cal = new GregorianCalendar()
 	cal.setTime(new Date())
-	cal.add(Calendar.MINUTE, seconds_from_now.toInteger())
+	cal.add(Calendar.MINUTE, minutes_from_now.toInteger())
 	
 	sw_timer.turn = desired_state
 	sw_timer.at = cal.getTime().toString()
