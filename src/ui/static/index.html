@@ -2,8 +2,10 @@
   <head>
     <title>{{api.label}}</title>
 
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto">
-    <link rel="stylesheet" type="text/css" href="app.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css" rel="stylesheet" type="text/css">
+    <link href="app.css" rel="stylesheet" type="text/css">
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.js"></script>
     <script type="text/javascript" src="/dist/app.js"></script>
@@ -11,29 +13,36 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
   </head>
 
-  <body ng-cloak>
-    <div id="main">
-      <h3>{{api.label}}</h3>
-      <div class="switches">
-        <div class="switch {{switch.state.currently}} {{getPlugStatus()}}" ng-repeat="switch in switches | orderBy: 'label'">
-          <label>{{switch.label}}</label>
-          <button ng-click="toggle()" class="{{switch.state.currently}}">
-            <span>{{switch.state.currently}}</span>
-          </button>
-          <div class="state-message">
-            {{ getStateMessage({
-                unplugged: "unplugged",
-                until: "turning off " + switchOffWhen(),
-                joiner: ", "
-            }) }}
+  <body ng-cloak class="container grey lighten-5">
+    <div class="row">
+      <div class="col s12 m8 offset-m2 l6 offset-l3">
+        <nav>
+          <div class="nav-wrapper">
+            <div class="brand-logo center">
+              {{api.label}}
+            </div>
+          </div>
+        </nav>
+        
+        <div class="card" ng-repeat="switch in switches | orderBy: 'label'">
+          <div class="card-content">
+              <div class="card-title">
+                {{switch.label}}
+                <span class="chip {{getStateColor()}}">
+                  {{getStateDescription()}}
+                </span>
+                <div class="right">
+                  <a class="btn {{getStateColor()}}" ng-click="toggle()" ng-disabled="!canToggle()">
+                    <i class="material-icons">power_settings_new</i>
+                  </a>
+                </div>
+              </div>
+              <p ng-if="switch.timer" class="grey-text">
+                Turning {{switch.timer.turn}} {{getDurationDescription(switch.timer.at)}}
+              </p>
           </div>
         </div>
       </div>
     </div>
-
-    <div class="message" ng-if="loading">
-      <p>Loading</p>
-    </div>
-
   </body>
 </html>

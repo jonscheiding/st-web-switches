@@ -43,38 +43,34 @@ app.controller('SwitchAppController', function($scope, $http, $window, $interval
   // Gets a description of when a switch will be turning off relative to now.
   // E.G. "in an hour"
   //
-  $scope.switchOffWhen = function() {
-    if(!this.switch.timer) {
-      return
-    }
-    
-    return moment(Date.parse(this.switch.timer.at)).fromNow()
+  $scope.getDurationDescription = function(futureDate) {
+    return moment(Date.parse(futureDate)).fromNow()
   }
   
-  //
-  // Builds the message for the state bar.  Takes a message to display when
-  // the switch is unplugged, and a message to describe when it's turning off.
-  // Puts them together with a comma if they both need to be displayed.
-  //
-  $scope.getStateMessage = function(displayParts) {
-    const parts = []
-    if(this.getPlugStatus() == 'unplugged') {
-      parts.push(displayParts.unplugged)
+  $scope.getStateColor = function() {
+    switch(this.switch.state.currently) {
+      case 'on': return this.switch.unplugged ? 'red' : 'green'
+      case 'turning on': return 'orange'
+      default: return 'grey'
     }
-    if(this.switch.timer) {
-      parts.push(displayParts.until)
-    }
-    
-    const message = parts.join(displayParts.joiner)
-    return message.firstLetterToUpperCase()
   }
   
-  $scope.getPlugStatus = function() {
-    switch(this.switch.unplugged) {
-      case true: return 'unplugged'
-      case false: return 'plugged'
-      default: return null
+  $scope.getStateDescription = function() {
+    if(this.switch.state.currently == 'on' && this.switch.unplugged) {
+      return 'on, unplugged'
     }
+    
+    return this.switch.state.currently
+  }
+  
+  $scope.canToggle = function() {
+    switch(this.switch.state.currently) {
+      case 'turning on':
+      case 'turning off':
+        return false
+    }
+    
+    return true
   }
   
   //

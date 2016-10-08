@@ -1,115 +1,27 @@
 /* LAYOUT */
 
 body {
-  margin: auto;
-  max-width: 400px;
-  width: 96%;
+  padding-top: 10px;
 }
 
-.ng-cloak #main {
-  display: none;
-}
-
-.switch button {
-  float: right;
-}
-
-.switch .state-message {
-  clear: both;
-}
-
-.message {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-}
-
-/* APPEARANCE */
-
-body { 
-  font-family: 'Roboto', sans-serif; 
-  font-size: 24px;
-}
-
-h3 {
-  margin-top: 1em;
-  padding: 0.7em;
-  text-align: center;
-}
-
-.switch {
-  line-height: 3em;
-  margin-bottom: 0.5em;
-}
-
-.switch label {
-  margin-left: 0.5em;
-}
-
-.switch .state-message {
-  font-size: 0.6em;
-  line-height: 2em;
-  text-align: center;
-}
-
-button {
-  text-transform: uppercase;
-  cursor: pointer;
-  outline: none;
-  border: none;
-  text-align: center;
-  font-size: 1em;
-}
-
-.switch button {
-  margin: 0.3em;
-  height: 2.4em;
-  width: 2.4em;
+.btn {
+  width: 36px;
   padding: 0;
 }
 
-.switch button.turning span { font-size: 0.7rem; }
-
-
-.message button {
-  padding: 0.5em;
+.card .card-content {
+  padding: 10px 15px;
 }
 
-button, .message p, h3 {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+.card .card-content .card-title {
+  font-size: 1.2em;
+  line-height: 36px;
 }
 
-.message p {
-  padding: 1em;
-  margin: auto;
-  margin-top: 2em;
-  max-width: 50%;
+.card-title .chip {
+  height: 20px;
+  line-height: 20px;
+  margin-left: 10px;
+  position: relative;
+  top: -2px;
 }
-.message button {
-  border: none;
-  display: block;
-  margin: auto;
-  margin-top: 1em;  
-}
-
-/* COLORS */
-
-body { background-color: #bdc3c7; }
-.switch { border-color: #bdc3c7; }
-
-body { color: #2e3e51; }
-
-h3, .state-message, button { color: #ecf0f1; }
-.switch, .message p { background-color: #ecf0f1; }
-
-.message button, h3 { background-color: #3498db; }
-
-.switch.on button, .switch.on .state-message { background-color: #7f8c8d; }
-.switch.on.plugged button, .switch.on.plugged .state-message { background-color: #27b061; }
-.switch.on.unplugged button, .switch.on.unplugged .state-message { background-color: #e67e22; }
-.switch.off button, .switch.off .state-message { background-color: #c0392b; }
-
-.message { background: rgba(0, 0, 0, 0.3); }
