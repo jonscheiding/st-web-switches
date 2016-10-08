@@ -43,8 +43,9 @@ app.controller('SwitchAppController', function($scope, $http, $window, $interval
   // Gets a description of when a switch will be turning off relative to now.
   // E.G. "in an hour"
   //
-  $scope.getDurationDescription = function(futureDate) {
-    return moment(Date.parse(futureDate)).fromNow()
+  $scope.getTimerDescription = function() {
+    if(!this.switch.timer) return null
+    return moment(Date.parse(this.switch.timer.at)).fromNow()
   }
   
   $scope.getStateColor = function() {
