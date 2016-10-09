@@ -74,15 +74,19 @@ app.controller('SwitchAppController', function($scope, $http, $interval, $timeou
     return this.switch.state.currently == 'off' && this.switch.timer == null
   }
   
+  $scope.canClearTimer = function() {
+    return this.switch.timer != null && this.switch.timer.turn == 'on'
+  }
+  
   $scope.setLoadingWhile = function(promise) {
     $scope.loading = true
-    promise.then(() => $scope.loading = false)
+    return promise.then(() => $scope.loading = false)
   }
   
   {
     let switches = {}
     $scope.reload = function() {
-      $http.get($scope.api.links.switches).then(function(response) {
+      return $http.get($scope.api.links.switches).then(function(response) {
         if(deepIs(switches, response.data)) {
           return
         }
@@ -98,7 +102,7 @@ app.controller('SwitchAppController', function($scope, $http, $interval, $timeou
     const newState = this.switch.state.currently == 'off' ? 'on' : 'off'
     
     const url = this.switch.links[newState]
-    $scope.setLoadingWhile(
+    return this.setLoadingWhile(
       $http.post(url).then(response => {
         this.switch = response.data
         $timeout($scope.reload, 1000)
@@ -108,7 +112,7 @@ app.controller('SwitchAppController', function($scope, $http, $interval, $timeou
   
   $scope.extendTimer = function() {
     const url = this.switch.links[`timer/${this.switch.timer.turn}`]
-    this.setLoadingWhile(
+    return this.setLoadingWhile(
       $http.post(url).then(response => {
         this.$parent.switch = response.data
       })
@@ -117,7 +121,7 @@ app.controller('SwitchAppController', function($scope, $http, $interval, $timeou
   
   $scope.setTimer = function() {
     const url = this.switch.links[`timer/${this.getOppositeState()}`]
-    this.setLoadingWhile(
+    return this.setLoadingWhile(
       $http.post(url).then(response => {
         //
         // TODO: Understand why we have to use $parent here and above
@@ -125,6 +129,16 @@ app.controller('SwitchAppController', function($scope, $http, $interval, $timeou
         //
         this.$parent.switch = response.data
       })
+    )
+  }
+  
+  $scope.clearTimer = function() {
+    const url = this.switch.links[`timer/${this.switch.timer.turn}`]
+    return this.setLoadingWhile(
+      //
+      // TODO: Need to fix the API proxy so that DELETE returns a resource
+      //
+      $http.delete(url).then(() => this.reload())
     )
   }
   

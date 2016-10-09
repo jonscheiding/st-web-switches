@@ -40,6 +40,9 @@
                   <a class="btn {{getStateColor()}}" ng-click="setTimer()" ng-if="canSetTimer()">
                     <i class="material-icons">timer</i>
                   </a>
+                  <a class="btn {{getStateColor()}}" ng-click="clearTimer()" ng-if="canClearTimer()">
+                    <i class="material-icons">timer_off</i>
+                  </a>
                   <a class="btn {{getStateColor()}}" ng-click="toggle()" ng-disabled="!canToggle()">
                     <i class="material-icons">power_settings_new</i>
                   </a>
