@@ -48,7 +48,10 @@ mappings {
 		action: [ POST: "api_switch_state_post" ]
 	}
 	path("/switches/:id/timer/:state") {
-		action: [ POST: "api_switch_timer_state_post" ]
+		action: [ 
+			POST: "api_switch_timer_state_post",
+			DELETE: "api_switch_timer_state_delete"
+		]
 	}
 	path("/debug/check_timers") {
 		action: [ POST: "check_timers" ]
@@ -78,6 +81,15 @@ def api_switch_state_post() {
 
 	turn_switch(sw, params.state)
 	map_switch(sw)
+}
+
+def api_switch_timer_state_delete() {
+	def sw = find_switch(params.id)
+	def timer = state.switches[sw.id].timer
+	if(timer == null) log_http_error(400, "There is no timer for switch ${sw.id}.")
+	if(timer.turn != params.state) log_http_error(400, "There is no timer to turn ${params.state} switch ${sw.id}.")
+	
+	clear_timer(sw)
 }
 
 def api_switch_timer_state_post() {
