@@ -5,40 +5,21 @@ import moment from 'moment'
 
 const app = angular.module('switch-app', [])
   .config(function($httpProvider) {
-    $httpProvider.interceptors.push(function($q, $rootScope) {
+    $httpProvider.interceptors.push(function($q) {
       return {
+        'response': function(response) { 
+          return response
+        },
         'responseError': function(response) {
-          if(response.status == 401) {
-            $rootScope.authorizationMissing = true
-            $rootScope.loading = false
-          }
           return $q.reject(response)
         }
       }
     })
   })
 
-app.controller('SwitchAppController', function($scope, $http, $window, $interval, $timeout) {
+app.controller('SwitchAppController', function($scope, $http, $interval, $timeout) {
   $scope.loading = true
-  
-  //
-  // Refreshes the state of all switches
-  //
-  {
-    let switches = {}
-    $scope.reload = function() {
-      $http.get($scope.api.links.switches).then(function(response) {
-        $scope.loading = false
-        if(deepIs(switches, response.data)) {
-          return
-        }
-        
-        switches = response.data
-        $scope.switches = clone(switches) // Have to clone because Angular modifies our objects
-      })
-    }
-  }
-  
+    
   //
   // Gets a description of when a switch will be turning off relative to now.
   // E.G. "in an hour"
@@ -78,25 +59,45 @@ app.controller('SwitchAppController', function($scope, $http, $window, $interval
     return this.switch.state.currently == 'on' && this.switch.timer != null
   }
   
-  //
-  // Makes an API call to toggle the switch on/off from its current state of
-  // off/on.
-  //
+  $scope.setLoadingWhile = function(promise) {
+    $scope.loading = true
+    promise.then(() => $scope.loading = false)
+  }
+  
+  {
+    let switches = {}
+    $scope.reload = function() {
+      $http.get($scope.api.links.switches).then(function(response) {
+        if(deepIs(switches, response.data)) {
+          return
+        }
+        
+        switches = response.data
+        $scope.switches = clone(switches) // Have to clone because Angular modifies our objects
+        $scope.loading = false
+      })
+    }
+  }
+
   $scope.toggle = function() {
     const newState = this.switch.state.currently == 'off' ? 'on' : 'off'
     
     const url = this.switch.links[newState]
-    $http.post(url).then(function(response) {
-      this.switches[this.$index] = response.data
-      $timeout($scope.reload, 1000)
-    })
+    $scope.setLoadingWhile(
+      $http.post(url).then(response => {
+        this.switch = response.data
+        $timeout($scope.reload, 1000)
+      })
+    )
   }
   
   $scope.extend = function() {
     const url = this.switch.links[`timer/${this.switch.timer.turn}`]
-    $http.post(url).then(response => {
-      this.switches[this.$index] = response.data
-    })
+    this.setLoadingWhile(
+      $http.post(url).then(response => {
+        this.switch = response.data
+      })
+    )
   }
   
   //
@@ -109,7 +110,3 @@ app.controller('SwitchAppController', function($scope, $http, $window, $interval
     $interval($scope.reload, 2000)
   })
 })
-
-String.prototype.firstLetterToUpperCase = function() {
-  return this.charAt(0).toUpperCase() + this.slice(1)
-}
