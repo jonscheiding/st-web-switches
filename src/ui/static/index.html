@@ -34,15 +34,18 @@
                   {{getStateDescription()}}
                 </span>
                 <div class="right">
-                  <a class="btn {{getStateColor()}}" ng-click="extend()" ng-if="canExtend()">
+                  <a class="btn {{getStateColor()}}" ng-click="extendTimer()" ng-if="canExtendTimer()">
                     <i class="material-icons">settings_power</i>
+                  </a>
+                  <a class="btn {{getStateColor()}}" ng-click="setTimer()" ng-if="canSetTimer()">
+                    <i class="material-icons">timer</i>
                   </a>
                   <a class="btn {{getStateColor()}}" ng-click="toggle()" ng-disabled="!canToggle()">
                     <i class="material-icons">power_settings_new</i>
                   </a>
                 </div>
               </div>
-              <p ng-if="switch.timer" class="grey-text">
+              <p ng-if="switch.timer != null" class="grey-text">
                 Turning {{switch.timer.turn}} {{getTimerDescription()}}
               </p>
           </div>

@@ -45,6 +45,17 @@ app.controller('SwitchAppController', function($scope, $http, $interval, $timeou
     return this.switch.state.currently
   }
   
+  $scope.getOppositeState = function() {
+    switch(this.switch.state.currently) {
+      case 'on':
+      case 'turning on':
+        return 'off'
+      case 'off':
+      case 'turning off':
+        return 'on'
+    }
+  }
+  
   $scope.canToggle = function() {
     switch(this.switch.state.currently) {
       case 'turning on':
@@ -55,8 +66,12 @@ app.controller('SwitchAppController', function($scope, $http, $interval, $timeou
     return true
   }
   
-  $scope.canExtend = function() {
+  $scope.canExtendTimer = function() {
     return this.switch.state.currently == 'on' && this.switch.timer != null
+  }
+  
+  $scope.canSetTimer = function() {
+    return this.switch.state.currently == 'off' && this.switch.timer == null
   }
   
   $scope.setLoadingWhile = function(promise) {
@@ -91,11 +106,24 @@ app.controller('SwitchAppController', function($scope, $http, $interval, $timeou
     )
   }
   
-  $scope.extend = function() {
+  $scope.extendTimer = function() {
     const url = this.switch.links[`timer/${this.switch.timer.turn}`]
     this.setLoadingWhile(
       $http.post(url).then(response => {
-        this.switch = response.data
+        this.$parent.switch = response.data
+      })
+    )
+  }
+  
+  $scope.setTimer = function() {
+    const url = this.switch.links[`timer/${this.getOppositeState()}`]
+    this.setLoadingWhile(
+      $http.post(url).then(response => {
+        //
+        // TODO: Understand why we have to use $parent here and above
+        // Fix it so it's not so fragile
+        //
+        this.$parent.switch = response.data
       })
     )
   }
