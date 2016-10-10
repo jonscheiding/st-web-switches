@@ -3,7 +3,7 @@ import deepIs from 'deep-is'
 import clone from 'clone'
 import moment from 'moment'
 
-const app = angular.module('switch-app', [])
+const app = angular.module('switch-app', ['ngMaterial'])
   .config(function($httpProvider) {
     $httpProvider.interceptors.push(function($q) {
       return {
@@ -31,9 +31,15 @@ app.controller('SwitchAppController', function($scope, $http, $interval, $timeou
   
   $scope.getStateColor = function() {
     switch(this.switch.state.currently) {
-      case 'on': return this.switch.unplugged ? 'red' : 'green'
-      case 'turning on': return 'orange'
-      default: return 'grey'
+      case 'on': return this.switch.unplugged ? 'red-400' : 'green-400'
+      case 'turning on': return 'orange-400'
+      default: return 'grey-400'
+    }
+  }
+  
+  $scope.getMdColors = function() {
+    return {
+      background: this.getStateColor()
     }
   }
   
