@@ -17,7 +17,7 @@ const app = angular.module('switch-app', ['ngMaterial'])
     })
   })
 
-app.controller('SwitchAppController', function($scope, $http, $interval, $timeout) {
+app.controller('SwitchAppController', function($scope, $http, $interval, $timeout, $mdDialog) {
   $scope.loading = true
     
   //
@@ -126,16 +126,30 @@ app.controller('SwitchAppController', function($scope, $http, $interval, $timeou
   }
   
   $scope.setTimer = function() {
-    const url = this.switch.links[`timer/${this.getOppositeState()}`]
-    return this.setLoadingWhile(
-      $http.post(url).then(response => {
-        //
-        // TODO: Understand why we have to use $parent here and above
-        // Fix it so it's not so fragile
-        //
-        this.$parent.switch = response.data
-      })
-    )
+    const scope = this.$new()
+    scope.cancel = function() { $mdDialog.cancel() }
+    scope.done = function() { $mdDialog.hide() }
+    
+    $mdDialog.show({
+      template: dialogTemplate,
+      clickOutsideToClose: true,
+      scope: scope,
+      onRemoving: function() {
+        document.activeElement.blur()
+      }
+    }).then(() => {
+      const minutes = calculateMinutesFromNow(scope.time)
+      const url = this.switch.links[`timer/${this.getOppositeState()}`]
+      return this.setLoadingWhile(
+        $http.post(`${url}?after=${minutes}`).then(response => {
+          //
+          // TODO: Understand why we have to use $parent here and above
+          // Fix it so it's not so fragile
+          //
+          this.$parent.switch = response.data
+        })
+      )
+    })
   }
   
   $scope.clearTimer = function() {
@@ -158,3 +172,32 @@ app.controller('SwitchAppController', function($scope, $http, $interval, $timeou
     $interval($scope.reload, 2000)
   })
 })
+
+const calculateMinutesFromNow = (time) => {
+  const now = moment()
+  time = moment(time)
+  const timeInSeconds = time.add(time.utcOffset(), 'minutes').unix()
+  let setDate = moment().startOf('day').add(timeInSeconds, 'seconds')
+  if(setDate.isBefore(now)) {
+    setDate = setDate.add(1, 'days')
+  }
+  
+  return setDate.diff(now, 'minutes')
+}
+
+const dialogTemplate = `
+  <md-dialog layout-padding>
+    <form ng-submit="done()">
+      <md-dialog-content>
+        <h3>Set timer for {{switch.label}}</h3>
+        <md-input-container class="md-block">
+          <input type="time" name="time" ng-model="time" md-autofocus>
+        </md-input-container>
+      </md-dialog-content>
+      <md-dialog-actions>
+        <md-button ng-click="cancel()">Cancel</md-button>
+        <md-button type="submit" ng-disabled="time == null">Set</md-button>
+      </md-dialog-actions>
+    </form>
+  </md-dialog>
+`
