@@ -130,6 +130,10 @@ app.controller('SwitchAppController', function($scope, $http, $interval, $timeou
     scope.cancel = function() { $mdDialog.cancel() }
     scope.done = function() { $mdDialog.hide() }
     
+    if(process.env.TIMER_DEFAULT_GMT != null) {
+      scope.time = new Date(process.env.TIMER_DEFAULT_GMT)
+    }
+    
     $mdDialog.show({
       template: dialogTemplate,
       clickOutsideToClose: true,

@@ -5,6 +5,8 @@ import webpackMiddleware from 'webpack-dev-middleware'
 
 const ui = express.Router()
 
+const { TIMER_DEFAULT_GMT } = process.env
+
 const webroot = path.resolve(__dirname, 'static')
 const options = {
   index: 'index.html'
@@ -25,7 +27,16 @@ const webpackCompiler = webpack({
   },
   externals: {
     'angular': 'angular'
-  }
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+         // Note the quotes, this is weird but necessary because otherwise it tries
+         // to treat the date (e.g. 1970-01-01) as an expression.
+        TIMER_DEFAULT_GMT: `"${TIMER_DEFAULT_GMT}"`
+      }
+    })
+  ]
 })
 
 ui.use('/', express.static(webroot, options))
