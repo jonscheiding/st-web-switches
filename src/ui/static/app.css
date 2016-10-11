@@ -1,5 +1,6 @@
 body {
   padding: 10px;
+  font-size: 17px;
 }
 
 .md-toolbar-tools {
@@ -7,8 +8,10 @@ body {
 }
 
 .md-button.square {
-  width: 36px;
-  min-width: 36px;
+  height: 3em;
+  width: 3em;
+  min-height: 3em;
+  min-width: 3em;
   margin: 0px 4px;
 }
 
@@ -19,32 +22,28 @@ body {
 md-card {
   margin-left: 0;
   margin-right: 0;
+  padding-top: 0.3em;
 }
 
 md-card md-card-title {
-  padding: 10px 12px;
-}
-
-md-card md-card-title md-card-title-media {
-  margin-top: 0
+  padding: 1em;
 }
 
 .md-title {
   font-size: 1.2em;
   font-weight: normal;
-  line-height: 36px;
 }
 
 .indicator {
   text-transform: uppercase;
-  font-size: 14px;
+  line-height: 1.5em;
+  font-size: 0.7em;
   display: inline-block;
   padding: 3px 5px;
   margin-left: 4px;
   border-radius: 5px;
   position: relative;
   top: -1px;
-  line-height: 18px;
 }
 
 .overlay {
