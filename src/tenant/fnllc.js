@@ -4,6 +4,7 @@ import expressSession from 'express-session'
 import ensureLogin from 'connect-ensure-login'
 import passport from 'passport'
 import OAuth2Strategy from 'passport-oauth2'
+import path from 'path'
 
 envalid.validate(process.env, {
   SESSION_SECRET: { required: true },
@@ -28,8 +29,10 @@ passport.use('fnllc', new OAuth2Strategy({
   }
 ))
 
-var callback = express.Router()
-callback.get('/login', passport.authenticate('fnllc', { failureRedirect: '/', successRedirect: '/' }))
+var app = express.Router()
+app.get('/login', passport.authenticate('fnllc', { failureRedirect: '/', successRedirect: '/' }))
+app.get('/favicon.png', (req, res, next) => res.sendFile(path.resolve(__dirname, 'fnllc-favicon.png'), null, next))
+app.get('/touch-icon.png', (req, res, next) => res.sendFile(path.resolve(__dirname, 'fnllc-touch-icon.png'), null, next))
 
 export default () => [
   expressSession({
@@ -39,6 +42,6 @@ export default () => [
   }),
   passport.initialize(),
   passport.session(),
-  callback,
+  app,
   ensureLogin.ensureLoggedIn('/login')
 ]

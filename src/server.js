@@ -5,9 +5,9 @@ import ui from './ui'
 
 const app = express()
 
-if(process.env.EXPRESS_AUTH) {
-  const auth = require('src/auth/' + process.env.EXPRESS_AUTH).default
-  app.use(auth())
+if(process.env.TENANT) {
+  const tenant = require('src/tenant/' + process.env.TENANT).default
+  app.use(tenant())
 }
 
 app.use('/api', api)
