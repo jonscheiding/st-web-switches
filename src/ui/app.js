@@ -129,6 +129,9 @@ app.controller('SwitchAppController', function($scope, $http, $interval, $timeou
     const scope = this.$new()
     scope.cancel = function() { $mdDialog.cancel() }
     scope.done = function() { $mdDialog.hide() }
+    scope.isTimeValid = function() {
+      return this.time instanceof Date && isFinite(this.time)
+    }
     
     if(process.env.TIMER_DEFAULT_GMT != null) {
       scope.time = new Date(process.env.TIMER_DEFAULT_GMT)
@@ -200,7 +203,7 @@ const dialogTemplate = `
       </md-dialog-content>
       <md-dialog-actions>
         <md-button ng-click="cancel()">Cancel</md-button>
-        <md-button type="submit" ng-disabled="time == null">Set</md-button>
+        <md-button type="submit" ng-disabled="!isTimeValid()">Set</md-button>
       </md-dialog-actions>
     </form>
   </md-dialog>
