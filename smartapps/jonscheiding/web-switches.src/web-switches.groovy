@@ -109,9 +109,10 @@ def api_switch_timer_state_post() {
 }
 
 def map_switch(sw) {
+	refresh_switch_state(sw)
 	def sw_state = state.switches[sw.id]
 	
-	def currentSwitch = (state.switches[sw.id].currently ?: sw.currentSwitch)
+	def currentSwitch = (sw_state.currently ?: sw.currentSwitch)
 	def currentPower = null
 	if(can_report_current_power(sw) && currentSwitch == "on") {
 		currentPower = sw.currentPower
@@ -144,6 +145,19 @@ def find_switch(id) {
 	}
 	
 	return sw
+}
+
+def refresh_switch_state(sw) {
+	def sw_state = state.switches[sw.id]
+	
+	
+	if(sw_state.currently == "turning ${sw.currentSwitch}") {
+		//
+		// Update the state "manually" to work around issue where the switch has 
+		// changed state, but the event handler apparently never fired.
+		//
+		sw_state = sw.currentSwitch
+	}
 }
 
 def start_timer(sw, desired_state, override = false, minutes_from_now = null) {
@@ -203,6 +217,7 @@ def check_timers() {
 			case "off": sw.off(); break
 			case "on": sw.on(); break
 		}
+		update_currently_value("turning ${sw_timer.turn}")
 		state.switches[sw.id].timer = null
 	}
 	
@@ -217,7 +232,7 @@ def check_timers() {
 def turn_switch(sw, turn) {
 	if(sw.currentSwitch == turn) return
 
-	update_currently_value(sw, "turning " + turn)
+	update_currently_value(sw, "turning ${turn}")
 	
 	switch(turn) {
 		case "on":
