@@ -115,7 +115,7 @@ def map_switch(sw) {
 	def currentSwitch = (sw_state.currently ?: sw.currentSwitch)
 	def currentPower = null
 	if(can_report_current_power(sw) && currentSwitch == "on") {
-		currentPower = sw.currentPower
+		currentPower = sw.currentPower ?: 0
 	}
 	
 	[
