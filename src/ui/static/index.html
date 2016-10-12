@@ -37,18 +37,18 @@
               <span class="indicator" md-colors="getMdColors()">{{getStateDescription()}}</span>
             </div>
             <div class="md-subhead" ng-if="switch.timer != null">
-              Turning {{switch.timer.turn}} {{getTimerDescription()}}
+              <md-icon class="material-icons">alarm_on</md-icon> Turning {{switch.timer.turn}} {{getTimerDescription()}}
             </div>
           </md-card-title-text>
           <md-card-title-media>
             <md-button class="md-raised square" md-colors="getMdColors()" ng-click="extendTimer()" ng-if="canExtendTimer()">
-              <md-icon class="material-icons">settings_power</md-icon>
+              <md-icon class="material-icons">alarm_add</md-icon>
             </md-button>
             <md-button class="md-raised square" md-colors="getMdColors()" ng-click="setTimer()" ng-if="canSetTimer()">
-              <md-icon class="material-icons">timer</md-icon>
+              <md-icon class="material-icons">alarm</md-icon>
             </md-button>
             <md-button class="md-raised square" md-colors="getMdColors()" ng-click="clearTimer()" ng-if="canClearTimer()">
-              <md-icon class="material-icons">timer_off</md-icon>
+              <md-icon class="material-icons">alarm_off</md-icon>
             </md-button>
             <md-button class="md-raised square" md-colors="getMdColors()" ng-click="toggle()" ng-disabled="!canToggle()">
               <md-icon class="material-icons">power_settings_new</md-icon>

@@ -62,6 +62,10 @@ md-card md-card-title {
   margin: auto;
 }
 
+.md-subhead .material-icons {
+  font-size: 22px;
+}
+
 .app {
   max-width: 500px;
   width: 100%;
