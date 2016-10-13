@@ -17,6 +17,11 @@ const app = angular.module('switch-app', ['ngMaterial'])
     })
   })
 
+app.config(function($mdThemingProvider) {
+  $mdThemingProvider.theme('default')
+    .accentPalette('indigo')
+})
+
 app.controller('SwitchAppController', function($scope, $http, $interval, $timeout, $mdDialog) {
   $scope.loading = true
     

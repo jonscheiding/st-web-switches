@@ -24,7 +24,7 @@
   </head>
 
   <body ng-cloak class="container grey lighten-5">
-    <div class="app">
+    <div class="app" ng-if="switches">
       <md-toolbar layout="row" layout-align="center center">
         {{api.label}}
       </md-toolbar>
@@ -75,26 +75,26 @@
             <h2>What do these buttons do?</h2>
             <md-list>
               <md-list-item>
+                <md-icon class="material-icons">power_settings_new</md-icon> 
                 <p>
-                  <md-icon class="material-icons">power_settings_new</md-icon> 
                   Turns switch on/off
                 </p>
               </md-list-item>
               <md-list-item>
+                <md-icon class="material-icons">alarm_add</md-icon> 
                 <p>
-                  <md-icon class="material-icons">alarm_add</md-icon> 
                   Resets countdown to switch turning off
                 </p>
               </md-list-item>
               <md-list-item>
+                <md-icon class="material-icons">alarm</md-icon>
                 <p>
-                  <md-icon class="material-icons">alarm</md-icon>
                   Sets a timer for the switch to turn on
                 </p>
               </md-list-item>
               <md-list-item>
+                <md-icon class="material-icons">alarm_off</md-icon>
                 <p>
-                  <md-icon class="material-icons">alarm_off</md-icon>
                   Cancels the timer
                 </p>
               </md-list-item>

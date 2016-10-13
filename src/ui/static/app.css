@@ -33,6 +33,15 @@ md-card md-card-title {
   font-weight: normal;
 }
 
+md-dialog {
+  min-width: 0;
+}
+
+#help-dialog md-list-item md-icon:first-child {
+  position: relative;
+  top: -3px;
+}
+
 .indicator {
   text-transform: uppercase;
   line-height: 1.5em;
@@ -71,8 +80,4 @@ md-card md-card-title {
   margin: auto;
   padding: 10px;
   box-sizing: border-box;
-}
-
-md-dialog {
-  min-width: 0;
 }
