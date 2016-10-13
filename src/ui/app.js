@@ -146,8 +146,8 @@ app.controller('SwitchAppController', function($scope, $http, $interval, $timeou
       return this.time instanceof Date && isFinite(this.time)
     }
     
-    if(process.env.TIMER_DEFAULT_GMT != null) {
-      scope.time = new Date(process.env.TIMER_DEFAULT_GMT)
+    if(process.env.TIMER_DEFAULT != null) {
+      scope.time = moment(process.env.TIMER_DEFAULT, 'h:mm A').toDate()
     }
     
     $mdDialog.show({
@@ -207,9 +207,11 @@ app.controller('SwitchAppController', function($scope, $http, $interval, $timeou
 
 const calculateMinutesFromNow = (time) => {
   const now = moment()
-  time = moment(time)
-  const timeInSeconds = time.add(time.utcOffset(), 'minutes').unix()
-  let setDate = moment().startOf('day').add(timeInSeconds, 'seconds')
+  const setTime = moment(time)
+  
+  const timeInMinutes = setTime.diff(setTime.clone().startOf('day'), 'minutes')
+
+  let setDate = now.clone().startOf('day').add(timeInMinutes, 'minutes')
   if(setDate.isBefore(now)) {
     setDate = setDate.add(1, 'days')
   }
