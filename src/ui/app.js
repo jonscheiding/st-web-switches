@@ -127,8 +127,16 @@ app.controller('SwitchAppController', function($scope, $http, $interval, $timeou
   
   $scope.setTimer = function() {
     const scope = this.$new()
-    scope.cancel = function() { $mdDialog.cancel() }
-    scope.done = function() { $mdDialog.hide() }
+    
+    scope.cancel = function() { 
+      $mdDialog.cancel()
+    }
+    
+    scope.done = function() { 
+      $scope.loading = true
+      $mdDialog.hide()
+    }
+    
     scope.isTimeValid = function() {
       return this.time instanceof Date && isFinite(this.time)
     }
