@@ -35,6 +35,7 @@ const rewriteSwitchesResponse = entity => {
 
 const rewriteLinksWithPrefix = (prefix) => entity => {
   if(entity instanceof Array) return entity.map(rewriteLinksWithPrefix(prefix))
+  if(!('links' in entity)) return entity
   
   return {
     ...entity,
