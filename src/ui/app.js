@@ -146,7 +146,7 @@ app.controller('SwitchAppController', function($scope, $http, $interval, $timeou
     }
     
     $mdDialog.show({
-      template: dialogTemplate,
+      template: timerDialogTemplate,
       clickOutsideToClose: true,
       scope: scope,
       onRemoving: function() {
@@ -177,6 +177,18 @@ app.controller('SwitchAppController', function($scope, $http, $interval, $timeou
     )
   }
   
+  $scope.showHelpDialog = function() {
+    $mdDialog.show({
+      contentElement: '#help-dialog',
+      parent: angular.element(document.body),
+      clickOutsideToClose: true
+    })
+  }
+  
+  $scope.closeHelpDialog = function() {
+    $mdDialog.hide()
+  }
+  
   //
   // Start everything up by calling the API root so we can get our app info
   // and links to other actions.
@@ -200,7 +212,7 @@ const calculateMinutesFromNow = (time) => {
   return setDate.diff(now, 'minutes')
 }
 
-const dialogTemplate = `
+const timerDialogTemplate = `
   <md-dialog layout-padding>
     <form ng-submit="done()">
       <md-dialog-content>

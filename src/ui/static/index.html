@@ -56,10 +56,55 @@
           </md-card-title-media>
         </md-card-title>
       </md-card>
+      
+      <div layout="row" layout-align="center center">
+        <md-button class="md-fab" aria-label="Eat cake">
+            <md-icon class="material-icons" ng-click="showHelpDialog()">help</md-icon>
+        </md-button>
+      </div>
     </div>
 
     <div class="overlay" ng-if="loading">
       <md-progress-circular />
+    </div>
+    
+    <div style="visibility: hidden">
+      <div class="md-dialog-container" id="help-dialog">
+        <md-dialog layout-padding>
+          <md-dialog-content>
+            <h2>What do these buttons do?</h2>
+            <md-list>
+              <md-list-item>
+                <p>
+                  <md-icon class="material-icons">power_settings_new</md-icon> 
+                  Turns switch on/off
+                </p>
+              </md-list-item>
+              <md-list-item>
+                <p>
+                  <md-icon class="material-icons">alarm_add</md-icon> 
+                  Resets countdown to switch turning off
+                </p>
+              </md-list-item>
+              <md-list-item>
+                <p>
+                  <md-icon class="material-icons">alarm</md-icon>
+                  Sets a timer for the switch to turn on
+                </p>
+              </md-list-item>
+              <md-list-item>
+                <p>
+                  <md-icon class="material-icons">alarm_off</md-icon>
+                  Cancels the timer
+                </p>
+              </md-list-item>
+            </md-list>
+          </md-dialog-content>
+          <md-dialog-actions>
+            <md-button ng-click="closeHelpDialog()">Close</md-button>
+          </md-dialog-actions>
+        </md-dialog>
+      </div>
     </div>
     
   </body>
