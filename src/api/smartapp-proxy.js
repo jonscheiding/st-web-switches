@@ -7,11 +7,6 @@ import mapObject from 'object.map'
 import restProxy from 'src/rest-proxy'
 import { accessTokenInterceptor, entityRewriteInterceptor, urlRewriteInterceptor } from 'src/rest-interceptor'
 
-envalid.validate(process.env, {
-  SMARTAPP_ACCESS_TOKEN: { required: true },
-  SMARTAPP_BASE_URL: { required: true }
-})
-
 const UNPLUGGED_TIME_THRESHOLD = 5000
 const UNPLUGGED_USAGE_THRESHOLD = 0
 
@@ -45,8 +40,13 @@ const rewriteLinksWithPrefix = (prefix) => entity => {
 
 const client = rest.wrap(mimeInterceptor)
 
-export default () => (req, res) => {
-  const [ baseUrl, accessToken ] = [ process.env.SMARTAPP_BASE_URL, process.env.SMARTAPP_ACCESS_TOKEN ]
+export default (config) => (req, res) => {
+  envalid.validate(config, {
+    SMARTAPP_ACCESS_TOKEN: { required: true },
+    SMARTAPP_BASE_URL: { required: true }
+  })
+
+  const [ baseUrl, accessToken ] = [ config.SMARTAPP_BASE_URL, config.SMARTAPP_ACCESS_TOKEN ]
 
   const proxyRequest = restProxy(client
     .wrap(pathPrefixInterceptor, {prefix: baseUrl})

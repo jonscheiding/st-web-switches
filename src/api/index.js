@@ -3,9 +3,11 @@ import bodyParser from 'body-parser'
 
 import proxy from './smartapp-proxy'
 
-const api = express.Router()
-api.use(bodyParser.json())
+export default (config) => {
+  const api = express.Router()
+  api.use(bodyParser.json())
 
-api.use(proxy())
+  api.use(proxy(config))
 
-export default api
+  return api
+}

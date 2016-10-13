@@ -3,43 +3,44 @@ import path from 'path'
 import webpack from 'webpack'
 import webpackMiddleware from 'webpack-dev-middleware'
 
-const ui = express.Router()
-
-const { TIMER_DEFAULT_GMT } = process.env
-
 const webroot = path.resolve(__dirname, 'static')
 const options = {
   index: 'index.html'
 }
 
-const webpackCompiler = webpack({
-  devtool: 'source-map',
-  entry: path.resolve(__dirname, 'app.js'),
-  output: {
-    filename: 'app.js',
-    path: path.resolve(__dirname, 'dist'),
-    publicPath: '/dist/'
-  },
-  module: {
-    loaders: [
-      { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel'] }
+export default (config) => {
+  const { TIMER_DEFAULT_GMT } = config
+
+  const webpackCompiler = webpack({
+    devtool: 'source-map',
+    entry: path.resolve(__dirname, 'app.js'),
+    output: {
+      filename: 'app.js',
+      path: path.resolve(__dirname, 'dist'),
+      publicPath: '/dist/'
+    },
+    module: {
+      loaders: [
+        { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel'] }
+      ]
+    },
+    externals: {
+      'angular': 'angular'
+    },
+    plugins: [
+      new webpack.DefinePlugin({
+        'process.env': {
+           // Note the quotes, this is weird but necessary because otherwise it tries
+           // to treat the date (e.g. 1970-01-01) as an expression.
+          TIMER_DEFAULT_GMT: `"${TIMER_DEFAULT_GMT}"`
+        }
+      })
     ]
-  },
-  externals: {
-    'angular': 'angular'
-  },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-         // Note the quotes, this is weird but necessary because otherwise it tries
-         // to treat the date (e.g. 1970-01-01) as an expression.
-        TIMER_DEFAULT_GMT: `"${TIMER_DEFAULT_GMT}"`
-      }
-    })
-  ]
-})
+  })
 
-ui.use('/', express.static(webroot, options))
-ui.use(webpackMiddleware(webpackCompiler, { publicPath: '/dist/' }))
+  const ui = express.Router()
+  ui.use('/', express.static(webroot, options))
+  ui.use(webpackMiddleware(webpackCompiler, { publicPath: '/dist/' }))
 
-export default ui
+  return ui
+}

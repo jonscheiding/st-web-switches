@@ -10,8 +10,8 @@ if(process.env.TENANT) {
   app.use(tenant())
 }
 
-app.use('/api', api)
-app.use('/', ui)
+app.use('/api', api(process.env))
+app.use('/', ui(process.env))
 
 export default {
   start: (port) => {
