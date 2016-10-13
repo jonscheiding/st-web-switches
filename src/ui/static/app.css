@@ -1,5 +1,4 @@
 body {
-  padding: 10px;
   font-size: 17px;
 }
 
@@ -70,4 +69,10 @@ md-card md-card-title {
   max-width: 500px;
   width: 100%;
   margin: auto;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+md-dialog {
+  min-width: 0;
 }
