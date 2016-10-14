@@ -6,8 +6,9 @@
   "scripts": {
     "start": "nodemon -e js main.js",
     "start:fnllc": "TENANT=fnllc npm start",
-    "lint": "eslint .",
-    "test": "mocha && npm run lint"
+    "test:lint": "eslint .",
+    "test:mocha": "mocha",
+    "test": "npm run test:mocha && npm run test:lint"
   },
   "repository": {
     "type": "git",
@@ -46,6 +47,7 @@
     "webpack-dev-middleware": "^1.8.3"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
     "depcheck": "^0.6.4",
     "eslint": "^3.6.1",
     "eslint-plugin-react": "^6.3.0",
