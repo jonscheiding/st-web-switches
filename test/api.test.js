@@ -1,4 +1,5 @@
 import express from 'express'
+import moment from 'moment'
 import nock from 'nock'
 import supertest from 'supertest'
 
@@ -46,6 +47,48 @@ describe('The Smartapp API proxy', () => {
           self: '/prefix/here',
           other: '/prefix/there'
         }
+      })
+      .then(() => n.done())
+  })
+  
+  it('should return switches with state "turning on" if there is no usage at first', () => {
+    const sw = {
+      state: { 
+        currently: 'on',
+        since: moment().add(-2, 'seconds').format()
+      },
+      usage: 0
+    }
+    
+    const n = nock('http://smartapp')
+      .get('/switches/1')
+      .reply(200, sw)
+      
+    return client.get('/prefix/switches/1')
+      .expect({
+        ...sw,
+        state: { ...sw.state, currently: 'turning on' }
+      })
+      .then(() => n.done())
+  })
+    
+  it('should return switches with "unplugged" if there is no usage for over 5 seconds', () => {
+    const sw = {
+      state: { 
+        currently: 'on',
+        since: moment().add(-10, 'seconds').format()
+      },
+      usage: 0
+    }
+    
+    const n = nock('http://smartapp')
+      .get('/switches/1')
+      .reply(200, sw)
+      
+    return client.get('/prefix/switches/1')
+      .expect({
+        ...sw,
+        unplugged: true
       })
       .then(() => n.done())
   })
