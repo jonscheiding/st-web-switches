@@ -95,6 +95,20 @@ describe('Interceptors', () => {
         .then(() => n.done())
     })
     
+    it('should not do anything to null or scalar properties', () => {
+      const entity = { nullProperty: null, barProperty: 'bar', bazProperty: 0, boolProperty: true }
+      const n = nock('http://host').get('/foo').reply(200, entity)
+      
+      const client = restMime.wrap(prefixLinksInterceptor, { prefix: '/prefixed' })
+      const request = client('http://host/foo')
+      
+      return request
+        .then(response => {
+          expect(response.entity).to.deep.equal(entity)
+        })
+        .then(() => n.done())
+    })
+    
     it('should prefix links at the root level of the object', () => {
       const entity = { links: { self: '/foo' }, bar: 'baz' }
       const n = nock('http://host').get('/foo').reply(200, entity)

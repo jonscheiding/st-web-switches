@@ -45,6 +45,8 @@ export const prefixLinksInterceptor = interceptor({
     }
     
     const prefixLinks = (obj) => {
+      if(obj === null) return null
+      
       if(obj instanceof Array) {
         return obj.map(prefixLinks)
       }
