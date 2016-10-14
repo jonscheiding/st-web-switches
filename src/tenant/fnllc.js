@@ -46,6 +46,10 @@ export default () => [
   }),
   passport.initialize(),
   passport.session(),
+  (req, res, next) => {
+    res.set('X-Logged-In', true)
+    next()
+  },
   app,
   ensureLogin.ensureLoggedIn('/login')
 ]

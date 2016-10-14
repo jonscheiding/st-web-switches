@@ -60,7 +60,7 @@
           <md-tooltip>Show Quick Help</md-tooltip>
           <md-icon class="material-icons">help</md-icon>
         </md-button>
-        <md-button ng-if="canLogout()" class="md-fab" aria-label="Help" href="/logout">
+        <md-button ng-if="isLoggedIn" class="md-fab" aria-label="Help" href="/logout">
           <md-tooltip>Logout</md-tooltip>
           <md-icon class="material-icons">exit_to_app</md-icon>
         </md-button>

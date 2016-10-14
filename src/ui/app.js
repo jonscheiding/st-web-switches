@@ -89,10 +89,6 @@ app.controller('SwitchAppController', function($scope, $http, $interval, $timeou
     return this.switch.timer != null && this.switch.timer.turn == 'on'
   }
   
-  $scope.canLogout = function() {
-    return process.env.TENANT != null
-  }
-  
   $scope.setLoadingWhile = function(promise) {
     $scope.loading = true
     return promise.then(() => $scope.loading = false)
@@ -204,6 +200,7 @@ app.controller('SwitchAppController', function($scope, $http, $interval, $timeou
   //
   $http.get('/api').then(function(response) {
     $scope.api = response.data
+    $scope.isLoggedIn = response.headers('X-Logged-In') === 'true'
     $scope.reload()
     $interval($scope.reload, 2000)
   })
