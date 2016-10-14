@@ -66,3 +66,32 @@ export const prefixLinksInterceptor = interceptor({
     }
   }
 })
+
+export const switchesInterceptor = interceptor({
+  response: (response, config) => {
+    const { unpluggedTimeThreshold = 0, unpluggedUsageThreshold = 0 } = config
+
+    const addUsageInformationToSwitchEntity = entity => {
+      if(entity instanceof Array) return entity.map(addUsageInformationToSwitchEntity)
+      
+      const result = {...entity}
+      if(result.state.currently == 'on' && result.state.since != null && result.usage != null) {
+        const timeOn = Date.now() - Date.parse(result.state.since)
+
+        if(result.usage <= unpluggedUsageThreshold && timeOn < unpluggedTimeThreshold) {
+          result.state.currently = 'turning on'
+        } else {
+          result.unplugged = (result.usage <= unpluggedUsageThreshold)
+        }
+      }
+      
+      return result
+    }
+    
+    if(!response.entity) return response
+    return {
+      ...response,
+      entity: addUsageInformationToSwitchEntity(response.entity)
+    }
+  }
+})
