@@ -9,7 +9,7 @@ const options = {
 }
 
 export default (config) => {
-  const { TIMER_DEFAULT } = config
+  const { TIMER_DEFAULT, TENANT } = config
 
   const webpackCompiler = webpack({
     devtool: 'source-map',
@@ -32,7 +32,8 @@ export default (config) => {
         'process.env': {
            // Note the quotes, this is weird but necessary because otherwise it tries
            // to treat the date (e.g. 1970-01-01) as an expression.
-          TIMER_DEFAULT: `"${TIMER_DEFAULT}"`
+          TIMER_DEFAULT: `"${TIMER_DEFAULT}"`,
+          TENANT: `"${TENANT}"`
         }
       })
     ]

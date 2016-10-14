@@ -31,6 +31,10 @@ passport.use('fnllc', new OAuth2Strategy({
 
 var app = express.Router()
 app.get('/login', passport.authenticate('fnllc', { failureRedirect: '/', successRedirect: '/' }))
+app.get('/logout', (req, res) => {
+  req.logout()
+  res.redirect(process.env.SM_API_URL + '/oauth2/logout')
+})
 app.get('/favicon.png', (req, res, next) => res.sendFile(path.resolve(__dirname, 'fnllc-favicon.png'), null, next))
 app.get('/touch-icon.png', (req, res, next) => res.sendFile(path.resolve(__dirname, 'fnllc-touch-icon.png'), null, next))
 

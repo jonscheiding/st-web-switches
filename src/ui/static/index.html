@@ -57,7 +57,12 @@
       
       <div layout="row" layout-align="center center">
         <md-button class="md-fab" aria-label="Help" ng-click="showHelpDialog()">
-            <md-icon class="material-icons">help</md-icon>
+          <md-tooltip>Show Quick Help</md-tooltip>
+          <md-icon class="material-icons">help</md-icon>
+        </md-button>
+        <md-button ng-if="canLogout()" class="md-fab" aria-label="Help" href="/logout">
+          <md-tooltip>Logout</md-tooltip>
+          <md-icon class="material-icons">exit_to_app</md-icon>
         </md-button>
       </div>
     </div>
@@ -99,7 +104,10 @@
             </md-list>
           </md-dialog-content>
           <md-dialog-actions>
-            <md-button ng-click="closeHelpDialog()">Got it!</md-button>
+            <md-button ng-click="closeHelpDialog()">
+              <md-icon class="material-icons">check_circle</md-icon>
+              Got it!
+            </md-button>
           </md-dialog-actions>
         </md-dialog>
       </div>
