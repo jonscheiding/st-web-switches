@@ -109,7 +109,12 @@ def api_switch_timer_state_post() {
 }
 
 def map_switch(sw) {
-	refresh_switch_state(sw)
+	//
+	// Update the state "manually" to work around issue where the switch has 
+	// changed state, but the event handler apparently never fired.
+	//
+	update_currently_value(sw)
+
 	def sw_state = state.switches[sw.id]
 	
 	def currentSwitch = (sw_state.currently ?: sw.currentSwitch)
@@ -145,19 +150,6 @@ def find_switch(id) {
 	}
 	
 	return sw
-}
-
-def refresh_switch_state(sw) {
-	def sw_state = state.switches[sw.id]
-	
-	
-	if(sw_state.currently == "turning ${sw.currentSwitch}") {
-		//
-		// Update the state "manually" to work around issue where the switch has 
-		// changed state, but the event handler apparently never fired.
-		//
-		sw_state = sw.currentSwitch
-	}
 }
 
 def start_timer(sw, desired_state, override = false, minutes_from_now = null) {
@@ -248,9 +240,14 @@ def turn_switch(sw, turn) {
 	}
 }
 
-def update_currently_value(sw, value = null) {
-	state.switches[sw.id].currently = value ?: sw.currentSwitch
-	state.switches[sw.id].since = new Date().toString()
+def update_currently_value(sw, value = sw.currentSwitch) {
+	def sw_state = state.switches[sw.id]
+	if(sw_state.currently == value) return
+
+	log.debug("Updating state value for switch ${sw.id} from '${sw_state.currently}' to '${value}'.")
+
+	sw_state.currently = value
+	sw_state.since = new Date().toString()
 }
 
 def can_report_current_power(sw) {
@@ -262,7 +259,7 @@ def log_http_error(code, msg) {
 	httpError(code, msg);
 }
 
-def handle_switch_on(evt) {
+def handle_switch_on(evt) { return
 	log.debug("Received notification that switch ${evt.device.id} turned on.")
 	update_currently_value(evt.device)
 	start_timer(evt.device, "off")
