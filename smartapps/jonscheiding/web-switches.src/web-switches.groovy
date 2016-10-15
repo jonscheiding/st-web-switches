@@ -109,13 +109,15 @@ def api_switch_timer_state_post() {
 }
 
 def map_switch(sw) {
-	//
-	// Update the state "manually" to work around issue where the switch has 
-	// changed state, but the event handler apparently never fired.
-	//
-	update_currently_value(sw)
-
 	def sw_state = state.switches[sw.id]
+	
+	if(sw_state.currently == "turning ${sw.currentSwitch}") {
+		//
+		// Update the state "manually" to work around issue where the switch has 
+		// changed state, but the event handler apparently never fired.
+		//
+		update_currently_value(sw)
+	}
 	
 	def currentSwitch = (sw_state.currently ?: sw.currentSwitch)
 	def currentPower = null
