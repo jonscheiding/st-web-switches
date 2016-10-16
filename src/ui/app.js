@@ -146,6 +146,10 @@ app.controller('SwitchAppController', function($scope, $http, $interval, $timeou
       return this.time instanceof Date && isFinite(this.time)
     }
     
+    scope.getTodayOrTomorrow = function() {
+      return normalizeInputTime(this.time).isBefore(moment()) ? 'Tomorrow' : 'Today'
+    }
+    
     if(process.env.TIMER_DEFAULT != null) {
       scope.time = moment(process.env.TIMER_DEFAULT, 'h:mm A').toDate()
     }
@@ -208,16 +212,18 @@ app.controller('SwitchAppController', function($scope, $http, $interval, $timeou
 
 const calculateMinutesFromNow = (time) => {
   const now = moment()
-  const setTime = moment(time)
-  
-  const timeInMinutes = setTime.diff(setTime.clone().startOf('day'), 'minutes')
-
-  let setDate = now.clone().startOf('day').add(timeInMinutes, 'minutes')
+  const setDate = normalizeInputTime(time)
   if(setDate.isBefore(now)) {
-    setDate = setDate.add(1, 'days')
+    setDate.add(1, 'days')
   }
   
   return setDate.diff(now, 'minutes')
+}
+
+const normalizeInputTime = (time) => {
+  const inputTime = moment(time)
+  const timeInMinutes = inputTime.diff(inputTime.clone().startOf('day'), 'minutes')
+  return moment().startOf('day').add(timeInMinutes, 'minutes')
 }
 
 const timerDialogTemplate = `
@@ -225,7 +231,10 @@ const timerDialogTemplate = `
     <form ng-submit="done()">
       <md-dialog-content>
         <h3>Set timer for {{switch.label}}</h3>
+        What time would you like the switch to turn on?
+        <br/><br/>
         <md-input-container class="md-block">
+          <label>{{getTodayOrTomorrow()}}</label>
           <input type="time" name="time" ng-model="time" md-autofocus>
         </md-input-container>
       </md-dialog-content>
