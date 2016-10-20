@@ -41,8 +41,7 @@ app.get('/touch-icon.png', (req, res, next) => res.sendFile(path.resolve(__dirna
 export default () => [
   expressSession({
     resave: false, saveUninitialized: true, 
-    secret: process.env.SESSION_SECRET, 
-    cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }
+    secret: process.env.SESSION_SECRET
   }),
   passport.initialize(),
   passport.session(),
