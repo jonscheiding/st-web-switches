@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "nodemon -e js main.js",
-    "start:fnllc": "TENANT=fnllc npm start",
+    "start:fnllc": "FNLLC=1 npm start",
     "test:lint": "eslint .",
     "test:mocha": "mocha",
     "test": "npm run test:mocha && npm run test:lint"

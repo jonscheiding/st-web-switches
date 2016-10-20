@@ -5,9 +5,9 @@ import ui from './ui'
 
 const app = express()
 
-if(process.env.TENANT) {
-  const tenant = require('src/tenant/' + process.env.TENANT).default
-  app.use(tenant())
+if(process.env.FNLLC) {
+  const fnllc = require('src/fnllc').default
+  app.use(fnllc())
 }
 
 app.use('/api', api(process.env))
