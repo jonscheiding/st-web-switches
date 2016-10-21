@@ -3,6 +3,8 @@ import deepIs from 'deep-is'
 import clone from 'clone'
 import moment from 'moment'
 
+import logger from 'src/logger'
+
 const app = angular.module('switch-app', ['ngMaterial'])
   .config(function($httpProvider) {
     $httpProvider.interceptors.push(function($q) {

@@ -35,7 +35,16 @@ export default (config) => {
           TIMER_DEFAULT: `"${TIMER_DEFAULT}"`
         }
       })
-    ]
+    ],
+    resolve: {
+      alias: {
+        bunyan: 'browser-bunyan',
+        'express-bunyan-logger': './empty'
+      },
+      root: [
+        path.resolve('.')
+      ]
+    }
   })
 
   const ui = express.Router()
