@@ -10,6 +10,7 @@ const app = angular.module('switch-app', ['ngMaterial'])
     $httpProvider.interceptors.push(function($q) {
       return {
         'response': function(response) { 
+          logger.debug(response)
           return response
         },
         'responseError': function(response) {
