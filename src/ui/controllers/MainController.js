@@ -1,3 +1,4 @@
+import $ from 'jquery'
 import deepIs from 'deep-is'
 import clone from 'clone'
 import moment from 'moment'
@@ -117,7 +118,7 @@ export default function($scope, $http, $interval, $timeout, $mdDialog) {
     const scope = this.$new()
     
     $mdDialog.show({
-      template: timerDialogTemplate,
+      template: $('#timer-dialog').text(),
       clickOutsideToClose: true,
       scope: scope,
       controller: TimerDialogController,
@@ -172,23 +173,3 @@ export default function($scope, $http, $interval, $timeout, $mdDialog) {
     $interval($scope.reload, 2000)
   })
 }
-
-const timerDialogTemplate = `
-  <md-dialog layout-padding>
-    <form ng-submit="done()">
-      <md-dialog-content>
-        <h3>Set timer for {{switch.label}}</h3>
-        What time would you like the switch to turn on?
-        <br/><br/>
-        <md-input-container class="md-block">
-          <label>{{getTodayOrTomorrow()}}</label>
-          <input type="time" name="time" ng-model="time" md-autofocus>
-        </md-input-container>
-      </md-dialog-content>
-      <md-dialog-actions>
-        <md-button ng-click="cancel()">Cancel</md-button>
-        <md-button type="submit" ng-disabled="!isTimeValid()">Set</md-button>
-      </md-dialog-actions>
-    </form>
-  </md-dialog>
-`
