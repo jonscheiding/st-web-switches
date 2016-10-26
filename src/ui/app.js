@@ -8,7 +8,7 @@ const app = angular.module('switch-app', ['ngMaterial'])
     $httpProvider.interceptors.push(function($q) {
       return {
         'response': function(response) { 
-          logger.debug(response)
+          logger.debug({obj: {response}}, 'API response received.')
           return response
         },
         'responseError': function(response) {
