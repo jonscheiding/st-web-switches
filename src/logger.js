@@ -16,6 +16,9 @@ export const expressLogger = () => {
         status >= 400 ? 'warn' :
         'debug'
       )
+    },
+    includesFn: (req) => {
+      return { user: req.user }
     }
   }
   

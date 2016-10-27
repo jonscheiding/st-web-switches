@@ -2,6 +2,7 @@ import envalid from 'envalid'
 import express from 'express'
 import expressSession from 'express-session'
 import ensureLogin from 'connect-ensure-login'
+import jwt from 'jsonwebtoken'
 import passport from 'passport'
 import OAuth2Strategy from 'passport-oauth2'
 import path from 'path'
@@ -13,8 +14,15 @@ envalid.validate(process.env, {
   SM_API_URL: { required: true }
 })
 
-passport.serializeUser((user, done) => done(null, user))
-passport.deserializeUser((user, done) => done(null, user))
+passport.serializeUser((user, done) => {
+  done(null, user.token)
+})
+passport.deserializeUser((user, done) => {
+  done(null, {
+    ...jwt.decode(user),
+    token: user
+  })
+})
 
 passport.use('fnllc', new OAuth2Strategy({
   authorizationURL: process.env.SM_API_URL + '/oauth2/authorize',
@@ -25,7 +33,7 @@ passport.use('fnllc', new OAuth2Strategy({
   scope: 'login'
 },
   function(accessToken, refreshToken, profile, cb) {
-    return cb(null, accessToken)
+    return passport.deserializeUser(accessToken, cb)
   }
 ))
 
