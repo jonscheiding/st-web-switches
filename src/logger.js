@@ -18,26 +18,35 @@ export const expressLogger = () => {
   ]
 }
 
-let logger
+class BrowserConsoleStream {
+  constructor() { 
+    this.innerStream = new bunyan.ConsoleFormattedStream()
+  }
+  
+  write(rec) {
+    const { level, levelName, msg, name, src, time, v, ...properties } = rec
+    
+    return this.innerStream.write({
+      level, levelName, msg, name, src, time, v,
+      obj: { ...properties }
+    })
+  }
+} 
 
-if(process.env.WEBPACK) {
-  logger = bunyan.createLogger({
-    name: 'st-web-switches',
-    level: process.env.LOG_LEVEL || 'info',
-    streams: [{
-      level: 'debug',
-      stream: new bunyan.ConsoleFormattedStream()
-      // stream: {
-      //   write: (data) => console.log(data)
-      // }
-    }],
-    src: true
-  })
-} else {
-  logger = bunyan.createLogger({
-    name: 'st-web-switches', // TODO: Can we infer a name based on the caller?
-    level: process.env.LOG_LEVEL || 'info'
-  })
+const config = {
+  name: 'st-web-switches',
+  level: process.env.LOG_LEVEL || 'info',
+  src: true
 }
 
-export default logger
+if(process.env.WEBPACK) {
+  config.streams = [{
+    level: 'debug',
+    stream: new BrowserConsoleStream()
+    // stream: {
+    //   write: (data) => console.log(data)
+    // }
+  }]
+}
+
+export default bunyan.createLogger(config)
