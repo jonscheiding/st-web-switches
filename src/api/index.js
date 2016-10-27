@@ -6,6 +6,7 @@ import pathPrefixInterceptor from 'rest/interceptor/pathPrefix'
 
 import { proxy, proxyInterceptor } from './express-rest-proxy'
 import { accessTokenInterceptor, pathRewriteInterceptor, prefixLinksInterceptor, switchesInterceptor } from './interceptors'
+import { restLoggerInterceptor } from 'src/logger'
 
 const UNPLUGGED_TIME_THRESHOLD = 5000
 
@@ -21,6 +22,7 @@ export default (config) => {
   api.use(bodyParser.json())
   
   api.use(
+    proxyInterceptor(restLoggerInterceptor),
     proxyInterceptor(mimeInterceptor),
     proxyInterceptor(pathPrefixInterceptor, { prefix: baseUrl }),
     proxyInterceptor(accessTokenInterceptor, { accessToken })
