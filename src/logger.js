@@ -1,8 +1,15 @@
 import bunyan from 'bunyan'
 import expressBunyanLogger from 'express-bunyan-logger'
 
+const config = {
+  name: 'st-web-switches',
+  level: process.env.LOG_LEVEL || 'info',
+  src: true
+}
+
 export const expressLogger = () => {
   const options = {
+    ...config,
     levelFn: (status) => {
       return (
         status >= 500 ? 'error' :
@@ -33,15 +40,8 @@ class BrowserConsoleStream {
   }
 } 
 
-const config = {
-  name: 'st-web-switches',
-  level: process.env.LOG_LEVEL || 'info',
-  src: true
-}
-
 if(process.env.WEBPACK) {
   config.streams = [{
-    level: 'debug',
     stream: new BrowserConsoleStream()
     // stream: {
     //   write: (data) => console.log(data)
