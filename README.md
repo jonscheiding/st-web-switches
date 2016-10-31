@@ -1,6 +1,6 @@
 # SmartThings Web Switches
 SmartThings solution for remotely controlling smart switches via a web interface.
-
+[![Build Status](https://travis-ci.org/jonscheiding/st-web-switches.svg?branch=master)](https://travis-ci.org/jonscheiding/st-web-switches)
 ## SmartApp
 
   The SmartApp is located in [smartapps/jonscheiding/power-control](smartapps/jonscheiding/power-control) and provides an API for accessing one or more smart switches.
