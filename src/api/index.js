@@ -6,7 +6,7 @@ import pathPrefixInterceptor from 'rest/interceptor/pathPrefix'
 
 import { proxy, proxyInterceptor } from './express-rest-proxy'
 import { accessTokenInterceptor, pathRewriteInterceptor, prefixLinksInterceptor, switchesInterceptor } from './interceptors'
-import { restLoggerInterceptor } from 'src/logger'
+import { default as logger, restLoggerInterceptor } from 'src/logger'
 
 const UNPLUGGED_TIME_THRESHOLD = 5000
 
@@ -34,6 +34,21 @@ export default (config) => {
 
   api.get('/', proxyInterceptor(pathRewriteInterceptor, { path: '/app' }))
   api.use('/switches', proxyInterceptor(switchesInterceptor, { unpluggedTimeThreshold: UNPLUGGED_TIME_THRESHOLD }))
+  
+  api.post('/switches/:id/:state', (req, res, next) => {
+    logger.info({user: req.user, id: req.params.id}, `Switch ${req.params.id} requested to turn ${req.params.state}.`)
+    next()
+  })
+  
+  api.post('/switches/:id/timer/:state', (req, res, next) => {
+    logger.info({user: req.user, id: req.params.id}, `Switch ${req.params.id} requested to turn ${req.params.state} in ${req.query.after} minutes.`)
+    next()
+  })
+  
+  api.delete('/switches/:id/timer/:state', (req, res, next) => {
+    logger.info({user: req.user, id: req.params.id}, `Timer to turn ${req.params.state} switch ${req.params.id} requested to cancel.`)
+    next()
+  })
   
   api.use(proxy())
   
