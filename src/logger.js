@@ -38,6 +38,9 @@ if(process.env.WEBPACK) {
   config.streams.push({ stream: new BrowserConsoleStream() })
 } else {
   config.streams.push({ stream: process.stdout, level: 'info' })
+}
+
+if(process.env.LOGGLY_TOKEN) {
   config.streams.push({
     stream: new LogglyStream({ token: process.env.LOGGLY_TOKEN, subdomain: process.env.LOGGLY_SUBDOMAIN }),
     level: 'debug',
