@@ -1,4 +1,5 @@
 import bunyan from 'bunyan'
+import LogglyStream from 'bunyan-loggly'
 import expressBunyanLogger from 'express-bunyan-logger'
 import interceptor from 'rest/interceptor'
 
@@ -31,13 +32,17 @@ const getLogLevelForStatusCode = (statusCode) => {
   )
 }
 
+config.streams = []
+
 if(process.env.WEBPACK) {
-  config.streams = [{
-    stream: new BrowserConsoleStream()
-    // stream: {
-    //   write: (data) => console.log(data)
-    // }
-  }]
+  config.streams.push({ stream: new BrowserConsoleStream() })
+} else {
+  config.streams.push({ stream: process.stdout, level: 'info' })
+  config.streams.push({
+    stream: new LogglyStream({ token: process.env.LOGGLY_TOKEN, subdomain: process.env.LOGGLY_SUBDOMAIN }),
+    level: 'debug',
+    type: 'raw'
+  })
 }
 
 const logger = bunyan.createLogger(config)

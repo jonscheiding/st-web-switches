@@ -41,6 +41,7 @@ export default (config) => {
     resolve: {
       alias: {
         bunyan: 'browser-bunyan',
+        'bunyan-loggly': 'empty-module',
         'express-bunyan-logger': 'empty-module'
       },
       root: [

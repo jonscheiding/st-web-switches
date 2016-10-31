@@ -30,6 +30,7 @@
     "body-parser": "^1.15.2",
     "browser-bunyan": "^0.4.0",
     "bunyan": "^1.8.3",
+    "bunyan-loggly": "^1.1.0",
     "clone": "^2.0.0",
     "connect-ensure-login": "^0.1.1",
     "deep-is": "^0.1.3",
