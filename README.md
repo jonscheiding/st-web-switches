@@ -6,7 +6,7 @@ SmartThings solution for remotely controlling smart switches via a web interface
 ## Architecture
 This solution consists of the following components:
 
- * A [SmartThings SmartApp](smartapps/jonscheiding/power-control) which provides an API to interact with switches controlled by SmartThings.
+ * A [SmartThings SmartApp](smartapps) which provides an API to interact with switches controlled by SmartThings.
  * An [ExpressJS server application](src) which proxies the SmartThings API so that the OAuth2 authentication can be abstracted away from the user.
  * An [AngularJS web application](src/app) that provides the actual user interface.
 
