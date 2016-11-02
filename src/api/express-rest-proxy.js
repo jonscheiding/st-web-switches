@@ -1,6 +1,11 @@
 import rest from 'rest'
 import parseUrl from 'parseurl'
 
+//
+// ExpressJS middleware that proxies requests to the 'rest' package.  Makes the
+// request with the same relative URL, passes entity bodies, some headers, etc.
+//
+
 export const proxy = () => (req, res) => {
   const url = parseUrl(req)
 
@@ -31,6 +36,9 @@ export const proxy = () => (req, res) => {
   .catch(err => res.status(500).send(err.toString()))
 }
 
+//
+// Allows Express app to provide 'rest' package interceptors on a given route
+//
 export const proxyInterceptor = (interceptor, config) => (req, res, next) => {
   if(!req.proxyInterceptors) req.proxyInterceptors = []
   req.proxyInterceptors.push({interceptor, config})

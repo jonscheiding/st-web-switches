@@ -29,13 +29,11 @@ export default (config) => {
     },
     plugins: [
       new webpack.DefinePlugin({
-        'process.env': {
-           // Note the quotes, this is weird but necessary because otherwise it tries
-           // to treat the date (e.g. 1970-01-01) as an expression.
-          TIMER_DEFAULT: `"${TIMER_DEFAULT}"`,
-          LOG_LEVEL: `"${LOG_LEVEL}"`,
+        'process.env': JSON.stringify({
+          TIMER_DEFAULT: TIMER_DEFAULT,
+          LOG_LEVEL: LOG_LEVEL,
           WEBPACK: true
-        }
+        })
       })
     ],
     resolve: {
