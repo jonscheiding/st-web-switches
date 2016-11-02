@@ -2,12 +2,6 @@
 
 This SmartApp and provides an API for accessing one or more smart switches.
 
-### Installation and Authentication
-
-Install the SmartApp by logging in to the SmartThings IDE and copy/pasting the code from this repository.  For detailed instructions, see [SmartApp / DeviceType :”From Code” and “From Template”](https://community.smartthings.com/t/smartapp-devicetype-from-code-and-from-template/11255).
-
-To use the API directly, you'll need to get an OAuth token as described in the [SmartThings documentation](http://docs.smartthings.com/en/latest/smartapp-web-services-developers-guide/authorization.html).
-
 ### Features
 
 The SmartApp has the following basic features:
