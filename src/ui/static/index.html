@@ -104,6 +104,10 @@
             </md-list>
           </md-dialog-content>
           <md-dialog-actions>
+            <md-button ng-if="docUrl" ng-href="{{docUrl}}">
+              <md-icon class="material-icons">launch</md-icon>
+              Tell me more
+            </md-button>
             <md-button ng-click="closeHelpDialog()">
               <md-icon class="material-icons">check_circle</md-icon>
               Got it!

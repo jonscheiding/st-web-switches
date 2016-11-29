@@ -57,6 +57,7 @@ export default () => [
   passport.session(),
   (req, res, next) => {
     res.set('X-Logged-In', true)
+    res.set('X-Doc-Url', '/doc')
     next()
   },
   app,

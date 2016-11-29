@@ -6,7 +6,7 @@ import moment from 'moment'
 import { TimerDialogController } from '.'
 import { calculateMinutesFromNow } from 'src/ui/time-helpers'
 
-export default function($scope, $http, $interval, $timeout, $mdDialog) {
+export default function($scope, $http, $interval, $timeout, $window, $mdDialog) {
   $scope.loading = true
     
   //
@@ -169,6 +169,7 @@ export default function($scope, $http, $interval, $timeout, $mdDialog) {
   $http.get('/api').then(function(response) {
     $scope.api = response.data
     $scope.isLoggedIn = response.headers('X-Logged-In') === 'true'
+    $scope.docUrl = response.headers('X-Doc-Url')
     $scope.reload()
     $interval($scope.reload, 2000)
   })
