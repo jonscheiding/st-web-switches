@@ -18,7 +18,6 @@ You'll see a list of all the airplanes, and the status of each.
 | Button | Purpose |
 |:-------------:| ------------- |
 | ![](onoff.png) | Click to turn the heater on (or off, if it's already on). |
-| ![](onoff.png) | Click to turn the heater on (or off, if it's already on). |
 | ![](timeron.png) | Click to set a timer to turn the heater on.  A popup will ask you what time you want it to turn on.  Enter the time and click SET. |
 | ![](timeroff.png) | This button will show up if there is a timer set to turn the heater on.  Click the button to cancel the timer. |
 | ![](timerextend.png) | Click to keep the heater on longer if it's about to turn off. |
