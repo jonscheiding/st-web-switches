@@ -46,6 +46,8 @@ app.get('/logout', (req, res) => {
 app.get('/favicon.png', (req, res, next) => res.sendFile(path.resolve(__dirname, 'fnllc-favicon.png'), null, next))
 app.get('/touch-icon.png', (req, res, next) => res.sendFile(path.resolve(__dirname, 'fnllc-touch-icon.png'), null, next))
 
+app.use('/doc', express.static(path.resolve(__dirname, 'doc')))
+
 export default () => [
   expressSession({
     resave: false, saveUninitialized: true, 
