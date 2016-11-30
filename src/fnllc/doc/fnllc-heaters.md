@@ -17,10 +17,10 @@ You'll see a list of all the airplanes, and the status of each.
 
 | Button | Purpose |
 |:-------------:| ------------- |
-| ![](onoff.png) | Click to turn the heater on (or off, if it's already on). |
+| ![](onoff.png) | Click to turn the heater on (or off, if it's already on). When you turn the heater on, a 2-hour timer to turn it off will automatically be set. |
 | ![](timeron.png) | Click to set a timer to turn the heater on.  A popup will ask you what time you want it to turn on.  Enter the time and click SET. |
 | ![](timeroff.png) | This button will show up if there is a timer set to turn the heater on.  Click the button to cancel the timer. |
-| ![](timerextend.png) | Click to keep the heater on longer if it's about to turn off. |
+| ![](timerextend.png) | This button will show up if the heater is on.  Click to restart the 2-hour countdown before it turns off. |
 
 If an airplane says it is ON, but UNPLUGGED, that means that either the airplane is not there, or the heater is not plugged into the smart switch.  In this case you'll need to call the FBO or go to the airport yourself to make sure it is plugged in.
 
