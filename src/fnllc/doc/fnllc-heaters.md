@@ -9,7 +9,7 @@ In the winter, the engine block heaters are always plugged in, but instead of be
 If you are at the airport, you can turn the heater on by pressing the button on top of the switch.  The blue light means the switch is on.  It will turn off automatically after two hours.
 
 ### How to use it
-To use the application, go to [http://fnllc-heaters.herokuapp.com](http://fnllc-heaters.herokuapp.com).  *(NOTE: Once the link is available on the website, I'll change this.)*  You'll be asked to login with the username and password that you use for Schedule Master.
+To use the application, go to the Flying Neutrons website and click the "FNI Plane Heaters" link, or go directly to [www.flyingneutrons.com/heaters](http:// www.flyingneutrons.com/heaters).  You'll be asked to login with the username and password that you use for Schedule Master.
 
 You'll see a list of all the airplanes, and the status of each.
 
@@ -20,7 +20,6 @@ You'll see a list of all the airplanes, and the status of each.
 | ![](onoff.png) | Click to turn the heater on (or off, if it's already on). When you turn the heater on, a 2-hour timer to turn it off will automatically be set. |
 | ![](timeron.png) | Click to set a timer to turn the heater on.  A popup will ask you what time you want it to turn on.  Enter the time and click SET. |
 | ![](timeroff.png) | This button will show up if there is a timer set to turn the heater on.  Click the button to cancel the timer. |
-| ![](timerextend.png) | This button will show up if the heater is on.  Click to restart the 2-hour countdown before it turns off. |
 
 If an airplane says it is ON, but UNPLUGGED, that means that either the airplane is not there, or the heater is not plugged into the smart switch.  In this case you'll need to call the FBO or go to the airport yourself to make sure it is plugged in.
 
