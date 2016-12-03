@@ -11,7 +11,7 @@ In the winter, the engine block heaters are always plugged in, but instead of be
 If you are at the airport, you can turn the heater on by pressing the button on top of the switch.  The blue light means the switch is on.  It will turn off automatically after two hours.
 
 ### How to use it
-To use the application, go to the Flying Neutrons website and click the "FNI Plane Heaters" link, or go directly to [www.flyingneutrons.com/heaters](http:// www.flyingneutrons.com/heaters).  You'll be asked to login with the username and password that you use for Schedule Master.
+To use the application, go to the Flying Neutrons website and click the "FNI Plane Heaters" link, or go directly to [www.flyingneutrons.com/heaters](http://www.flyingneutrons.com/heaters).  You'll be asked to login with the username and password that you use for Schedule Master.
 
 You'll see a list of all the airplanes, and the status of each.
 
