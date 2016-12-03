@@ -16,7 +16,9 @@ export default function($scope, $mdDialog) {
   }
   
   $scope.getTodayOrTomorrow = function() {
-    return normalizeTime(this.time).isBefore(moment()) ? 'Tomorrow' : 'Today'
+    const setDay = normalizeTime(this.time).startOf('day')
+    const today = moment().startOf('day')
+    return setDay.isAfter(today) ? 'Tomorrow' : 'Today'
   }
   
   if(process.env.TIMER_DEFAULT != null) {
