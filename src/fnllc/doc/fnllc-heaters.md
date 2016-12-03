@@ -6,6 +6,8 @@ This application allows you to turn the engine block heaters for the airplanes o
 ### How it works
 In the winter, the engine block heaters are always plugged in, but instead of being plugged in directly to the outlet, they are plugged into a "smart" switch that can be turned on and off remotely.
 
+![](switch.png)
+
 If you are at the airport, you can turn the heater on by pressing the button on top of the switch.  The blue light means the switch is on.  It will turn off automatically after two hours.
 
 ### How to use it
