@@ -168,8 +168,8 @@ export default function($scope, $http, $interval, $timeout, $window, $mdDialog) 
   //
   $http.get('/api').then(function(response) {
     $scope.api = response.data
+    $scope.help = $scope.api.help
     $scope.isLoggedIn = response.headers('X-Logged-In') === 'true'
-    $scope.docUrl = response.headers('X-Doc-Url')
     $scope.reload()
     $interval($scope.reload, 2000)
   })
