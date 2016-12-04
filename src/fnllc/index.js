@@ -21,7 +21,8 @@ const fnllcInterceptor = interceptor({
     //response.entity.docLink = '/doc'
     response.entity = mergeEntity(response.entity, {
       help: {
-        doc: '/doc'
+        doc: '/doc',
+        video: process.env.FNLLC_VIDEO_URL
       }
     })
     return response

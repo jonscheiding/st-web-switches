@@ -104,7 +104,11 @@
             </md-list>
           </md-dialog-content>
           <md-dialog-actions>
-            <md-button ng-if="help.doc" ng-href="{{help.doc}}">
+            <md-button ng-if="help.video" ng-href="{{help.video}}" target="_blank">
+              <md-icon class="material-icons">tv</md-icon>
+              Watch a video
+            </md-button>
+            <md-button ng-if="help.doc" ng-href="{{help.doc}}" target="_blank">
               <md-icon class="material-icons">launch</md-icon>
               Tell me more
             </md-button>
