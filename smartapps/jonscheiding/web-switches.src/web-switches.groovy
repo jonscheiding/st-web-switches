@@ -179,8 +179,6 @@ def start_timer(sw, desired_state, override = false, minutes_from_now = null) {
 	sw_timer.at = cal.getTime().toString()
 	
 	log.info("Setting timer for switch ${sw.id}: ${sw_timer}")
-	
-	schedule("* * * * * ?", check_timers)
 }
 
 def clear_timer(sw) {
@@ -198,7 +196,28 @@ def check_timers() {
 	def timers_remaining = 0
 	
 	switches.each { sw ->
-		def sw_timer = state.switches[sw.id].timer
+		def sw_state = state.switches[sw.id]
+		
+		//
+		// Check switch state to make sure it has not gotten updated behind our backs
+		// (This happens sometimes when the event handlers don't fire)
+		//
+		switch(sw_state.currently) {
+			case 'on':
+			case 'turning off':
+				if(sw.currentSwitch == 'off') {
+					handle_switch_off(sw)
+				}
+				break
+			case 'off':
+			case 'turning on':
+				if(sw.currentSwitch == 'on') {
+					handle_switch_on(sw)
+				}
+				break
+		}
+	
+		def sw_timer = sw_state.timer
 		if(sw_timer == null) return
 		
 		if(now < Date.parseToStringDate(sw_timer.at)) {
@@ -212,20 +231,17 @@ def check_timers() {
 			case "on": sw.on(); break
 		}
 		update_currently_value("turning ${sw_timer.turn}")
-		state.switches[sw.id].timer = null
-	}
-	
-	if(timers_remaining == 0) {
-		log.info("Stopping timer schedule because there are no active timers.")
-		unschedule(check_timers)
+		sw_state.timer = null
 	}
 	
 	state
 }
 
 def turn_switch(sw, turn) {
-	if(sw.currentSwitch == turn) return
-
+	if(sw.currentSwitch == turn) {
+		return
+	}
+	
 	update_currently_value(sw, "turning ${turn}")
 	
 	switch(turn) {
@@ -261,16 +277,24 @@ def log_http_error(code, msg) {
 	httpError(code, msg);
 }
 
-def handle_switch_on(evt) { return
-	log.debug("Received notification that switch ${evt.device.id} turned on.")
-	update_currently_value(evt.device)
-	start_timer(evt.device, "off")
+def handle_switch_on(sw) {
+	log.debug("Received notification that switch ${sw.id} turned on.")
+	update_currently_value(sw)
+	start_timer(sw, "off")
 }
 
-def handle_switch_off(evt) {
-	log.debug("Received notification that switch ${evt.deviceId} turned off.")
-	update_currently_value(evt.device)
-	clear_timer(evt.device)
+def handle_switch_off(sw) {
+	log.debug("Received notification that switch ${sw.id} turned off.")
+	update_currently_value(sw)
+	clear_timer(sw)
+}
+
+def subscribe_switch_on(evt) { return
+	handle_switch_on(evt.device)
+}
+
+def subscribe_switch_off(evt) {
+	handle_switch_off(evt.device)
 }
 
 def installed() {
@@ -291,12 +315,13 @@ def initialize() {
 	def updatedState = [:]
 	
 	switches.each { sw -> 
-		subscribe(sw, "switch.on", handle_switch_on)
-		subscribe(sw, "switch.off", handle_switch_off)
+		subscribe(sw, "switch.on", subscribe_switch_on)
+		subscribe(sw, "switch.off", subscribe_switch_off)
 		updatedState[sw.id] = state.switches[sw.id] ?: [:]
 	}
 
 	state.switches = updatedState
+	schedule("* * * * * ?", check_timers)
 	
 	log.info "state: ${state} | settings: ${settings}"
 }
