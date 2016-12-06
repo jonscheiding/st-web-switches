@@ -18,7 +18,8 @@ const UNPLUGGED_TIME_THRESHOLD = 5000
 export default (config) => {
   config = envalid.validate(config, {
     SMARTAPP_ACCESS_TOKEN: { required: true },
-    SMARTAPP_BASE_URL: { required: true }
+    SMARTAPP_BASE_URL: { required: true },
+    UNPLUGGED_USAGE_THRESHOLD: { required: false }
   })
   
   const [ baseUrl, accessToken ] = [ config.SMARTAPP_BASE_URL, config.SMARTAPP_ACCESS_TOKEN ]

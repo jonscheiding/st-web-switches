@@ -98,10 +98,12 @@ export const switchesInterceptor = interceptor({
       if(result.state.currently == 'on' && result.state.since != null && result.usage != null) {
         const timeOn = Date.now() - Date.parse(result.state.since)
 
-        if(result.usage <= unpluggedUsageThreshold && timeOn < unpluggedTimeThreshold) {
+        if(result.usage > unpluggedUsageThreshold) {
+          result.unplugged = false
+        } else if (timeOn < unpluggedTimeThreshold) {
           result.state.currently = 'turning on'
         } else {
-          result.unplugged = (result.usage <= unpluggedUsageThreshold)
+          result.unplugged = true
         }
       }
       

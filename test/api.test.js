@@ -5,11 +5,14 @@ import supertest from 'supertest'
 
 import api from 'src/api'
 
+const USAGE_THRESHOLD = 10 // The value doesn't really matter
+
 describe('The Smartapp API proxy', () => {
   const app = express()
   app.use('/prefix', api({
     SMARTAPP_BASE_URL: 'http://smartapp',
-    SMARTAPP_ACCESS_TOKEN: 'access_token'
+    SMARTAPP_ACCESS_TOKEN: 'access_token',
+    UNPLUGGED_USAGE_THRESHOLD: USAGE_THRESHOLD
   }))
   const client = supertest(app)
   
@@ -91,5 +94,47 @@ describe('The Smartapp API proxy', () => {
         unplugged: true
       })
       .then(() => n.done())
+  })
+  
+  it('should return switches with "unplugged" if usage is below the threshold', () => {
+    const sw = {
+      state: { 
+        currently: 'on',
+        since: moment().add(-10, 'seconds').format()
+      },
+      usage: USAGE_THRESHOLD - 1
+    }
+    
+    const n = nock('http://smartapp')
+      .get('/switches/1')
+      .reply(200, sw)
+      
+    return client.get('/prefix/switches/1')
+      .expect({
+        ...sw,
+        unplugged: true
+      })
+      .then(() => n.done())    
+  })
+  
+  it('should return switches with not "unplugged" if usage is above the threshold', () => {
+    const sw = {
+      state: { 
+        currently: 'on',
+        since: moment().add(-10, 'seconds').format()
+      },
+      usage: USAGE_THRESHOLD + 1
+    }
+    
+    const n = nock('http://smartapp')
+      .get('/switches/1')
+      .reply(200, sw)
+      
+    return client.get('/prefix/switches/1')
+      .expect({
+        ...sw,
+        unplugged: false
+      })
+      .then(() => n.done())    
   })
 })
