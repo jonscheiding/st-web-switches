@@ -60,7 +60,10 @@ export default (config) => {
   // Rewrite / to <st api>/app
   api.get('/', proxyInterceptor(pathRewriteInterceptor, { path: '/app' }))
   // Add some info to the /switches resource derived from the data that the API provides
-  api.use('/switches', proxyInterceptor(switchesInterceptor, { unpluggedTimeThreshold: UNPLUGGED_TIME_THRESHOLD }))
+  api.use('/switches', proxyInterceptor(switchesInterceptor, { 
+    unpluggedTimeThreshold: UNPLUGGED_TIME_THRESHOLD,
+    unpluggedUsageThreshold: config.UNPLUGGED_USAGE_THRESHOLD
+  }))
   
   // Finally set up that we are going to satisfy all requests using a REST proxy
   api.use(proxy())
