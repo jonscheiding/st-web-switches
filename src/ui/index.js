@@ -1,4 +1,5 @@
 import express from 'express'
+import useragent from 'express-useragent'
 import path from 'path'
 import webpack from 'webpack'
 import webpackMiddleware from 'webpack-dev-middleware'
@@ -49,6 +50,17 @@ export default (config) => {
   })
 
   const ui = express.Router()
+  ui.use(useragent.express())
+  
+  ui.use('/', (req, res, next) => {
+    if(req.useragent.isIE && req.useragent.version < 11) {
+      res.sendFile(path.resolve(webroot, 'unsupported.html'))
+      return
+    }
+    
+    next()
+  })
+  
   ui.use('/', express.static(webroot, options))
   ui.use(webpackMiddleware(webpackCompiler, { publicPath: '/dist/' }))
 
