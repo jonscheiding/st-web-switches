@@ -30,12 +30,75 @@
     .subtitle {
       font-size: 1em;
     }
+    
+    .browsers {
+      margin-top: 1em;
+    }
+    
+    table.browsers td {
+      width: 15%;
+      vertical-align: top;
+      text-align: center;
+      font-size: 0.8em;
+    }
+    
+    table.browsers td img {
+      width: 60%;
+    }
+    
+    table.browsers td strong {
+      display: block;
+      text-align: center;
+    }
+    
+    table.browsers a {
+      color: #777;
+    }
   </style>
 </head>
 <body>
   <div class="message">
     <div class="headline">Your browser is not supported.</div>
-    <div class="subtitle">Please use the latest version of Internet Explorer, Chrome, Firefox or Safari.</div>
+    <div class="subtitle">This app requires one of the following browsers:</div>
+    <table class="browsers">
+      <tr>
+        <td>
+          <a href="https://www.google.com/chrome/browser/desktop/">
+            <img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/37.2.1/chrome/chrome.png">
+            <strong>Google Chrome</strong>
+          </a>
+          <span>Version 21+</span>
+        </td>
+        <td>
+          <a href="https://www.google.com/chrome/browser/desktop/">
+            <img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/37.2.1/firefox/firefox.png">
+            <strong>Mozilla Firefox</strong>
+          </a>
+          <span>Version 28+</span>
+        </td>
+        <td>
+          <a href="http://www.opera.com/download">
+            <img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/37.2.1/opera/opera.png">
+            <strong>Opera</strong>
+          </a>
+          <span>Version 12.1+</span>
+        </td>
+        <td>
+          <a href="https://support.microsoft.com/en-us/help/17621/internet-explorer-downloads">
+            <img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/37.2.1/edge/edge.png">
+            <strong>Internet Explorer</strong>
+          </a>
+          <span>Version 11+</span>
+        </td>
+        <td>
+          <a href="https://support.apple.com/downloads/safari">
+            <img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/37.2.1/safari/safari.png">
+            <strong>Apple Safari</strong>
+          </a>
+          <span>Version 6.1+</span>
+        </td>
+      </tr>
+    </table>
   </div>
 </body>
 </html>
