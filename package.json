@@ -1,6 +1,9 @@
 {
   "name": "st-web-switches",
   "version": "1.0.0",
+  "engines": {
+    "node": "8.1.4"
+  },
   "description": "Web app for remotely controlling switches via SmartThings",
   "main": "main.js",
   "scripts": {
