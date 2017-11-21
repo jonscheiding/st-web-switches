@@ -28,6 +28,7 @@ definition(
 preferences {
 	section("Allow external service to control these things...") {
 		input "switches", "capability.switch", title: "Which switches should the API expose?", multiple: true, required: true
+		input "temperatureSensors", "capability.temperatureMeasurement", title: "Which temperature readings should the API provide?", multiple: true, required: false
 	}
 	section (mobileOnly: true, "Turn off switches automatically...") {
 		input "timer_default", "number", title: "After how many minutes?", required: true, defaultValue: 120
@@ -64,6 +65,12 @@ def api_app_get() {
 		timerDefault: settings.timer_default,
 		links: [
 			"switches": "/switches"
+		],
+		sensors: [
+			temperature: temperatureSensors
+                .collect {
+                    [ label: it.displayName, temperature: it.currentTemperature ]
+                }
 		]
 	]
 }
