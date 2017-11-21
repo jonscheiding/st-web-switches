@@ -81,3 +81,11 @@ md-dialog {
   padding: 10px;
   box-sizing: border-box;
 }
+
+.tile {
+  line-height: 2em;
+  padding: 0px 15px;
+  border-radius: 3px;
+  background-color: white;
+  color: black;
+}
