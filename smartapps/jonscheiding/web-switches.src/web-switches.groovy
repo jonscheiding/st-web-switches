@@ -42,6 +42,9 @@ mappings {
 	path("/switches") {
 		action: [ GET: "api_switches_get" ]
 	}
+	path("/sensors") {
+		action: [ GET: "api_sensors_get" ]
+	}
 	path("/switches/:id") {
 		action: [ GET: "api_switch_get" ]
 	}
@@ -64,19 +67,23 @@ def api_app_get() {
 		label: app.label, 
 		timerDefault: settings.timer_default,
 		links: [
-			"switches": "/switches"
-		],
-		sensors: [
-			temperature: temperatureSensors
-                .collect {
-                    [ label: it.displayName, temperature: it.currentTemperature ]
-                }
+			"switches": "/switches",
+			"sensors": "/sensors"
 		]
 	]
 }
 
 def api_switches_get() {
 	switches.collect { map_switch(it) }
+}
+
+def api_sensors_get() {
+	[
+		temperature: temperatureSensors
+			.collect {
+				[ label: it.displayName, temperature: it.currentTemperature ]
+			}
+	]
 }
 
 def api_switch_get() {
