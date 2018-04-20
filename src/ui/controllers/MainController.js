@@ -6,6 +6,22 @@ import moment from 'moment'
 import { TimerDialogController } from '.'
 import { calculateMinutesFromNow } from 'src/ui/time-helpers'
 
+function createRefreshFunction($http, urlFn, doneFn) {
+  let content = {}
+  return function() {
+    const url = urlFn()
+    return $http.get(url)
+      .then(function(response) {
+        if(deepIs(content, response.data)) {
+          return
+        }
+        
+        content = response.data
+        doneFn(clone(content)) // Have to clone because Angular modifies our objects
+      })
+  }
+}
+
 export default function($scope, $http, $interval, $timeout, $window, $mdDialog) {
   $scope.loading = true
     
@@ -78,20 +94,18 @@ export default function($scope, $http, $interval, $timeout, $window, $mdDialog) 
     return promise.then(() => $scope.loading = false)
   }
   
-  {
-    let switches = {}
-    $scope.reload = function() {
-      return $http.get($scope.api.links.switches).then(function(response) {
-        if(deepIs(switches, response.data)) {
-          return
-        }
-        
-        switches = response.data
-        $scope.switches = clone(switches) // Have to clone because Angular modifies our objects
-        $scope.loading = false
-      })
+  $scope.reloadSwitches = createRefreshFunction($http, 
+    () => $scope.api.links.switches,
+    res => {
+      $scope.switches = res
+      $scope.loading = false
     }
-  }
+  )
+
+  $scope.reloadSensors = createRefreshFunction($http,
+    () => $scope.api.links.sensors,
+    res => $scope.sensors = res
+  )
 
   $scope.toggle = function() {
     const newState = this.switch.state.currently == 'off' ? 'on' : 'off'
@@ -170,7 +184,9 @@ export default function($scope, $http, $interval, $timeout, $window, $mdDialog) 
     $scope.api = response.data
     $scope.help = $scope.api.help
     $scope.isLoggedIn = response.headers('X-Logged-In') === 'true'
-    $scope.reload()
-    $interval($scope.reload, 2000)
+    $scope.reloadSwitches()
+    $scope.reloadSensors()
+    $interval($scope.reloadSwitches, 2000)
+    $interval($scope.reloadSensors, 60000)
   })
 }
