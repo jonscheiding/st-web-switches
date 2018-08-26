@@ -1,4 +1,5 @@
 import express from 'express'
+import enforce from 'express-sslify'
 
 import api from './api'
 import ui from './ui'
@@ -7,6 +8,10 @@ import logger from './logger'
 
 const app = express()
 app.use(expressLogger())
+
+if(process.env.REQUIRE_SSL) {
+  app.use(enforce.HTTPS())
+}
 
 if(process.env.FNLLC) {
   const fnllc = require('src/fnllc').default
