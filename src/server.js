@@ -10,7 +10,7 @@ const app = express()
 app.use(expressLogger())
 
 if(process.env.REQUIRE_SSL) {
-  app.use(enforce.HTTPS())
+  app.use(enforce.HTTPS({ trustProtoHeader: true }))
 }
 
 if(process.env.FNLLC) {
